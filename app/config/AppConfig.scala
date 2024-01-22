@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.individualsdividendsincomeapi.config
+package config
 
-import com.google.inject.AbstractModule
+import javax.inject.{Inject, Singleton}
+import play.api.Configuration
 
-class Module extends AbstractModule {
+@Singleton
+class AppConfig @Inject()(config: Configuration) {
 
-  override def configure(): Unit = {
-
-    bind(classOf[AppConfig]).asEagerSingleton()
-  }
+  val appName: String = config.get[String]("appName")
 }
