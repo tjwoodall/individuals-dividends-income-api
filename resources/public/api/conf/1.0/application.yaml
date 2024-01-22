@@ -24,7 +24,7 @@ components:
       required: true
 
 paths:
-  /individuals/disposals-income/hello-world:
+  /individuals/dividends-income/hello-world:
     get:
       summary: Placeholder hello world endpoint
       description: |
