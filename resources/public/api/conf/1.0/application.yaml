@@ -5,9 +5,9 @@ info:
   title: Individuals Dividends Income (MTD)
 
 servers:
-  - url: https://test-api.service.hmrc.gov.uk/hello-world
+  - url: https://test-api.service.hmrc.gov.uk
     description: Sandbox
-  - url: https://api.service.hmrc.gov.uk/hello-world
+  - url: https://api.service.hmrc.gov.uk
     description: Production
 
 components:
