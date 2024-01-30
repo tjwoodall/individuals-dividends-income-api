@@ -14,26 +14,25 @@
  * limitations under the License.
  */
 
-package config
+package api.services
 
-import controllers.Assets
-import definition.ApiDefinitionFactory
-import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
+import api.connectors.{MtdIdLookupConnector, MtdIdLookupOutcome}
+import api.models.domain.Nino
+import api.models.errors.NinoFormatError
+import uk.gov.hmrc.http.HeaderCarrier
 
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class DocumentationController @Inject() (selfAssessmentApiDefinition: ApiDefinitionFactory, cc: ControllerComponents, assets: Assets)
-    extends BackendController(cc) {
+class MtdIdLookupService @Inject() (val connector: MtdIdLookupConnector) {
 
-  def definition(): Action[AnyContent] = Action {
-    Ok(Json.toJson(selfAssessmentApiDefinition.definition))
-  }
-
-  def asset(version: String, file: String): Action[AnyContent] = {
-    assets.at(s"/public/api/conf/$version", file)
+  def lookup(nino: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[MtdIdLookupOutcome] = {
+    if (Nino.isValid(nino)) {
+      connector.getMtdId(nino)
+    } else {
+      Future.successful(Left(NinoFormatError))
+    }
   }
 
 }

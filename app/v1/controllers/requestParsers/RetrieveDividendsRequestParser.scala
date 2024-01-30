@@ -14,26 +14,20 @@
  * limitations under the License.
  */
 
-package config
+package v1.controllers.requestParsers
 
-import controllers.Assets
-import definition.ApiDefinitionFactory
-import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
+import api.controllers.requestParsers.RequestParser
+import api.models.domain.{Nino, TaxYear}
+import v1.controllers.requestParsers.validators.RetrieveDividendsValidator
+import v1.models.request.retrieveDividends.{RetrieveDividendsRawData, RetrieveDividendsRequest}
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class DocumentationController @Inject() (selfAssessmentApiDefinition: ApiDefinitionFactory, cc: ControllerComponents, assets: Assets)
-    extends BackendController(cc) {
+class RetrieveDividendsRequestParser @Inject() (val validator: RetrieveDividendsValidator)
+    extends RequestParser[RetrieveDividendsRawData, RetrieveDividendsRequest] {
 
-  def definition(): Action[AnyContent] = Action {
-    Ok(Json.toJson(selfAssessmentApiDefinition.definition))
-  }
-
-  def asset(version: String, file: String): Action[AnyContent] = {
-    assets.at(s"/public/api/conf/$version", file)
-  }
+  override protected def requestFor(data: RetrieveDividendsRawData): RetrieveDividendsRequest =
+    RetrieveDividendsRequest(Nino(data.nino), TaxYear.fromMtd(data.taxYear))
 
 }

@@ -14,26 +14,20 @@
  * limitations under the License.
  */
 
-package config
+package api.connectors
 
-import controllers.Assets
-import definition.ApiDefinitionFactory
-import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
+import config.AppConfig
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class DocumentationController @Inject() (selfAssessmentApiDefinition: ApiDefinitionFactory, cc: ControllerComponents, assets: Assets)
-    extends BackendController(cc) {
+class MtdIdLookupConnector @Inject() (http: HttpClient, appConfig: AppConfig) {
 
-  def definition(): Action[AnyContent] = Action {
-    Ok(Json.toJson(selfAssessmentApiDefinition.definition))
-  }
-
-  def asset(version: String, file: String): Action[AnyContent] = {
-    assets.at(s"/public/api/conf/$version", file)
+  def getMtdId(nino: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[MtdIdLookupOutcome] = {
+    import api.connectors.httpparsers.MtdIdLookupHttpParser.mtdIdLookupHttpReads
+    http.GET[MtdIdLookupOutcome](s"${appConfig.mtdIdBaseUrl}/mtd-identifier-lookup/nino/$nino")
   }
 
 }
