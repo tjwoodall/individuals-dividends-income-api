@@ -19,6 +19,7 @@ package v1.services
 import api.controllers.RequestContext
 import api.models.errors._
 import api.services.{BaseService, ServiceOutcome}
+import cats.implicits._
 import v1.connectors.DeleteUkDividendsIncomeAnnualSummaryConnector
 import v1.models.request.deleteUkDividendsIncomeAnnualSummary.DeleteUkDividendsIncomeAnnualSummaryRequest
 

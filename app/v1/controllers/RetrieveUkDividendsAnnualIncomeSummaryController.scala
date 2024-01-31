@@ -22,7 +22,6 @@ import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.IdGenerator
 import v1.controllers.requestParsers.RetrieveUkDividendsIncomeAnnualSummaryRequestParser
 import v1.models.request.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsAnnualIncomeSummaryRawData
-import v1.models.response.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsAnnualIncomeSummaryHateoasData
 import v1.services.RetrieveUkDividendsIncomeAnnualSummaryService
 
 import javax.inject.{Inject, Singleton}
@@ -33,7 +32,6 @@ class RetrieveUkDividendsAnnualIncomeSummaryController @Inject() (val authServic
                                                                   val lookupService: MtdIdLookupService,
                                                                   parser: RetrieveUkDividendsIncomeAnnualSummaryRequestParser,
                                                                   service: RetrieveUkDividendsIncomeAnnualSummaryService,
-                                                                  hateoasFactory: HateoasFactory,
                                                                   cc: ControllerComponents,
                                                                   val idGenerator: IdGenerator)(implicit ec: ExecutionContext)
     extends AuthorisedController(cc) {
@@ -56,7 +54,7 @@ class RetrieveUkDividendsAnnualIncomeSummaryController @Inject() (val authServic
       val requestHandler = RequestHandler
         .withParser(parser)
         .withService(service.retrieveUKDividendsIncomeAnnualSummary)
-        .withHateoasResult(hateoasFactory)(RetrieveUkDividendsAnnualIncomeSummaryHateoasData(nino, taxYear))
+        .withPlainJsonResult()
 
       requestHandler.handleRequest(rawData)
     }

@@ -26,10 +26,8 @@ import javax.inject.{Inject, Singleton}
 @ImplementedBy(classOf[FeatureSwitchesImpl])
 trait FeatureSwitches {
 
-  def isPostCessationReceiptsEnabled: Boolean
   def isPassDeleteIntentEnabled: Boolean
   def isTemporalValidationEnabled(implicit request: Request[_]): Boolean
-  def isOpwEnabled: Boolean
 }
 
 @Singleton
@@ -38,9 +36,7 @@ class FeatureSwitchesImpl(featureSwitchConfig: Configuration) extends FeatureSwi
   @Inject
   def this(appConfig: AppConfig) = this(appConfig.featureSwitches)
 
-  val isPostCessationReceiptsEnabled: Boolean = isEnabled("postCessationReceipts.enabled")
-  val isPassDeleteIntentEnabled: Boolean      = isEnabled("passDeleteIntentHeader.enabled")
-  val isOpwEnabled: Boolean                   = isEnabled("opw.enabled")
+  val isPassDeleteIntentEnabled: Boolean = isEnabled("passDeleteIntentHeader.enabled")
 
   def isTemporalValidationEnabled(implicit request: Request[_]): Boolean = {
     if (isEnabled("allowTemporalValidationSuspension.enabled")) {

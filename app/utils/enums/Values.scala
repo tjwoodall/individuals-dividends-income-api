@@ -16,6 +16,8 @@
 
 package utils.enums
 
+import shapeless._
+
 import scala.annotation.nowarn
 
 // Based on code in https://github.com/milessabin/shapeless/blob/master/examples/src/main/scala/shapeless/examples/enum.scala

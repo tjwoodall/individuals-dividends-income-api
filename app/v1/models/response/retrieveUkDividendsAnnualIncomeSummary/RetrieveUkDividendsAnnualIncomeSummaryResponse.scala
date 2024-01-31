@@ -16,28 +16,12 @@
 
 package v1.models.response.retrieveUkDividendsAnnualIncomeSummary
 
-import config.AppConfig
 import play.api.libs.json.{Json, OFormat}
 
 case class RetrieveUkDividendsAnnualIncomeSummaryResponse(ukDividends: Option[BigDecimal], otherUkDividends: Option[BigDecimal])
 
-object RetrieveUkDividendsAnnualIncomeSummaryResponse extends HateoasLinks {
+object RetrieveUkDividendsAnnualIncomeSummaryResponse {
+
   implicit val format: OFormat[RetrieveUkDividendsAnnualIncomeSummaryResponse] = Json.format
 
-  implicit object LinksFactory
-      extends HateoasLinksFactory[RetrieveUkDividendsAnnualIncomeSummaryResponse, RetrieveUkDividendsAnnualIncomeSummaryHateoasData] {
-
-    override def links(appConfig: AppConfig, data: RetrieveUkDividendsAnnualIncomeSummaryHateoasData): Seq[Link] = {
-      import data._
-      Seq(
-        createAmendUkDividends(appConfig, nino, taxYear),
-        retrieveUkDividends(appConfig, nino, taxYear),
-        deleteUkDividends(appConfig, nino, taxYear)
-      )
-    }
-
-  }
-
 }
-
-case class RetrieveUkDividendsAnnualIncomeSummaryHateoasData(nino: String, taxYear: String) extends HateoasData

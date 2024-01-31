@@ -16,6 +16,7 @@
 
 package utils.enums
 
+import cats.Show
 import play.api.libs.json._
 import utils.enums.Values.MkValues
 

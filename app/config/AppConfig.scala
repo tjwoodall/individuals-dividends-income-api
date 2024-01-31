@@ -57,6 +57,7 @@ trait AppConfig {
 
   def apiGatewayContext: String
   def minimumPermittedTaxYear: Int
+  def ukDividendsMinimumTaxYear: Int
 
   // API Config
   def apiStatus(version: Version): String
@@ -91,6 +92,7 @@ class AppConfigImpl @Inject() (config: ServicesConfig, configuration: Configurat
 
   val apiGatewayContext: String                    = config.getString("api.gateway.context")
   val minimumPermittedTaxYear: Int                 = config.getInt("minimumPermittedTaxYear")
+  val ukDividendsMinimumTaxYear: Int               = config.getInt("ukDividendsMinimumTaxYear")
   val confidenceLevelConfig: ConfidenceLevelConfig = configuration.get[ConfidenceLevelConfig](s"api.confidence-level-check")
 
   // API Config

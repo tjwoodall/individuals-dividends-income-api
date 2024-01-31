@@ -21,15 +21,13 @@ import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import api.models.auth.UserDetails
 import api.models.errors._
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
-import config.AppConfig
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.JsValue
 import play.api.mvc.{Action, AnyContentAsJson, ControllerComponents}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditResult
 import utils.IdGenerator
 import v1.controllers.requestParsers.CreateAmendDividendsRequestParser
 import v1.models.request.createAmendDividends.CreateAmendDividendsRawData
-import v1.models.response.createAmendDividends.CreateAmendDividendsHateoasData
 import v1.services.CreateAmendDividendsService
 
 import javax.inject.{Inject, Singleton}
@@ -38,11 +36,9 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class CreateAmendDividendsController @Inject() (val authService: EnrolmentsAuthService,
                                                 val lookupService: MtdIdLookupService,
-                                                appConfig: AppConfig,
                                                 parser: CreateAmendDividendsRequestParser,
                                                 service: CreateAmendDividendsService,
                                                 auditService: AuditService,
-                                                hateoasFactory: HateoasFactory,
                                                 cc: ControllerComponents,
                                                 val idGenerator: IdGenerator)(implicit ec: ExecutionContext)
     extends AuthorisedController(cc) {
@@ -67,7 +63,7 @@ class CreateAmendDividendsController @Inject() (val authService: EnrolmentsAuthS
         .withParser(parser)
         .withService(service.createAmendDividends)
         .withAuditing(auditHandler(nino, taxYear, request))
-        .withHateoasResult(hateoasFactory)(CreateAmendDividendsHateoasData(nino, taxYear))
+        .withNoContentResult(successStatus = OK)
 
       requestHandler.handleRequest(rawData)
     }
@@ -97,7 +93,7 @@ class CreateAmendDividendsController @Inject() (val authService: EnrolmentsAuthS
                 Map("nino" -> nino, "taxYear" -> taxYear),
                 Some(request.body),
                 ctx.correlationId,
-                AuditResponse(OK, Right(Some(Json.toJson(CreateAmendDividendsHateoasData(nino, taxYear)))))
+                AuditResponse(OK, Right(None))
               )
             )
         }

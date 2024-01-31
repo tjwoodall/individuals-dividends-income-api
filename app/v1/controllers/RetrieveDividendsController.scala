@@ -22,7 +22,6 @@ import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.IdGenerator
 import v1.controllers.requestParsers.RetrieveDividendsRequestParser
 import v1.models.request.retrieveDividends.RetrieveDividendsRawData
-import v1.models.response.retrieveDividends.RetrieveDividendsHateoasData
 import v1.services.RetrieveDividendsService
 
 import javax.inject.{Inject, Singleton}
@@ -33,7 +32,6 @@ class RetrieveDividendsController @Inject() (val authService: EnrolmentsAuthServ
                                              val lookupService: MtdIdLookupService,
                                              parser: RetrieveDividendsRequestParser,
                                              service: RetrieveDividendsService,
-                                             hateoasFactory: HateoasFactory,
                                              cc: ControllerComponents,
                                              val idGenerator: IdGenerator)(implicit ec: ExecutionContext)
     extends AuthorisedController(cc) {
@@ -56,7 +54,7 @@ class RetrieveDividendsController @Inject() (val authService: EnrolmentsAuthServ
       val requestHandler = RequestHandler
         .withParser(parser)
         .withService(service.retrieve)
-        .withHateoasResult(hateoasFactory)(RetrieveDividendsHateoasData(nino, taxYear))
+        .withPlainJsonResult()
 
       requestHandler.handleRequest(rawData)
     }
