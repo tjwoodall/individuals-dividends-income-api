@@ -42,7 +42,7 @@ lazy val microservice = Project(appName, file("."))
   .settings(
     resolvers += Resolver.jcenterRepo
   )
-  .settings(PlayKeys.playDefaultPort := 7761)
+  .settings(PlayKeys.playDefaultPort := 7763)
 
 dependencyUpdatesFilter -= moduleFilter(organization = "com.typesafe.play")
 dependencyUpdatesFilter -= moduleFilter(name = "simple-reactivemongo")
