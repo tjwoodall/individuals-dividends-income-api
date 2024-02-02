@@ -1,0 +1,7 @@
+PUT        /:nino/:taxYear          v1.controllers.CreateAmendDividendsController.createAmendDividends(nino: String, taxYear: String)
+GET        /:nino/:taxYear          v1.controllers.RetrieveDividendsController.retrieveDividends(nino: String, taxYear: String)
+DELETE     /:nino/:taxYear          v1.controllers.DeleteDividendsController.deleteDividends(nino: String, taxYear: String)
+
+PUT        /uk/:nino/:taxYear       v1.controllers.CreateAmendUkDividendsAnnualSummaryController.createAmendUkDividendsAnnualSummary(nino: String, taxYear: String)
+GET        /uk/:nino/:taxYear       v1.controllers.RetrieveUkDividendsAnnualIncomeSummaryController.retrieveUkDividends(nino: String, taxYear: String)
+DELETE     /uk/:nino/:taxYear       v1.controllers.DeleteUkDividendsIncomeAnnualSummaryController.deleteUkDividends(nino: String, taxYear: String)
