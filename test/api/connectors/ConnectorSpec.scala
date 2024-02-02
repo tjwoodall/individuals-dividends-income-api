@@ -42,21 +42,21 @@ trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames
     HeaderCarrier.Config(
       Seq("^not-test-BaseUrl?$".r),
       Seq.empty[String],
-      Some("individuals-income-received-api")
+      Some("individuals-dividends-income-api")
     )
 
   val dummyIfsHeaderCarrierConfig: HeaderCarrier.Config =
     HeaderCarrier.Config(
       Seq("^not-test-BaseUrl?$".r),
       Seq.empty[String],
-      Some("individuals-income-received-api")
+      Some("individuals-dividends-income-api")
     )
 
   val dummyHeaderCarrierConfig: HeaderCarrier.Config =
     HeaderCarrier.Config(
       Seq("^not-test-BaseUrl?$".r),
       Seq.empty[String],
-      Some("individuals-income-received-api")
+      Some("individuals-dividends-income-api")
     )
 
   val allowedDesHeaders: Seq[String] = List(
@@ -92,18 +92,6 @@ trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames
   val requiredTysIfsHeaders: Seq[(String, String)] = List(
     "Environment"   -> "TYS-IFS-environment",
     "Authorization" -> s"Bearer TYS-IFS-token",
-    "CorrelationId" -> s"$correlationId"
-  )
-
-  val requiredRelease6Headers: Seq[(String, String)] = List(
-    "Environment"   -> "release6-environment",
-    "Authorization" -> s"Bearer release6-token",
-    "CorrelationId" -> s"$correlationId"
-  )
-
-  val requiredApi1661Headers: Seq[(String, String)] = List(
-    "Environment"   -> "api1661-environment",
-    "Authorization" -> s"Bearer api1661-token",
     "CorrelationId" -> s"$correlationId"
   )
 

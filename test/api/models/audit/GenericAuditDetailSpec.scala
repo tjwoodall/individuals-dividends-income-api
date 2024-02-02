@@ -48,29 +48,7 @@ class GenericAuditDetailSpec extends UnitSpec {
        |    "response": {
        |      "httpStatus": $OK,
        |      "body": {
-       |         "employmentId": "$employmentId",
-       |         "links":[
-       |           {
-       |               "href": "/individuals/income-received/employments/$nino/$taxYear",
-       |               "rel": "list-employments",
-       |               "method": "GET"
-       |           },
-       |           {
-       |               "href": "/individuals/income-received/employments/$nino/$taxYear/$employmentId",
-       |               "rel": "self",
-       |               "method": "GET"
-       |           },
-       |           {
-       |               "href": "/individuals/income-received/employments/$nino/$taxYear/$employmentId",
-       |               "rel": "amend-custom-employment",
-       |               "method": "PUT"
-       |           },
-       |           {
-       |               "href": "/individuals/income-received/employments/$nino/$taxYear/$employmentId",
-       |               "rel": "delete-custom-employment",
-       |               "method": "DELETE"
-       |           }
-       |         ]
+       |         "employmentId": "$employmentId"
        |       }
        |    }
        |}
@@ -98,29 +76,7 @@ class GenericAuditDetailSpec extends UnitSpec {
       OK,
       Right(Some(Json.parse(s"""
                                |{
-                               |   "employmentId": "$employmentId",
-                               |   "links":[
-                               |      {
-                               |         "href": "/individuals/income-received/employments/$nino/$taxYear",
-                               |         "rel": "list-employments",
-                               |         "method": "GET"
-                               |      },
-                               |      {
-                               |         "href": "/individuals/income-received/employments/$nino/$taxYear/$employmentId",
-                               |         "rel": "self",
-                               |         "method": "GET"
-                               |      },
-                               |      {
-                               |         "href": "/individuals/income-received/employments/$nino/$taxYear/$employmentId",
-                               |         "rel": "amend-custom-employment",
-                               |         "method": "PUT"
-                               |      },
-                               |      {
-                               |         "href": "/individuals/income-received/employments/$nino/$taxYear/$employmentId",
-                               |         "rel": "delete-custom-employment",
-                               |         "method": "DELETE"
-                               |      }
-                               |   ]
+                               |   "employmentId": "$employmentId"
                                |}
         """.stripMargin)))
     )
