@@ -21,6 +21,7 @@ import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import api.models.auth.UserDetails
 import api.models.errors._
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
+import config.AppConfig
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, AnyContentAsJson, ControllerComponents}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -40,7 +41,7 @@ class CreateAmendDividendsController @Inject() (val authService: EnrolmentsAuthS
                                                 service: CreateAmendDividendsService,
                                                 auditService: AuditService,
                                                 cc: ControllerComponents,
-                                                val idGenerator: IdGenerator)(implicit ec: ExecutionContext)
+                                                val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: AppConfig)
     extends AuthorisedController(cc) {
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -52,7 +53,6 @@ class CreateAmendDividendsController @Inject() (val authService: EnrolmentsAuthS
   def createAmendDividends(nino: String, taxYear: String): Action[JsValue] =
     authorisedAction(nino).async(parse.json) { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
-
       val rawData: CreateAmendDividendsRawData = CreateAmendDividendsRawData(
         nino = nino,
         taxYear = taxYear,

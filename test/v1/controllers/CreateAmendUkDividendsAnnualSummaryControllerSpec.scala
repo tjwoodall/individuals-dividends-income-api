@@ -22,6 +22,7 @@ import api.models.auth.UserDetails
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors._
 import api.models.outcomes.ResponseWrapper
+import mocks.MockAppConfig
 import play.api.libs.json.{JsObject, JsValue}
 import play.api.mvc.{AnyContentAsJson, Result}
 import v1.mocks.requestParsers.MockCreateAmendUkDividendsAnnualSummaryRequestParser
@@ -35,7 +36,8 @@ class CreateAmendUkDividendsAnnualSummaryControllerSpec
     extends ControllerBaseSpec
     with ControllerTestRunner
     with MockCreateAmendUkDividendsAnnualSummaryService
-    with MockCreateAmendUkDividendsAnnualSummaryRequestParser {
+    with MockCreateAmendUkDividendsAnnualSummaryRequestParser
+    with MockAppConfig {
 
   private val taxYear = "2019-20"
   private val mtdId   = "test-mtd-id"

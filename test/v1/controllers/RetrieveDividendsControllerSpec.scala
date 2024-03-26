@@ -22,6 +22,7 @@ import api.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService}
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors._
 import api.models.outcomes.ResponseWrapper
+import mocks.MockAppConfig
 import play.api.mvc.Result
 import v1.fixtures.RetrieveDividendsFixtures
 import v1.fixtures.RetrieveDividendsFixtures.responseModel
@@ -39,7 +40,8 @@ class RetrieveDividendsControllerSpec
     with MockMtdIdLookupService
     with MockRetrieveDividendsService
     with MockRetrieveDividendsRequestParser
-    with MockIdGenerator {
+    with MockIdGenerator
+    with MockAppConfig {
 
   private val taxYear: String = "2019-20"
 

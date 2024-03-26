@@ -20,6 +20,7 @@ import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors._
 import api.models.outcomes.ResponseWrapper
+import mocks.MockAppConfig
 import play.api.libs.json.Json
 import play.api.mvc.Result
 import v1.mocks.requestParsers.MockRetrieveUkDividendsAnnualIncomeSummaryRequestParser
@@ -34,7 +35,8 @@ class RetrieveUkDividendsAnnualIncomeSummaryControllerSpec
     extends ControllerBaseSpec
     with ControllerTestRunner
     with MockRetrieveUkDividendsAnnualIncomeSummaryService
-    with MockRetrieveUkDividendsAnnualIncomeSummaryRequestParser {
+    with MockRetrieveUkDividendsAnnualIncomeSummaryRequestParser
+    with MockAppConfig {
 
   private val taxYear = "2019-20"
 
