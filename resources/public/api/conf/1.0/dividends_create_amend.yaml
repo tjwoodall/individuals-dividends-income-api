@@ -11,8 +11,7 @@ description: |
   | Header Value (Gov-Test-Scenario) | Scenario                              |
   |----------------------------------|---------------------------------------|
   | N/A - DEFAULT                    | Simulates success response.           |
-  | REQUEST_CANNOT_BE_FULFILLED      | Simulates the scenario where 
-                                         the request could not be processed. |
+  | REQUEST_CANNOT_BE_FULFILLED      | Simulates the scenario where the request could not be processed. |
   | STATEFUL                         | Performs a stateful create or update. |
 
 tags:
