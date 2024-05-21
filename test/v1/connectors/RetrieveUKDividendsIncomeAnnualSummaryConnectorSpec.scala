@@ -37,10 +37,12 @@ class RetrieveUKDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec 
     otherUkDividends = Some(11.12)
   )
 
-  "RetrieveUkDividendsIncomeAnnualSummaryConnectorSpec" when {
+  "RetrieveUkDividendsIncomeAnnualSummaryConnectorSpec and isDefIf_MigrationEnabled is off" when {
     "retrieveUKDividendsIncomeAnnualSummary is called" must {
       "return a 200 for success scenario" in {
         new DesTest with Test {
+          MockFeatureSwitches.isDesIf_MigrationEnabled.returns(false)
+
           def taxYear: TaxYear = TaxYear.fromMtd("2018-19")
 
           val outcome                             = Right(ResponseWrapper(correlationId, validResponse))
@@ -51,6 +53,31 @@ class RetrieveUKDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec 
               url = s"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/$taxYearDownstream",
               config = dummyDesHeaderCarrierConfig,
               requiredHeaders = requiredDesHeaders,
+              excludedHeaders = Seq("AnotherHeader" -> "HeaderValue")
+            )
+            .returns(Future.successful(outcome))
+
+          await(connector.retrieveUKDividendsIncomeAnnualSummary(request)) shouldBe outcome
+
+        }
+      }
+    }
+
+    "retrieveUKDividendsIncomeAnnualSummary is called and isDesIf_MigrationEnabled is on" must {
+      "return a 200 for success scenario" in {
+        new IfsTest with Test {
+          MockFeatureSwitches.isDesIf_MigrationEnabled.returns(true)
+
+          def taxYear: TaxYear = TaxYear.fromMtd("2018-19")
+
+          val outcome                             = Right(ResponseWrapper(correlationId, validResponse))
+          override implicit val hc: HeaderCarrier = HeaderCarrier(otherHeaders = otherHeaders)
+
+          MockedHttpClient
+            .get(
+              url = s"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/$taxYearDownstream",
+              config = dummyIfsHeaderCarrierConfig,
+              requiredHeaders = requiredIfsHeaders,
               excludedHeaders = Seq("AnotherHeader" -> "HeaderValue")
             )
             .returns(Future.successful(outcome))

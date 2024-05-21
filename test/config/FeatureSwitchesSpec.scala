@@ -32,15 +32,18 @@ class FeatureSwitchesSpec extends UnitSpec {
         val featureSwitches = FeatureSwitches(configuration)
 
         featureSwitches.isPassDeleteIntentEnabled shouldBe true
+        featureSwitches.isDesIf_MigrationEnabled shouldBe true
       }
 
       "enabled" in {
         val configuration = Configuration(
-          "passDeleteIntentHeader.enabled" -> true
+          "passDeleteIntentHeader.enabled"   -> true,
+          "desIf_Migration.enabled" -> true
         )
         val featureSwitches = FeatureSwitches(configuration)
 
         featureSwitches.isPassDeleteIntentEnabled shouldBe true
+        featureSwitches.isDesIf_MigrationEnabled shouldBe true
 
       }
     }
@@ -48,12 +51,14 @@ class FeatureSwitchesSpec extends UnitSpec {
     "be false" when {
       "disabled" in {
         val configuration = Configuration(
-          "passDeleteIntentHeader.enabled" -> false
+          "desIf_Migration.enabled" -> false,
+          "passDeleteIntentHeader.enabled"   -> false
         )
 
         val featureSwitches = FeatureSwitches(configuration)
 
         featureSwitches.isPassDeleteIntentEnabled shouldBe false
+        featureSwitches.isDesIf_MigrationEnabled shouldBe false
       }
     }
   }

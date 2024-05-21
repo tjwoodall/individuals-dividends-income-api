@@ -38,7 +38,7 @@ class CreateAmendUkDividendsAnnualSummaryService @Inject() (connector: CreateAme
   private val downstreamErrorMap: Map[String, MtdError] = {
     val errors = Map(
       "INVALID_NINO"                      -> NinoFormatError,
-      "INVALID_TAXYEAR"                   -> TaxYearFormatError,
+      "INVALID_TAXYEAR"                   -> TaxYearFormatError, //remove once DES to IFS migration complete
       "INVALID_TYPE"                      -> InternalError,
       "INVALID_PAYLOAD"                   -> InternalError,
       "NOT_FOUND_INCOME_SOURCE"           -> NotFoundError,
@@ -56,7 +56,6 @@ class CreateAmendUkDividendsAnnualSummaryService @Inject() (connector: CreateAme
     val extraTysErrors = Map(
       "INVALID_TAX_YEAR"           -> TaxYearFormatError,
       "INVALID_INCOMESOURCE_TYPE"  -> InternalError,
-      "INVALID_CORRELATIONID"      -> InternalError,
       "TAX_YEAR_NOT_SUPPORTED"     -> RuleTaxYearNotSupportedError,
       "INCOME_SOURCE_NOT_FOUND"    -> NotFoundError,
       "INCOMPATIBLE_INCOME_SOURCE" -> InternalError
