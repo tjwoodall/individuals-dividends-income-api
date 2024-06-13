@@ -368,7 +368,7 @@ components:
         message: Duplicate account name given for supplied NINO
 
     ruleUnalignedCessationTaxYear:
-      description: The tax year provided must be the same as the tax year of income to be taxed [test only].
+      description: The tax year provided must be the same as the tax year of income to be taxed.
       value:
         code: RULE_UNALIGNED_CESSATION_TAX_YEAR
         message: The tax year provided must be the same as the tax year of income to be taxed

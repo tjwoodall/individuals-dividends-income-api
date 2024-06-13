@@ -1,4 +1,4 @@
-summary: Retrieve Dividends Income [Test only]
+summary: Retrieve Dividends Income
 description: |
   This endpoint enables you to retrieve dividends income: 
   foreign dividend, dividend income received whilst abroad, stock dividend, redeemable shares, bonus issues of 

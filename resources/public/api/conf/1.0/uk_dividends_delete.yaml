@@ -1,4 +1,4 @@
-summary: Delete a UK Dividends Income Annual Summary [Test only]
+summary: Delete a UK Dividends Income Annual Summary
 description: |
   This endpoint enables you to delete a UK dividends income annual summary for a tax year.
   A National Insurance Number and tax year must be provided.
