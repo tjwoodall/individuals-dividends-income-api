@@ -15,9 +15,5 @@ what you submitted.
 
 The following groups are stateful in the sandbox:
 
-- Create and Amend Dividends Income
-- Retrieve Dividends Income
-- Delete Dividends Income
-- Create and Amend UK Dividends Income Annual Summary
-- Retrieve UK Dividends Income Annual Summary
-- Delete a UK Dividends Income Annual Summary
+- Dividends Income
+- UK Dividends Income
