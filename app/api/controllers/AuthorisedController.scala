@@ -17,7 +17,7 @@
 package api.controllers
 
 import api.models.auth.UserDetails
-import api.models.errors.{ClientNotAuthenticatedError, InternalError, MtdError}
+import api.models.errors.{ClientOrAgentNotAuthorisedError, InternalError, MtdError}
 import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import play.api.mvc._
 import uk.gov.hmrc.auth.core.Enrolment
@@ -49,7 +49,7 @@ abstract class AuthorisedController(cc: ControllerComponents)(implicit ec: Execu
         headerCarrier: HeaderCarrier): Future[Result] = {
       authService.authorised(predicate(mtdId)).flatMap[Result] {
         case Right(userDetails)                => block(UserRequest(userDetails.copy(mtdId = mtdId), request))
-        case Left(ClientNotAuthenticatedError) => Future.successful(Forbidden(ClientNotAuthenticatedError.asJson))
+        case Left(ClientOrAgentNotAuthorisedError) => Future.successful(Forbidden(ClientOrAgentNotAuthorisedError.asJson))
         case Left(_)                           => Future.successful(InternalServerError(InternalError.asJson))
       }
     }
