@@ -22,8 +22,10 @@ trait RetrieveUkDividendsAnnualIncomeSummaryFixture {
 
   protected val downstreamResponseJson: JsValue = Json.parse("""
                                                                |{
-                                                               |  "ukDividends": 10.12,
-                                                               |  "otherUkDividends": 11.12
+                                                               |  "ukDividendsAnnual" : {
+                                                               |    "ukDividends": 10.12,
+                                                               |    "otherUkDividends": 11.12
+                                                               |  }
                                                                |}
                                                                |""".stripMargin)
 
@@ -38,4 +40,3 @@ trait RetrieveUkDividendsAnnualIncomeSummaryFixture {
     RetrieveUkDividendsAnnualIncomeSummaryResponse(Some(10.12), Some(11.12))
 
 }
-

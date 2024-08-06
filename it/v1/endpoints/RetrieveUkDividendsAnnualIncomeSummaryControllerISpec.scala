@@ -154,8 +154,10 @@ class RetrieveUkDividendsAnnualIncomeSummaryControllerISpec extends IntegrationB
 
     val downstreamResponse: JsValue = Json.parse("""
                                                    |{
-                                                   |  "ukDividends": 10.12,
-                                                   |  "otherUkDividends": 11.12
+                                                   |  "ukDividendsAnnual" : {
+                                                   |    "ukDividends": 10.12,
+                                                   |    "otherUkDividends": 11.12
+                                                   |  }
                                                    |}
                                                    |""".stripMargin)
 
