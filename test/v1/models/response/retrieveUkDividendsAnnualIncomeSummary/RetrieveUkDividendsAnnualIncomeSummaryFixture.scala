@@ -20,14 +20,21 @@ import play.api.libs.json.{JsValue, Json}
 
 trait RetrieveUkDividendsAnnualIncomeSummaryFixture {
 
-  protected val downstreamResponseJson: JsValue = Json.parse("""
-                                                               |{
-                                                               |  "ukDividendsAnnual" : {
-                                                               |    "ukDividends": 10.12,
-                                                               |    "otherUkDividends": 11.12
-                                                               |  }
-                                                               |}
-                                                               |""".stripMargin)
+  protected val desResponseJson: JsValue = Json.parse("""
+                                                         |{
+                                                         |  "ukDividends": 10.12,
+                                                         |  "otherUkDividends": 11.12
+                                                         |}
+                                                         |""".stripMargin)
+
+  protected val ifsResponseJson: JsValue = Json.parse("""
+                                                        |{
+                                                        |  "ukDividendsAnnual" : {
+                                                        |    "ukDividends": 10.12,
+                                                        |    "otherUkDividends": 11.12
+                                                        |  }
+                                                        |}
+                                                        |""".stripMargin)
 
   protected val mtdResponseJson: JsValue = Json.parse("""
                                                         |{

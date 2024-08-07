@@ -16,17 +16,19 @@
 
 package v1.models.response.retrieveUkDividendsAnnualIncomeSummary
 
-import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
 
 case class RetrieveUkDividendsAnnualIncomeSummaryResponse(ukDividends: Option[BigDecimal], otherUkDividends: Option[BigDecimal])
 
 object RetrieveUkDividendsAnnualIncomeSummaryResponse {
 
-  implicit val reads: Reads[RetrieveUkDividendsAnnualIncomeSummaryResponse] = (
-    (JsPath \ "ukDividendsAnnual" \ "ukDividends").readNullable[BigDecimal] and
-      (JsPath \ "ukDividendsAnnual" \ "otherUkDividends").readNullable[BigDecimal]
-  )(RetrieveUkDividendsAnnualIncomeSummaryResponse.apply _)
+  implicit val reads: Reads[RetrieveUkDividendsAnnualIncomeSummaryResponse] = {
+    val defaultReads: Reads[RetrieveUkDividendsAnnualIncomeSummaryResponse] = Json.reads
+
+    val ifsReads = (JsPath \ "ukDividendsAnnual").read(defaultReads)
+
+    ifsReads orElse defaultReads
+  }
 
   implicit val writes: Writes[RetrieveUkDividendsAnnualIncomeSummaryResponse] = Json.writes[RetrieveUkDividendsAnnualIncomeSummaryResponse]
 }
