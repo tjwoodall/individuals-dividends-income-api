@@ -36,7 +36,7 @@ class RetrieveUkDividendsAnnualIncomeSummaryControllerISpec extends IntegrationB
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, OK, downstreamResponse)
+          DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, OK, desResponse)
         }
 
         val response: WSResponse = await(request.get())
@@ -50,7 +50,7 @@ class RetrieveUkDividendsAnnualIncomeSummaryControllerISpec extends IntegrationB
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, OK, downstreamResponse)
+          DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, OK, ifsResponse)
         }
 
         val response: WSResponse = await(request.get())
@@ -152,12 +152,21 @@ class RetrieveUkDividendsAnnualIncomeSummaryControllerISpec extends IntegrationB
 
     def nino: String = "AA123456A"
 
-    val downstreamResponse: JsValue = Json.parse("""
-                                                   |{
-                                                   |  "ukDividends": 10.12,
-                                                   |  "otherUkDividends": 11.12
-                                                   |}
-                                                   |""".stripMargin)
+    val desResponse: JsValue = Json.parse("""
+                                             |{
+                                             |  "ukDividends": 10.12,
+                                             |  "otherUkDividends": 11.12
+                                             |}
+                                             |""".stripMargin)
+
+    val ifsResponse: JsValue = Json.parse("""
+                                            |{
+                                            |  "ukDividendsAnnual" : {
+                                            |    "ukDividends": 10.12,
+                                            |    "otherUkDividends": 11.12
+                                            |  }
+                                            |}
+                                            |""".stripMargin)
 
     val mtdResponse: JsValue = Json.parse(s"""
                                              |{
