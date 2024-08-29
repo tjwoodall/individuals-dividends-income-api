@@ -73,4 +73,3 @@ class RetrieveDividendsRequestParserSpec extends UnitSpec {
   }
 
 }
-

@@ -235,4 +235,3 @@ class CreateAmendDividendsRequestBodySpec extends UnitSpec {
   }
 
 }
-

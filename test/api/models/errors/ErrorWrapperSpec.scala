@@ -145,4 +145,3 @@ class ErrorWrapperSpec extends UnitSpec {
   }
 
 }
-

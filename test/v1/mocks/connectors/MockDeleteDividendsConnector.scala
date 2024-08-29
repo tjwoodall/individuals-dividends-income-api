@@ -39,4 +39,3 @@ trait MockDeleteDividendsConnector extends MockFactory {
   }
 
 }
-

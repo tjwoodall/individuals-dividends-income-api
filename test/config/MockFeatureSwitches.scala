@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package mocks
+package config
 
 import config.FeatureSwitches
 import org.scalamock.handlers.CallHandler

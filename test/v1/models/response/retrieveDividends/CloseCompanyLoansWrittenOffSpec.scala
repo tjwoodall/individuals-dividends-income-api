@@ -45,4 +45,3 @@ class CloseCompanyLoansWrittenOffSpec extends UnitSpec {
   }
 
 }
-

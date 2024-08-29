@@ -22,12 +22,17 @@ import api.models.auth.UserDetails
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors._
 import api.models.outcomes.ResponseWrapper
-import mocks.MockAppConfig
+import config.MockAppConfig
 import play.api.libs.json.{JsObject, JsValue}
 import play.api.mvc.{AnyContentAsJson, Result}
+import play.api.Configuration
 import v1.mocks.requestParsers.MockCreateAmendUkDividendsAnnualSummaryRequestParser
 import v1.mocks.services.MockCreateAmendUkDividendsAnnualSummaryService
-import v1.models.request.createAmendUkDividendsIncomeAnnualSummary.{CreateAmendUkDividendsIncomeAnnualSummaryBody, CreateAmendUkDividendsIncomeAnnualSummaryRawData, CreateAmendUkDividendsIncomeAnnualSummaryRequest}
+import v1.models.request.createAmendUkDividendsIncomeAnnualSummary.{
+  CreateAmendUkDividendsIncomeAnnualSummaryBody,
+  CreateAmendUkDividendsIncomeAnnualSummaryRawData,
+  CreateAmendUkDividendsIncomeAnnualSummaryRequest
+}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -108,6 +113,12 @@ class CreateAmendUkDividendsAnnualSummaryControllerSpec
       idGenerator = mockIdGenerator,
       auditService = mockAuditService
     )
+
+    MockedAppConfig.featureSwitches.anyNumberOfTimes() returns Configuration(
+      "supporting-agents-access-control.enabled" -> true
+    )
+
+    MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
 
     protected def callController(): Future[Result] = controller.createAmendUkDividendsAnnualSummary(nino, taxYear)(fakePutRequest(requestJson))
 

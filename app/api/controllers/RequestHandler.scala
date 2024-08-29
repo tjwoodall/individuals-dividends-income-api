@@ -34,7 +34,7 @@ import scala.concurrent.{ExecutionContext, Future}
 trait RequestHandler[InputRaw <: RawData] {
 
   def handleRequest(
-      rawData: InputRaw)(implicit ctx: RequestContext, request: UserRequest[_],appConfig: AppConfig, ec: ExecutionContext): Future[Result]
+      rawData: InputRaw)(implicit ctx: RequestContext, request: UserRequest[_], appConfig: AppConfig, ec: ExecutionContext): Future[Result]
 
 }
 
@@ -61,7 +61,7 @@ object RequestHandler {
   ) extends RequestHandler[InputRaw] {
 
     def handleRequest(
-        rawData: InputRaw)(implicit ctx: RequestContext, request: UserRequest[_],appConfig: AppConfig, ec: ExecutionContext): Future[Result] =
+        rawData: InputRaw)(implicit ctx: RequestContext, request: UserRequest[_], appConfig: AppConfig, ec: ExecutionContext): Future[Result] =
       Delegate.handleRequest(rawData)
 
     def withResultCreator(resultCreator: ResultCreator[InputRaw, Input, Output]): RequestHandlerBuilder[InputRaw, Input, Output] =
@@ -116,7 +116,7 @@ object RequestHandler {
           EitherT[Future, ErrorWrapper, Result](Future.successful(Left(ErrorWrapper(ctx.correlationId, RuleRequestCannotBeFulfilled))))
         } else {
           for {
-            parsedRequest <- EitherT.fromEither[Future](parser.parseRequest(rawData))
+            parsedRequest   <- EitherT.fromEither[Future](parser.parseRequest(rawData))
             serviceResponse <- EitherT(service(parsedRequest))
           } yield doWithContext(ctx.withCorrelationId(serviceResponse.correlationId)) { implicit ctx: RequestContext =>
             handleSuccess(rawData, parsedRequest, serviceResponse)

@@ -39,4 +39,3 @@ class AuditErrorSpec extends UnitSpec {
   }
 
 }
-

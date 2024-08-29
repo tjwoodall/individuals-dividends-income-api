@@ -29,6 +29,9 @@ trait FeatureSwitches {
   def isPassDeleteIntentEnabled: Boolean
   def isTemporalValidationEnabled(implicit request: Request[_]): Boolean
   def isDesIf_MigrationEnabled: Boolean
+  def supportingAgentsAccessControlEnabled: Boolean
+  def isEnabled(key: String): Boolean
+  def isReleasedInProduction(feature: String): Boolean
 }
 
 @Singleton
@@ -37,18 +40,25 @@ class FeatureSwitchesImpl(featureSwitchConfig: Configuration) extends FeatureSwi
   @Inject
   def this(appConfig: AppConfig) = this(appConfig.featureSwitches)
 
-  val isPassDeleteIntentEnabled: Boolean = isEnabled("passDeleteIntentHeader.enabled")
-  val isDesIf_MigrationEnabled: Boolean  = isEnabled("desIf_Migration.enabled")
+  val isPassDeleteIntentEnabled: Boolean = isEnabled("passDeleteIntentHeader")
+  val isDesIf_MigrationEnabled: Boolean  = isEnabled("desIf_Migration")
 
   def isTemporalValidationEnabled(implicit request: Request[_]): Boolean = {
-    if (isEnabled("allowTemporalValidationSuspension.enabled")) {
+    if (isEnabled("allowTemporalValidationSuspension")) {
       request.headers.get("suspend-temporal-validations").forall(!BooleanUtils.toBoolean(_))
     } else {
       true
     }
   }
 
-  private def isEnabled(key: String): Boolean = featureSwitchConfig.getOptional[Boolean](key).getOrElse(true)
+  val supportingAgentsAccessControlEnabled: Boolean = isEnabled("supporting-agents-access-control")
+
+  def isEnabled(key: String): Boolean = isConfigTrue(key + ".enabled")
+
+  def isReleasedInProduction(feature: String): Boolean = isConfigTrue(feature + ".released-in-production")
+
+  private def isConfigTrue(key: String): Boolean = featureSwitchConfig.getOptional[Boolean](key).getOrElse(true)
+
 }
 
 object FeatureSwitches {

@@ -34,7 +34,7 @@ trait MockRetrieveUkDividendsAnnualIncomeSummaryService extends MockFactory {
   object MockRetrieveUkDividendsIncomeAnnualSummaryService {
 
     def retrieveUkDividends(requestData: RetrieveUkDividendsAnnualIncomeSummaryRequest)
-    : CallHandler[Future[ServiceOutcome[RetrieveUkDividendsAnnualIncomeSummaryResponse]]] = {
+        : CallHandler[Future[ServiceOutcome[RetrieveUkDividendsAnnualIncomeSummaryResponse]]] = {
       (
         mockRetrieveUkDividendsAnnualIncomeSummaryService
           .retrieveUKDividendsIncomeAnnualSummary(_: RetrieveUkDividendsAnnualIncomeSummaryRequest)(
@@ -48,4 +48,3 @@ trait MockRetrieveUkDividendsAnnualIncomeSummaryService extends MockFactory {
   }
 
 }
-

@@ -73,4 +73,3 @@ class RetrieveUkDividendsIncomeAnnualSummaryRequestParserSpec extends UnitSpec {
   }
 
 }
-

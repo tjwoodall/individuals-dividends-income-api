@@ -235,4 +235,3 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
   }
 
 }
-

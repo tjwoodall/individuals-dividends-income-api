@@ -38,4 +38,3 @@ trait MockMtdIdLookupConnector extends MockFactory {
   }
 
 }
-

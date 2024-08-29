@@ -45,4 +45,3 @@ class BonusIssuesOfSecuritiesSpec extends UnitSpec {
   }
 
 }
-

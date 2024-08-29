@@ -39,6 +39,8 @@ class CreateAmendUkDividendsAnnualSummaryController @Inject() (val authService: 
                                                                val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: AppConfig)
     extends AuthorisedController(cc) {
 
+  val endpointName: String = "create-amend-uk-dividends-annual-summary"
+
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(
       controllerName = "CreateAmendUkDividendsAnnualSummaryController",

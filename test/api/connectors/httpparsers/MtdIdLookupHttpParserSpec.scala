@@ -30,9 +30,6 @@ class MtdIdLookupHttpParserSpec extends UnitSpec {
   val method = "GET"
   val url    = "test-url"
 
-
-
-
   "read" when {
     "the response contains a 200 status" when {
       "the response body contains an MtdId" must {
@@ -63,4 +60,3 @@ class MtdIdLookupHttpParserSpec extends UnitSpec {
   }
 
 }
-

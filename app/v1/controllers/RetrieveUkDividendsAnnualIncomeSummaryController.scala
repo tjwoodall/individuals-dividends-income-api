@@ -37,6 +37,8 @@ class RetrieveUkDividendsAnnualIncomeSummaryController @Inject() (val authServic
                                                                   val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: AppConfig)
     extends AuthorisedController(cc) {
 
+  val endpointName: String = "retrieve-uk-dividends-annual-income-summary"
+
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(
       controllerName = "RetrieveUkDividendsAnnualIncomeSummaryController",

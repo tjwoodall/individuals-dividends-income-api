@@ -71,4 +71,3 @@ class RequestParserSpec extends UnitSpec {
   }
 
 }
-

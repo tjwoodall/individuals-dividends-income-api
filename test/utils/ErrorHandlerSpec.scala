@@ -168,4 +168,3 @@ class ErrorHandlerSpec extends UnitSpec with GuiceOneAppPerSuite {
   }
 
 }
-

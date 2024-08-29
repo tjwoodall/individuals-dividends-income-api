@@ -58,4 +58,3 @@ class CustomerRefValidationSpec extends UnitSpec {
   }
 
 }
-

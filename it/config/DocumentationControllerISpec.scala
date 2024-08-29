@@ -112,4 +112,3 @@ class DocumentationControllerISpec extends IntegrationBaseSpec {
   }
 
 }
-

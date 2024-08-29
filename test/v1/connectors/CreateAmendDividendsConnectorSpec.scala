@@ -73,4 +73,3 @@ class CreateAmendDividendsConnectorSpec extends ConnectorSpec {
   }
 
 }
-

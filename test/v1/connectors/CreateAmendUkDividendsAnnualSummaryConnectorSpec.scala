@@ -19,8 +19,11 @@ package v1.connectors
 import api.connectors.{ConnectorSpec, DownstreamOutcome}
 import api.models.domain.{Nino, TaxYear}
 import api.models.outcomes.ResponseWrapper
-import mocks.MockFeatureSwitches
-import v1.models.request.createAmendUkDividendsIncomeAnnualSummary.{CreateAmendUkDividendsIncomeAnnualSummaryBody, CreateAmendUkDividendsIncomeAnnualSummaryRequest}
+import config.MockFeatureSwitches
+import v1.models.request.createAmendUkDividendsIncomeAnnualSummary.{
+  CreateAmendUkDividendsIncomeAnnualSummaryBody,
+  CreateAmendUkDividendsIncomeAnnualSummaryRequest
+}
 
 import scala.concurrent.Future
 
@@ -96,4 +99,3 @@ class CreateAmendUkDividendsAnnualSummaryConnectorSpec extends ConnectorSpec wit
   }
 
 }
-

@@ -40,4 +40,3 @@ trait MockRetrieveDividendsConnector extends MockFactory {
   }
 
 }
-

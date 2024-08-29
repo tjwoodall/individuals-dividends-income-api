@@ -121,4 +121,3 @@ class AuditServiceSpec extends ServiceSpec {
   }
 
 }
-

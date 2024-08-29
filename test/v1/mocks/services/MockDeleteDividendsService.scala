@@ -45,4 +45,3 @@ trait MockDeleteDividendsService extends MockFactory {
   }
 
 }
-

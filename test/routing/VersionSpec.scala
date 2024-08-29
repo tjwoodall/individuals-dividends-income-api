@@ -32,4 +32,3 @@ class VersionSpec extends UnitSpec {
   }
 
 }
-

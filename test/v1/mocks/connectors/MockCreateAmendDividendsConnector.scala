@@ -40,4 +40,3 @@ trait MockCreateAmendDividendsConnector extends MockFactory {
   }
 
 }
-

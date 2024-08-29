@@ -29,8 +29,11 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class DocumentationController @Inject() (selfAssessmentApiDefinition: ApiDefinitionFactory, cc: ControllerComponents, assets: Assets, configuration: Configuration)
-                                        (implicit mat: Materializer, ec: ExecutionContext) extends BackendController(cc) {
+class DocumentationController @Inject() (selfAssessmentApiDefinition: ApiDefinitionFactory,
+                                         cc: ControllerComponents,
+                                         assets: Assets,
+                                         configuration: Configuration)(implicit mat: Materializer, ec: ExecutionContext)
+    extends BackendController(cc) {
 
   def definition(): Action[AnyContent] = Action {
     Ok(Json.toJson(selfAssessmentApiDefinition.definition))

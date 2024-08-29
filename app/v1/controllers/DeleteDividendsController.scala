@@ -38,6 +38,8 @@ class DeleteDividendsController @Inject() (val authService: EnrolmentsAuthServic
                                            val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: AppConfig)
     extends AuthorisedController(cc) {
 
+  val endpointName: String = "delete-dividends"
+
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(
       controllerName = "DeleteDividendsController",

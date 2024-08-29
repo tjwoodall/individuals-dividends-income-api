@@ -29,4 +29,3 @@ trait MockIdGenerator extends MockFactory {
   }
 
 }
-

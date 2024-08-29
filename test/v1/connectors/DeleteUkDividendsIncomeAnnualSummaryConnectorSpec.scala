@@ -31,11 +31,10 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
       "a valid request is made and `isPassDeleteIntentEnabled` feature switch is on and isDesMigrationEnabled is on" in new IfsTest with Test {
         override lazy val excludedHeaders: scala.Seq[(String, String)] = super.excludedHeaders :+ ("intent" -> "IIR_DELETE")
 
-
         def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
         MockFeatureSwitches.isDesIf_MigrationEnabled.returns(true)
 
-        val outcome          = Right(ResponseWrapper(correlationId, ()))
+        val outcome = Right(ResponseWrapper(correlationId, ()))
 
         willPost(
           url = s"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}",
@@ -84,11 +83,10 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
       "a valid request is made and `isPassDeleteIntentEnabled` feature switch is off and isDesMigrationEnabled is on" in new IfsTest with Test {
         override lazy val excludedHeaders: scala.Seq[(String, String)] = super.excludedHeaders :+ ("intent" -> "IIR_DELETE")
 
-
         def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
         MockFeatureSwitches.isDesIf_MigrationEnabled.returns(true)
 
-        val outcome          = Right(ResponseWrapper(correlationId, ()))
+        val outcome = Right(ResponseWrapper(correlationId, ()))
 
         willPost(
           url = s"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}",
@@ -130,4 +128,3 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
   }
 
 }
-

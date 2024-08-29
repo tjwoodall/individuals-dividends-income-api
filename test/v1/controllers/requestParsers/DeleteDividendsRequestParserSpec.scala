@@ -73,4 +73,3 @@ class DeleteDividendsRequestParserSpec extends UnitSpec {
   }
 
 }
-

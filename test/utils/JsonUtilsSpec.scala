@@ -38,4 +38,3 @@ class JsonUtilsSpec extends UnitSpec with JsonUtils {
   }
 
 }
-

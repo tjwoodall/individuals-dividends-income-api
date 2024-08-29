@@ -18,7 +18,7 @@ package v1.controllers.requestParsers.validators
 
 import api.models.errors._
 import config.AppConfig
-import mocks.MockAppConfig
+import config.MockAppConfig
 import support.UnitSpec
 import v1.models.request.retrieveDividends.RetrieveDividendsRawData
 
@@ -83,4 +83,3 @@ class RetrieveDividendsValidatorSpec extends UnitSpec {
   }
 
 }
-

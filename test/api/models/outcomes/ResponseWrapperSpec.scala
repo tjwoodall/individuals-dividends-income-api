@@ -30,4 +30,3 @@ class ResponseWrapperSpec extends UnitSpec {
   }
 
 }
-

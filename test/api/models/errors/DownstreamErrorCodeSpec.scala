@@ -37,4 +37,3 @@ class DownstreamErrorCodeSpec extends UnitSpec {
   }
 
 }
-

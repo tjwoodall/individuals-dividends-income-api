@@ -45,4 +45,3 @@ trait MockDeleteUkDividendsIncomeAnnualSummaryService extends MockFactory {
   }
 
 }
-

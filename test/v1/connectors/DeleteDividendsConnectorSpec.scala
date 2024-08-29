@@ -25,12 +25,12 @@ import scala.concurrent.Future
 
 class DeleteDividendsConnectorSpec extends ConnectorSpec {
 
-  private val nino: String    = "AA123456A"
+  private val nino: String = "AA123456A"
 
   "DeleteDividendsConnector" should {
     "return a 200 result on delete for a non-TYS request" when {
       "the downstream call is successful and not tax year specific" in new IfsTest with Test {
-        def taxYear: TaxYear = TaxYear.fromMtd("2021-22")
+        def taxYear: TaxYear                               = TaxYear.fromMtd("2021-22")
         val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
 
         willDelete(s"$baseUrl/income-tax/income/dividends/$nino/${taxYear.asMtd}") returns Future.successful(outcome)
@@ -42,7 +42,7 @@ class DeleteDividendsConnectorSpec extends ConnectorSpec {
 
     "return a 200 result on delete for a TYS request" when {
       "the downstream call is successful and tax year specific" in new TysIfsTest with Test {
-        def taxYear: TaxYear = TaxYear.fromMtd("2023-24")
+        def taxYear: TaxYear                               = TaxYear.fromMtd("2023-24")
         val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
 
         willDelete(s"$baseUrl/income-tax/income/dividends/23-24/$nino") returns Future.successful(outcome)
@@ -73,4 +73,3 @@ class DeleteDividendsConnectorSpec extends ConnectorSpec {
   }
 
 }
-

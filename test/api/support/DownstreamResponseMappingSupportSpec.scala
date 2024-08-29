@@ -41,12 +41,12 @@ class DownstreamResponseMappingSupportSpec extends UnitSpec {
   object ErrorBvr extends MtdError("msg", "bvr", BAD_REQUEST)
 
   val errorCodeMap: PartialFunction[String, MtdError] = {
-    case "ERR1"                 => Error1
-    case "ERR2"                 => Error2
-    case "DS"                   => InternalError
-    case "UNMATCHED_STUB_ERROR" => RuleIncorrectGovTestScenarioError
+    case "ERR1"                   => Error1
+    case "ERR2"                   => Error2
+    case "DS"                     => InternalError
+    case "UNMATCHED_STUB_ERROR"   => RuleIncorrectGovTestScenarioError
     case "INVALID_CORRELATION_ID" => InternalError
-    case "INVALID_CORRELATIONID" => InternalError
+    case "INVALID_CORRELATIONID"  => InternalError
   }
 
   case class TestClass(field: Option[String])
@@ -135,4 +135,3 @@ class DownstreamResponseMappingSupportSpec extends UnitSpec {
   }
 
 }
-

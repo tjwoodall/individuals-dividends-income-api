@@ -66,4 +66,3 @@ class CreateAmendCommonDividendsSpec extends UnitSpec {
   }
 
 }
-

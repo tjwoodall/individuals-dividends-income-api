@@ -60,4 +60,3 @@ class CountryCodeValidationSpec extends UnitSpec {
   }
 
 }
-

@@ -204,4 +204,3 @@ class CreateAmendDividendsRequestParserSpec extends UnitSpec {
   }
 
 }
-

@@ -37,4 +37,3 @@ trait MockDeleteDividendsValidator extends MockFactory {
   }
 
 }
-

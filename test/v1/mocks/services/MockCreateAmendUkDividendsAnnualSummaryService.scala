@@ -45,4 +45,3 @@ trait MockCreateAmendUkDividendsAnnualSummaryService extends MockFactory {
   }
 
 }
-

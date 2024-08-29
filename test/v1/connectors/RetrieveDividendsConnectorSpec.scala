@@ -62,4 +62,3 @@ class RetrieveDividendsConnectorSpec extends ConnectorSpec {
   }
 
 }
-

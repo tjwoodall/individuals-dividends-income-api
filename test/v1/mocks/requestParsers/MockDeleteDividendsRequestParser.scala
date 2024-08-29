@@ -34,4 +34,3 @@ trait MockDeleteDividendsRequestParser extends MockFactory {
   }
 
 }
-

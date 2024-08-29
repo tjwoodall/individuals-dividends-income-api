@@ -36,4 +36,3 @@ class MtdSourceEnumSpec extends UnitSpec with EnumJsonSpecSupport {
   }
 
 }
-

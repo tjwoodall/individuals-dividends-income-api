@@ -200,4 +200,3 @@ class ValidatorSpec extends UnitSpec with MockFactory {
   }
 
 }
-

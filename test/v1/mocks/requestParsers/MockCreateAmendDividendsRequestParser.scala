@@ -35,4 +35,3 @@ trait MockCreateAmendDividendsRequestParser extends MockFactory {
   }
 
 }
-

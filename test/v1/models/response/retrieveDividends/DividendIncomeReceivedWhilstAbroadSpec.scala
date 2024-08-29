@@ -75,4 +75,3 @@ class DividendIncomeReceivedWhilstAbroadSpec extends UnitSpec {
   }
 
 }
-

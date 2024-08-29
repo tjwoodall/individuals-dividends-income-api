@@ -45,4 +45,3 @@ class StockDividendSpec extends UnitSpec {
   }
 
 }
-

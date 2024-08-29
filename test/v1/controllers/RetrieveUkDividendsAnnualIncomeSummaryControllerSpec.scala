@@ -20,12 +20,16 @@ import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors._
 import api.models.outcomes.ResponseWrapper
-import mocks.MockAppConfig
+import config.MockAppConfig
 import play.api.libs.json.Json
 import play.api.mvc.Result
+import play.api.Configuration
 import v1.mocks.requestParsers.MockRetrieveUkDividendsAnnualIncomeSummaryRequestParser
 import v1.mocks.services.MockRetrieveUkDividendsAnnualIncomeSummaryService
-import v1.models.request.retrieveUkDividendsAnnualIncomeSummary.{RetrieveUkDividendsAnnualIncomeSummaryRawData, RetrieveUkDividendsAnnualIncomeSummaryRequest}
+import v1.models.request.retrieveUkDividendsAnnualIncomeSummary.{
+  RetrieveUkDividendsAnnualIncomeSummaryRawData,
+  RetrieveUkDividendsAnnualIncomeSummaryRequest
+}
 import v1.models.response.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsAnnualIncomeSummaryResponse
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -113,6 +117,12 @@ class RetrieveUkDividendsAnnualIncomeSummaryControllerSpec
       cc = cc,
       idGenerator = mockIdGenerator
     )
+
+    MockedAppConfig.featureSwitches.anyNumberOfTimes() returns Configuration(
+      "supporting-agents-access-control.enabled" -> true
+    )
+
+    MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
 
     protected def callController(): Future[Result] = controller.retrieveUkDividends(nino, taxYear)(fakeGetRequest)
 

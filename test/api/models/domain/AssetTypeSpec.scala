@@ -29,4 +29,3 @@ class AssetTypeSpec extends UnitSpec with EnumJsonSpecSupport {
   )
 
 }
-

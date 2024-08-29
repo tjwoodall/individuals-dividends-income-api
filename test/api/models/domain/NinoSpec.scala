@@ -84,4 +84,3 @@ class NinoSpec extends UnitSpec {
 
   def validateNino(nino: String): Boolean = Nino.isValid(nino)
 }
-

@@ -22,22 +22,26 @@ import api.models.auth.UserDetails
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors._
 import api.models.outcomes.ResponseWrapper
-import mocks.MockAppConfig
+import config.MockAppConfig
 import play.api.libs.json.JsValue
 import play.api.mvc.Result
+import play.api.Configuration
 import v1.mocks.requestParsers.MockDeleteUkDividendsIncomeAnnualSummaryRequestParser
 import v1.mocks.services.MockDeleteUkDividendsIncomeAnnualSummaryService
-import v1.models.request.deleteUkDividendsIncomeAnnualSummary.{DeleteUkDividendsIncomeAnnualSummaryRawData, DeleteUkDividendsIncomeAnnualSummaryRequest}
+import v1.models.request.deleteUkDividendsIncomeAnnualSummary.{
+  DeleteUkDividendsIncomeAnnualSummaryRawData,
+  DeleteUkDividendsIncomeAnnualSummaryRequest
+}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class DeleteUkDividendsIncomeAnnualSummaryControllerSpec
-  extends ControllerBaseSpec
+    extends ControllerBaseSpec
     with ControllerTestRunner
     with MockDeleteUkDividendsIncomeAnnualSummaryService
     with MockDeleteUkDividendsIncomeAnnualSummaryRequestParser
-    with MockAppConfig{
+    with MockAppConfig {
 
   private val taxYear = "2017-18"
   private val mtdId   = "test-mtd-id"
@@ -102,6 +106,12 @@ class DeleteUkDividendsIncomeAnnualSummaryControllerSpec
       idGenerator = mockIdGenerator
     )
 
+    MockedAppConfig.featureSwitches.anyNumberOfTimes() returns Configuration(
+      "supporting-agents-access-control.enabled" -> true
+    )
+
+    MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
+
     protected def callController(): Future[Result] = controller.deleteUkDividends(nino, taxYear)(fakeDeleteRequest)
 
     def event(auditResponse: AuditResponse, requestBody: Option[JsValue]): AuditEvent[FlattenedGenericAuditDetail] =
@@ -121,4 +131,3 @@ class DeleteUkDividendsIncomeAnnualSummaryControllerSpec
   }
 
 }
-

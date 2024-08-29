@@ -37,6 +37,8 @@ class RetrieveDividendsController @Inject() (val authService: EnrolmentsAuthServ
                                              val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: AppConfig)
     extends AuthorisedController(cc) {
 
+  val endpointName: String = "retrieve-dividends"
+
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(
       controllerName = "RetrieveDividendsController",

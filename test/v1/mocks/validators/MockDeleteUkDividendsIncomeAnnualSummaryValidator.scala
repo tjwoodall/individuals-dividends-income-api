@@ -38,4 +38,3 @@ trait MockDeleteUkDividendsIncomeAnnualSummaryValidator extends MockFactory {
   }
 
 }
-

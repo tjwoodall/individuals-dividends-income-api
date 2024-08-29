@@ -46,4 +46,3 @@ trait MockCreateAmendUkDividendsAnnualSummaryConnector extends MockFactory {
   }
 
 }
-

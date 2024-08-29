@@ -42,4 +42,3 @@ class JsonErrorSanitiserSpec extends UnitSpec {
   }
 
 }
-

@@ -20,7 +20,7 @@ import api.controllers.requestParsers.validators.validations.DecimalValueValidat
 import api.mocks.MockCurrentDateTime
 import api.models.errors._
 import config.AppConfig
-import mocks.MockAppConfig
+import config.MockAppConfig
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.AnyContentAsJson
 import support.UnitSpec

@@ -37,4 +37,3 @@ trait MockCreateAmendDividendsValidator extends MockFactory {
   }
 
 }
-
