@@ -4,7 +4,7 @@ info:
   version: "1.0"
   title: Individuals Dividends Income (MTD)
   description: |
-    The following endpoints are stateful in the sandbox:
+    The following endpoints are stateful in the Sandbox:
     * Dividends Income
     * UK Dividends Income
 
