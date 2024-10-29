@@ -1,9 +1,13 @@
 openapi: "3.0.3"
 
 info:
-  version: 1.0
+  version: "1.0"
   title: Individuals Dividends Income (MTD)
   description: |
+    The following groups of endpoints are stateful in the Sandbox:
+    * [Dividends Income](#tag/Dividends-Income)
+    * [UK Dividends Income](#tag/UK-Dividends-Income)
+
     # Send fraud prevention data
     HMRC monitors transactions to help protect your customers' confidential data from criminals and fraudsters. 
     
