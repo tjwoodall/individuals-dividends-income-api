@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,12 @@
 
 package auth
 
-import api.models.domain.TaxYear
-import api.services.DownstreamStub
 import play.api.http.Status.NO_CONTENT
 import play.api.libs.json.JsValue
 import play.api.libs.ws.{WSRequest, WSResponse}
+import shared.auth.AuthSupportingAgentsAllowedISpec
+import shared.models.domain.TaxYear
+import shared.services.DownstreamStub
 
 class IndividualsDividendsIncomeAuthSupportingAgentsAllowedISpec extends AuthSupportingAgentsAllowedISpec {
 
@@ -36,9 +37,11 @@ class IndividualsDividendsIncomeAuthSupportingAgentsAllowedISpec extends AuthSup
 
   override val downstreamUri: String = s"/income-tax/income/dividends/$nino/${taxYear.asMtd}"
 
+  val maybeDownstreamResponseJson: Option[JsValue] = None
+
   override val downstreamHttpMethod: DownstreamStub.HTTPMethod = DownstreamStub.DELETE
 
-  val maybeDownstreamResponseJson: Option[JsValue] = None
+  override val downstreamSuccessStatus: Int = NO_CONTENT
 
   override val expectedMtdSuccessStatus: Int = NO_CONTENT
 

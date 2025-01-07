@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,33 +16,33 @@
 
 package v1.controllers
 
-import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import api.mocks.MockIdGenerator
-import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
-import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
-import api.models.domain.{Nino, TaxYear}
-import api.models.errors._
-import api.models.outcomes.ResponseWrapper
-import config.MockAppConfig
-import play.api.libs.json.{JsValue, Json}
-import play.api.mvc.{AnyContentAsJson, Result}
 import play.api.Configuration
-import v1.mocks.requestParsers.MockCreateAmendDividendsRequestParser
+import play.api.libs.json.{JsValue, Json}
+import play.api.mvc.Result
+import shared.config.MockSharedAppConfig
+import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
+import shared.models.domain.TaxYear
+import shared.models.errors._
+import shared.models.outcomes.ResponseWrapper
+import shared.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
+import shared.utils.MockIdGenerator
 import v1.mocks.services.MockCreateAmendDividendsService
+import v1.mocks.validators.MockCreateAmendDividendsValidatorFactory
 import v1.models.request.createAmendDividends._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class CreateAmendDividendsControllerSpec
-    extends ControllerBaseSpec
+  extends ControllerBaseSpec
     with ControllerTestRunner
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
-    with MockAppConfig
+    with MockSharedAppConfig
     with MockAuditService
     with MockCreateAmendDividendsService
-    with MockCreateAmendDividendsRequestParser
+    with MockCreateAmendDividendsValidatorFactory
     with MockIdGenerator {
 
   val taxYear: String = "2019-20"
@@ -104,12 +104,6 @@ class CreateAmendDividendsControllerSpec
       |   }
       |}
     """.stripMargin
-  )
-
-  val rawData: CreateAmendDividendsRawData = CreateAmendDividendsRawData(
-    nino = nino,
-    taxYear = taxYear,
-    body = AnyContentAsJson(validRequestJson)
   )
 
   val foreignDividend: List[CreateAmendForeignDividendItem] = List(
@@ -180,7 +174,7 @@ class CreateAmendDividendsControllerSpec
   )
 
   val requestData: CreateAmendDividendsRequest = CreateAmendDividendsRequest(
-    nino = Nino(nino),
+    nino = parsedNino,
     taxYear = TaxYear.fromMtd(taxYear),
     body = createAmendDividendsRequestBody
   )
@@ -188,11 +182,9 @@ class CreateAmendDividendsControllerSpec
   "CreateAmendDividendsController" should {
     "return a successful response with status OK" when {
       "happy path" in new Test {
-        MockedAppConfig.apiGatewayContext.returns("individuals/dividends-income").anyNumberOfTimes()
+        MockedSharedAppConfig.apiGatewayContext.returns("individuals/dividends-income").anyNumberOfTimes()
 
-        MockCreateAmendDividendsRequestParser
-          .parse(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockCreateAmendDividendsService
           .createAmendDividends(requestData)
@@ -208,17 +200,13 @@ class CreateAmendDividendsControllerSpec
 
     "return the error as per spec" when {
       "the parser validation fails" in new Test {
-        MockCreateAmendDividendsRequestParser
-          .parse(rawData)
-          .returns(Left(ErrorWrapper(correlationId, NinoFormatError)))
+        willUseValidator(returning(NinoFormatError))
 
         runErrorTestWithAudit(NinoFormatError, maybeAuditRequestBody = Some(validRequestJson))
       }
 
       "service returns an error" in new Test {
-        MockCreateAmendDividendsRequestParser
-          .parse(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockCreateAmendDividendsService
           .createAmendDividends(requestData)
@@ -234,20 +222,20 @@ class CreateAmendDividendsControllerSpec
     val controller = new CreateAmendDividendsController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
-      parser = mockCreateAmendDividendsRequestParser,
+      validatorFactory = mockCreateAmendDividendsValidatorFactory,
       service = mockCreateAmendDividendsService,
       auditService = mockAuditService,
       cc = cc,
       idGenerator = mockIdGenerator
     )
 
-    MockedAppConfig.featureSwitches.anyNumberOfTimes() returns Configuration(
+    MockedSharedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
       "supporting-agents-access-control.enabled" -> true
     )
 
-    MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
+    MockedSharedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
 
-    protected def callController(): Future[Result] = controller.createAmendDividends(nino, taxYear)(fakePutRequest(validRequestJson))
+    protected def callController(): Future[Result] = controller.createAmendDividends(validNino, taxYear)(fakeRequest.withBody(validRequestJson))
 
     def event(auditResponse: AuditResponse, requestBody: Option[JsValue]): AuditEvent[GenericAuditDetail] =
       AuditEvent(
@@ -255,11 +243,12 @@ class CreateAmendDividendsControllerSpec
         transactionName = "create-amend-dividends-income",
         detail = GenericAuditDetail(
           userType = "Individual",
+          versionNumber = apiVersion.name,
           agentReferenceNumber = None,
-          params = Map("nino" -> nino, "taxYear" -> taxYear),
-          request = requestBody,
+          params = Map("nino" -> validNino, "taxYear" -> taxYear),
+          requestBody = requestBody,
           `X-CorrelationId` = correlationId,
-          response = auditResponse
+          auditResponse = auditResponse
         )
       )
 

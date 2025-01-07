@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,29 +16,28 @@
 
 package v1.connectors
 
-import api.connectors.DownstreamUri.{DesUri, IfsUri, TaxYearSpecificIfsUri}
-import api.connectors.{BaseDownstreamConnector, DownstreamOutcome}
-import config.{AppConfig, FeatureSwitches}
+import config.DividendsIncomeFeatureSwitches
+import shared.config.SharedAppConfig
+import shared.connectors.DownstreamUri.{DesUri, IfsUri, TaxYearSpecificIfsUri}
+import shared.connectors.httpparsers.StandardDownstreamHttpParser._
+import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v1.models.request.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsAnnualIncomeSummaryRequest
+import v1.models.request.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsIncomeAnnualSummaryRequest
 import v1.models.response.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsAnnualIncomeSummaryResponse
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class RetrieveUKDividendsIncomeAnnualSummaryConnector @Inject() (val http: HttpClient, val appConfig: AppConfig)(implicit
-    featureSwitches: FeatureSwitches)
+class RetrieveUKDividendsIncomeAnnualSummaryConnector @Inject() (val http: HttpClient, val appConfig: SharedAppConfig)
     extends BaseDownstreamConnector {
 
-  def retrieveUKDividendsIncomeAnnualSummary(request: RetrieveUkDividendsAnnualIncomeSummaryRequest)(implicit
-      hc: HeaderCarrier,
-      ec: ExecutionContext,
-      correlationId: String): Future[DownstreamOutcome[RetrieveUkDividendsAnnualIncomeSummaryResponse]] = {
+  def retrieveUKDividendsIncomeAnnualSummary(request: RetrieveUkDividendsIncomeAnnualSummaryRequest)(implicit
+                                                                                                     hc: HeaderCarrier,
+                                                                                                     ec: ExecutionContext,
+                                                                                                     correlationId: String): Future[DownstreamOutcome[RetrieveUkDividendsAnnualIncomeSummaryResponse]] = {
 
-    import api.connectors.httpparsers.StandardDownstreamHttpParser._
-    import request.nino.nino
-    import request.taxYear
+    import request._
 
     val path = s"income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}"
 
@@ -46,7 +45,7 @@ class RetrieveUKDividendsIncomeAnnualSummaryConnector @Inject() (val http: HttpC
       if (taxYear.useTaxYearSpecificApi) {
         TaxYearSpecificIfsUri[RetrieveUkDividendsAnnualIncomeSummaryResponse](
           s"income-tax/${taxYear.asTysDownstream}/$nino/income-source/dividends/annual")
-      } else if (featureSwitches.isDesIf_MigrationEnabled) {
+      } else if (DividendsIncomeFeatureSwitches().isDesIfMigrationEnabled) {
         IfsUri[RetrieveUkDividendsAnnualIncomeSummaryResponse](path)
       } else {
         DesUri[RetrieveUkDividendsAnnualIncomeSummaryResponse](path)

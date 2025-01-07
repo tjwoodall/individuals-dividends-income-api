@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,17 @@
 
 package v1.controllers
 
-import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import api.mocks.MockIdGenerator
-import api.services.{MockEnrolmentsAuthService, MockMtdIdLookupService}
-import api.models.domain.{Nino, TaxYear}
-import api.models.errors._
-import api.models.outcomes.ResponseWrapper
-import config.MockAppConfig
-import play.api.mvc.Result
 import play.api.Configuration
+import play.api.mvc.Result
+import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import shared.models.domain.TaxYear
+import shared.models.errors._
+import shared.models.outcomes.ResponseWrapper
 import v1.fixtures.RetrieveDividendsFixtures
 import v1.fixtures.RetrieveDividendsFixtures.responseModel
-import v1.mocks.requestParsers.MockRetrieveDividendsRequestParser
 import v1.mocks.services.MockRetrieveDividendsService
-import v1.models.request.retrieveDividends.{RetrieveDividendsRawData, RetrieveDividendsRequest}
+import v1.mocks.validators.MockRetrieveDividendsValidatorFactory
+import v1.models.request.retrieveDividends.RetrieveDividendsRequest
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -37,22 +34,13 @@ import scala.concurrent.Future
 class RetrieveDividendsControllerSpec
     extends ControllerBaseSpec
     with ControllerTestRunner
-    with MockEnrolmentsAuthService
-    with MockMtdIdLookupService
     with MockRetrieveDividendsService
-    with MockRetrieveDividendsRequestParser
-    with MockIdGenerator
-    with MockAppConfig {
+    with MockRetrieveDividendsValidatorFactory {
 
   private val taxYear: String = "2019-20"
 
-  private val rawData: RetrieveDividendsRawData = RetrieveDividendsRawData(
-    nino = nino,
-    taxYear = taxYear
-  )
-
   private val requestData: RetrieveDividendsRequest = RetrieveDividendsRequest(
-    nino = Nino(nino),
+    nino = parsedNino,
     taxYear = TaxYear.fromMtd(taxYear)
   )
 
@@ -61,9 +49,7 @@ class RetrieveDividendsControllerSpec
   "RetrieveDividendsController" should {
     "return a successful response with status 200 (OK)" when {
       "given a valid request" in new Test {
-        MockRetrieveDividendsRequestParser
-          .parse(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockRetrieveDividendsService
           .retrieve(requestData)
@@ -78,17 +64,13 @@ class RetrieveDividendsControllerSpec
 
     "return the error as per spec" when {
       "parser validation fails" in new Test {
-        MockRetrieveDividendsRequestParser
-          .parse(rawData)
-          .returns(Left(ErrorWrapper(correlationId, NinoFormatError)))
+        willUseValidator(returning(NinoFormatError))
 
         runErrorTest(NinoFormatError)
       }
 
       "the service returns an error" in new Test {
-        MockRetrieveDividendsRequestParser
-          .parse(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockRetrieveDividendsService
           .retrieve(requestData)
@@ -104,19 +86,19 @@ class RetrieveDividendsControllerSpec
     val controller = new RetrieveDividendsController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
-      parser = mockRetrieveDividendsRequestParser,
+      validatorFactory = mockRetrieveDividendsValidatorFactory,
       service = mockRetrieveDividendsService,
       cc = cc,
       idGenerator = mockIdGenerator
     )
 
-    MockedAppConfig.featureSwitches.anyNumberOfTimes() returns Configuration(
+    MockedSharedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
       "supporting-agents-access-control.enabled" -> true
     )
 
-    MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
+    MockedSharedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
 
-    override protected def callController(): Future[Result] = controller.retrieveDividends(nino, taxYear)(fakeGetRequest)
+    override protected def callController(): Future[Result] = controller.retrieveDividends(validNino, taxYear)(fakeGetRequest)
 
   }
 

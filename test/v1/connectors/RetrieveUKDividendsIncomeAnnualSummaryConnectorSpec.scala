@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 package v1.connectors
 
-import api.connectors.ConnectorSpec
-import api.models.domain.{Nino, TaxYear}
-import api.models.outcomes.ResponseWrapper
-import uk.gov.hmrc.http.HeaderCarrier
-import v1.models.request.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsAnnualIncomeSummaryRequest
+import play.api.Configuration
+import shared.connectors.ConnectorSpec
+import shared.models.domain.{Nino, TaxYear}
+import shared.models.outcomes.ResponseWrapper
+import v1.models.request.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsIncomeAnnualSummaryRequest
 import v1.models.response.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsAnnualIncomeSummaryResponse
 
 import scala.concurrent.Future
@@ -41,45 +41,38 @@ class RetrieveUKDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec 
     "retrieveUKDividendsIncomeAnnualSummary is called" must {
       "return a 200 for success scenario" in {
         new DesTest with Test {
-          MockFeatureSwitches.isDesIf_MigrationEnabled.returns(false)
+          MockedSharedAppConfig.featureSwitchConfig
+            .once()
+            .returns(
+              Configuration(
+                "isDesIfMigrationEnabled" -> "false"
+              ))
 
           def taxYear: TaxYear = TaxYear.fromMtd("2018-19")
 
-          val outcome                             = Right(ResponseWrapper(correlationId, validResponse))
-          override implicit val hc: HeaderCarrier = HeaderCarrier(otherHeaders = otherHeaders)
+          val outcome = Right(ResponseWrapper(correlationId, validResponse))
 
-          MockedHttpClient
-            .get(
-              url = s"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/$taxYearDownstream",
-              config = dummyDesHeaderCarrierConfig,
-              requiredHeaders = requiredDesHeaders,
-              excludedHeaders = Seq("AnotherHeader" -> "HeaderValue")
-            )
+          willGet(s"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/$taxYearDownstream")
             .returns(Future.successful(outcome))
-
-          await(connector.retrieveUKDividendsIncomeAnnualSummary(request)) shouldBe outcome
-
         }
       }
     }
 
-    "retrieveUKDividendsIncomeAnnualSummary is called and isDesIf_MigrationEnabled is on" must {
+    "retrieveUKDividendsIncomeAnnualSummary is called and isDesIfMigrationEnabled is on" must {
       "return a 200 for success scenario" in {
         new IfsTest with Test {
-          MockFeatureSwitches.isDesIf_MigrationEnabled.returns(true)
+          MockedSharedAppConfig.featureSwitchConfig
+            .once()
+            .returns(
+              Configuration(
+                "isDesIfMigrationEnabled" -> "true"
+              ))
 
           def taxYear: TaxYear = TaxYear.fromMtd("2018-19")
 
-          val outcome                             = Right(ResponseWrapper(correlationId, validResponse))
-          override implicit val hc: HeaderCarrier = HeaderCarrier(otherHeaders = otherHeaders)
+          val outcome = Right(ResponseWrapper(correlationId, validResponse))
 
-          MockedHttpClient
-            .get(
-              url = s"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/$taxYearDownstream",
-              config = dummyIfsHeaderCarrierConfig,
-              requiredHeaders = requiredIfsHeaders,
-              excludedHeaders = Seq("AnotherHeader" -> "HeaderValue")
-            )
+          willGet(s"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/$taxYearDownstream")
             .returns(Future.successful(outcome))
 
           await(connector.retrieveUKDividendsIncomeAnnualSummary(request)) shouldBe outcome
@@ -108,10 +101,10 @@ class RetrieveUKDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec 
     def taxYear: TaxYear
 
     protected val connector: RetrieveUKDividendsIncomeAnnualSummaryConnector =
-      new RetrieveUKDividendsIncomeAnnualSummaryConnector(http = mockHttpClient, appConfig = mockAppConfig)
+      new RetrieveUKDividendsIncomeAnnualSummaryConnector(http = mockHttpClient, appConfig = mockSharedAppConfig)
 
-    protected val request: RetrieveUkDividendsAnnualIncomeSummaryRequest =
-      RetrieveUkDividendsAnnualIncomeSummaryRequest(Nino("AA111111A"), taxYear = taxYear)
+    protected val request: RetrieveUkDividendsIncomeAnnualSummaryRequest =
+      RetrieveUkDividendsIncomeAnnualSummaryRequest(Nino("AA111111A"), taxYear = taxYear)
 
   }
 

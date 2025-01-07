@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 
 package v1.connectors
 
-import api.connectors.{ConnectorSpec, DownstreamOutcome}
-import api.models.domain.{Nino, TaxYear}
-import api.models.outcomes.ResponseWrapper
-import config.MockFeatureSwitches
+import play.api.Configuration
+import shared.connectors.{ConnectorSpec, DownstreamOutcome}
+import shared.models.domain.{Nino, TaxYear}
+import shared.models.outcomes.ResponseWrapper
 import v1.models.request.createAmendUkDividendsIncomeAnnualSummary.{
   CreateAmendUkDividendsIncomeAnnualSummaryBody,
   CreateAmendUkDividendsIncomeAnnualSummaryRequest
@@ -27,16 +27,18 @@ import v1.models.request.createAmendUkDividendsIncomeAnnualSummary.{
 
 import scala.concurrent.Future
 
-class CreateAmendUkDividendsAnnualSummaryConnectorSpec extends ConnectorSpec with MockFeatureSwitches {
+class CreateAmendUkDividendsAnnualSummaryConnectorSpec extends ConnectorSpec {
 
   val nino: String = "AA123456A"
   private val body = CreateAmendUkDividendsIncomeAnnualSummaryBody(None, None)
 
   "CreateAmendUkDividendsAnnualSummaryConnector" when {
-    "createOrAmendAnnualSummary called and 'isDesIf_MigrationEnabled' is off" must {
+    "createOrAmendAnnualSummary called and 'isDesIfMigrationEnabled' is off" must {
       "return a 200 status for a success scenario" in
         new DesTest with Test {
-          MockFeatureSwitches.isDesIf_MigrationEnabled.returns(false)
+          MockedSharedAppConfig.featureSwitchConfig.anyNumberOfTimes().returns(Configuration(
+            "desIf_Migration.enabled" -> "false"
+          ))
 
           def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
 
@@ -49,10 +51,12 @@ class CreateAmendUkDividendsAnnualSummaryConnectorSpec extends ConnectorSpec wit
         }
     }
 
-    "createOrAmendAnnualSummary called and 'isDesIf_MigrationEnabled' is on" must {
+    "createOrAmendAnnualSummary called and 'isDesIfMigrationEnabled' is on" must {
       "return a 200 status for a success scenario" in
         new IfsTest with Test {
-          MockFeatureSwitches.isDesIf_MigrationEnabled.returns(true)
+          MockedSharedAppConfig.featureSwitchConfig.anyNumberOfTimes().returns(Configuration(
+            "desIf_Migration.enabled" -> "true"
+          ))
 
           def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
 
@@ -86,7 +90,7 @@ class CreateAmendUkDividendsAnnualSummaryConnectorSpec extends ConnectorSpec wit
     protected val connector: CreateAmendUkDividendsAnnualSummaryConnector =
       new CreateAmendUkDividendsAnnualSummaryConnector(
         http = mockHttpClient,
-        appConfig = mockAppConfig
+        appConfig = mockSharedAppConfig
       )
 
     protected val request: CreateAmendUkDividendsIncomeAnnualSummaryRequest =

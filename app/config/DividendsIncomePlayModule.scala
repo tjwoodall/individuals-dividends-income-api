@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,16 @@
 package config
 
 import com.google.inject.AbstractModule
+import definition.DividendsIncomeDefinitionFactory
+import routing.DividendsIncomeVersionRoutingMap
+import shared.definition.ApiDefinitionFactory
+import shared.routing.VersionRoutingMap
 
 class DividendsIncomePlayModule extends AbstractModule {
 
   override def configure(): Unit = {
-    bind(classOf[AppConfig]).to(classOf[AppConfigImpl]).asEagerSingleton()
+    bind(classOf[ApiDefinitionFactory]).to(classOf[DividendsIncomeDefinitionFactory]).asEagerSingleton()
+    bind(classOf[VersionRoutingMap]).to(classOf[DividendsIncomeVersionRoutingMap]).asEagerSingleton()
   }
 
 }

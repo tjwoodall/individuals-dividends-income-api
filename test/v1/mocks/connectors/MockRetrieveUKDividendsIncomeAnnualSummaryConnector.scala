@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 package v1.mocks.connectors
 
-import api.connectors.DownstreamOutcome
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
+import shared.connectors.DownstreamOutcome
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.connectors.RetrieveUKDividendsIncomeAnnualSummaryConnector
-import v1.models.request.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsAnnualIncomeSummaryRequest
+import v1.models.request.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsIncomeAnnualSummaryRequest
 import v1.models.response.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsAnnualIncomeSummaryResponse
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -33,11 +33,11 @@ trait MockRetrieveUKDividendsIncomeAnnualSummaryConnector extends MockFactory {
 
   object MockRetrieveUKDividendsIncomeAnnualSummaryConnector {
 
-    def retrieveUKDividendsIncomeAnnualSummary(requestData: RetrieveUkDividendsAnnualIncomeSummaryRequest)
+    def retrieveUKDividendsIncomeAnnualSummary(requestData: RetrieveUkDividendsIncomeAnnualSummaryRequest)
         : CallHandler[Future[DownstreamOutcome[RetrieveUkDividendsAnnualIncomeSummaryResponse]]] = {
       (
         mockRetrieveUKDividendsIncomeAnnualSummaryConnector
-          .retrieveUKDividendsIncomeAnnualSummary(_: RetrieveUkDividendsAnnualIncomeSummaryRequest)(
+          .retrieveUKDividendsIncomeAnnualSummary(_: RetrieveUkDividendsIncomeAnnualSummaryRequest)(
             _: HeaderCarrier,
             _: ExecutionContext,
             _: String

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,11 @@
 
 package v1.controllers
 
-import api.controllers.{AuthorisedController, EndpointLogContext, RequestContext, RequestHandler}
-import api.services.{EnrolmentsAuthService, MtdIdLookupService}
-import config.AppConfig
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import utils.IdGenerator
-import v1.controllers.requestParsers.RetrieveDividendsRequestParser
-import v1.models.request.retrieveDividends.RetrieveDividendsRawData
+import shared.config.SharedAppConfig
+import shared.controllers._
+import shared.services.{EnrolmentsAuthService, MtdIdLookupService}
+import shared.utils.IdGenerator
 import v1.services.RetrieveDividendsService
 
 import javax.inject.{Inject, Singleton}
@@ -31,10 +29,10 @@ import scala.concurrent.ExecutionContext
 @Singleton
 class RetrieveDividendsController @Inject() (val authService: EnrolmentsAuthService,
                                              val lookupService: MtdIdLookupService,
-                                             parser: RetrieveDividendsRequestParser,
+                                             validatorFactory: RetrieveDividendsValidatorFactory,
                                              service: RetrieveDividendsService,
                                              cc: ControllerComponents,
-                                             val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: AppConfig)
+                                             val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: SharedAppConfig)
     extends AuthorisedController(cc) {
 
   val endpointName: String = "retrieve-dividends"
@@ -49,17 +47,14 @@ class RetrieveDividendsController @Inject() (val authService: EnrolmentsAuthServ
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
-      val rawData: RetrieveDividendsRawData = RetrieveDividendsRawData(
-        nino = nino,
-        taxYear = taxYear
-      )
+      val validator = validatorFactory.validator(nino, taxYear)
 
       val requestHandler = RequestHandler
-        .withParser(parser)
+        .withValidator(validator)
         .withService(service.retrieve)
         .withPlainJsonResult()
 
-      requestHandler.handleRequest(rawData)
+      requestHandler.handleRequest()
     }
 
 }

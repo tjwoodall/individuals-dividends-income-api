@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,15 @@
 
 package v1.endpoints
 
-import api.controllers.requestParsers.validators.validations.DecimalValueValidation.ZERO_MINIMUM_INCLUSIVE
-import api.models.errors._
-import api.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
 import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
-import support.{IntegrationBaseSpec, WireMockMethods}
+import shared.models.errors._
+import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
+import shared.support.{IntegrationBaseSpec, WireMockMethods}
 
 class CreateAmendUkDividendsAnnualSummaryControllerISpec extends IntegrationBaseSpec with WireMockMethods {
 
@@ -111,7 +110,7 @@ class CreateAmendUkDividendsAnnualSummaryControllerISpec extends IntegrationBase
             "2020-21",
             Json.parse("""{ "ukDividends": -10.99 }"""),
             BAD_REQUEST,
-            ValueFormatError.copy(message = ZERO_MINIMUM_INCLUSIVE, paths = Some(Seq("/ukDividends"))))
+            ValueFormatError.copy(paths = Some(Seq("/ukDividends"))))
         )
 
         input.foreach(args => (validationErrorTest _).tupled(args))

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,53 +16,46 @@
 
 package v1.controllers
 
-import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import api.mocks.MockIdGenerator
-import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
-import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
-import api.models.domain.{Nino, TaxYear}
-import api.models.errors._
-import api.models.outcomes.ResponseWrapper
-import config.MockAppConfig
+import play.api.Configuration
 import play.api.libs.json.JsValue
 import play.api.mvc.Result
-import play.api.Configuration
-import v1.mocks.requestParsers.MockDeleteDividendsRequestParser
+import shared.config.MockSharedAppConfig
+import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
+import shared.models.domain.TaxYear
+import shared.models.errors._
+import shared.models.outcomes.ResponseWrapper
+import shared.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
+import shared.utils.MockIdGenerator
 import v1.mocks.services.MockDeleteDividendsService
-import v1.models.request.deleteDividends.{DeleteDividendsRawData, DeleteDividendsRequest}
+import v1.mocks.validators.MockDeleteDividendsValidatorFactory
+import v1.models.request.deleteDividends.DeleteDividendsRequest
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class DeleteDividendsControllerSpec
-    extends ControllerBaseSpec
+  extends ControllerBaseSpec
     with ControllerTestRunner
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockAuditService
     with MockDeleteDividendsService
-    with MockDeleteDividendsRequestParser
+    with MockDeleteDividendsValidatorFactory
     with MockIdGenerator
-    with MockAppConfig {
+    with MockSharedAppConfig {
 
   val taxYear: String = "2019-20"
 
-  val rawData: DeleteDividendsRawData = DeleteDividendsRawData(
-    nino = nino,
-    taxYear = taxYear
-  )
-
   val requestData: DeleteDividendsRequest = DeleteDividendsRequest(
-    nino = Nino(nino),
+    nino = parsedNino,
     taxYear = TaxYear.fromMtd(taxYear)
   )
 
   "DeleteDividendsController" should {
     "return NO_content" when {
       "happy path" in new Test {
-        MockDeleteDividendsRequestParser
-          .parse(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockDeleteDividendsService
           .delete(requestData)
@@ -74,17 +67,13 @@ class DeleteDividendsControllerSpec
 
     "return the error as per spec" when {
       "the parser validation fails" in new Test {
-        MockDeleteDividendsRequestParser
-          .parse(rawData)
-          .returns(Left(ErrorWrapper(correlationId, NinoFormatError)))
+        willUseValidator(returning(NinoFormatError))
 
         runErrorTestWithAudit(NinoFormatError)
       }
 
       "service returns an error" in new Test {
-        MockDeleteDividendsRequestParser
-          .parse(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockDeleteDividendsService
           .delete(requestData)
@@ -100,20 +89,20 @@ class DeleteDividendsControllerSpec
     val controller = new DeleteDividendsController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
-      requestParser = mockDeleteDividendsRequestParser,
+      validatorFactory = mockDeleteDividendsValidatorFactory,
       service = mockDeleteDividendsService,
       auditService = mockAuditService,
       cc = cc,
       idGenerator = mockIdGenerator
     )
 
-    MockedAppConfig.featureSwitches.anyNumberOfTimes() returns Configuration(
+    MockedSharedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
       "supporting-agents-access-control.enabled" -> true
     )
 
-    MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
+    MockedSharedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
 
-    protected def callController(): Future[Result] = controller.deleteDividends(nino, taxYear)(fakeDeleteRequest)
+    protected def callController(): Future[Result] = controller.deleteDividends(validNino, taxYear)(fakeRequest)
 
     def event(auditResponse: AuditResponse, requestBody: Option[JsValue]): AuditEvent[GenericAuditDetail] =
       AuditEvent(
@@ -121,11 +110,12 @@ class DeleteDividendsControllerSpec
         transactionName = "delete-dividends-income",
         detail = GenericAuditDetail(
           userType = "Individual",
+          versionNumber = apiVersion.name,
           agentReferenceNumber = None,
-          params = Map("nino" -> nino, "taxYear" -> taxYear),
-          request = None,
+          params = Map("nino" -> validNino, "taxYear" -> taxYear),
           `X-CorrelationId` = correlationId,
-          response = auditResponse
+          requestBody = None,
+          auditResponse = auditResponse
         )
       )
 

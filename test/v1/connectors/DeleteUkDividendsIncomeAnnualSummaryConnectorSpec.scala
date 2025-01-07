@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,11 @@
 
 package v1.connectors
 
-import api.connectors.ConnectorSpec
-import api.models.domain.{Nino, TaxYear}
-import api.models.outcomes.ResponseWrapper
+import play.api.Configuration
 import play.api.libs.json.Json
+import shared.connectors.ConnectorSpec
+import shared.models.domain.{Nino, TaxYear}
+import shared.models.outcomes.ResponseWrapper
 import v1.models.request.deleteUkDividendsIncomeAnnualSummary.DeleteUkDividendsIncomeAnnualSummaryRequest
 
 import scala.concurrent.Future
@@ -28,11 +29,11 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
 
   "DeleteUkDividendsIncomeAnnualSummaryConnector" should {
     "return the expected response for a non-TYS request" when {
-      "a valid request is made and `isPassDeleteIntentEnabled` feature switch is on and isDesMigrationEnabled is on" in new IfsTest with Test {
-        override lazy val excludedHeaders: scala.Seq[(String, String)] = super.excludedHeaders :+ ("intent" -> "IIR_DELETE")
-
+      "a valid request is made and `isPassDeleteIntentEnabled` feature switch is on and isDesIfMigrationEnabled is on" in new IfsTest with Test {
         def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
-        MockFeatureSwitches.isDesIf_MigrationEnabled.returns(true)
+        MockedSharedAppConfig.featureSwitchConfig.anyNumberOfTimes().returns(Configuration(
+            "desIf_Migration.enabled" -> "true"
+          ))
 
         val outcome = Right(ResponseWrapper(correlationId, ()))
 
@@ -41,14 +42,17 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
           body = Json.parse("""{}""")
         ).returns(Future.successful(outcome))
 
-        MockFeatureSwitches.isPassDeleteIntentEnabled.returns(true)
+        MockedSharedAppConfig.featureSwitchConfig.anyNumberOfTimes().returns(Configuration(
+          "passDeleteIntentHeader.enabled" -> "true"
+        ))
 
         await(connector.delete(request)) shouldBe outcome
       }
 
-      "a valid request is made and `isPassDeleteIntentEnabled` feature switch is on and isDefIf_MigrationEnabled is off" in new DesTest with Test {
-        override lazy val requiredHeaders: scala.Seq[(String, String)] = requiredDesHeaders :+ ("intent" -> "IDI_DELETE")
-        MockFeatureSwitches.isDesIf_MigrationEnabled.returns(false)
+      "a valid request is made and `isPassDeleteIntentEnabled` feature switch is on and isDefIfMigrationEnabled is off" in new DesTest with Test {
+        MockedSharedAppConfig.featureSwitchConfig.anyNumberOfTimes().returns(Configuration(
+            "desIf_Migration.enabled" -> "false"
+          ))
 
         def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
         val outcome          = Right(ResponseWrapper(correlationId, ()))
@@ -58,14 +62,17 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
           body = Json.parse("""{}""")
         ).returns(Future.successful(outcome))
 
-        MockFeatureSwitches.isPassDeleteIntentEnabled.returns(true)
+        MockedSharedAppConfig.featureSwitchConfig.anyNumberOfTimes().returns(Configuration(
+          "passDeleteIntentHeader.enabled" -> "true"
+        ))
 
         await(connector.delete(request)) shouldBe outcome
       }
 
       "a valid request is made and `isPassDeleteIntentEnabled` feature switch is off and isDesMigrationEnabled is off" in new DesTest with Test {
-        override lazy val excludedHeaders: scala.Seq[(String, String)] = super.excludedHeaders :+ ("intent" -> "IIR_DELETE")
-        MockFeatureSwitches.isDesIf_MigrationEnabled.returns(false)
+        MockedSharedAppConfig.featureSwitchConfig.anyNumberOfTimes().returns(Configuration(
+            "desIf_Migration.enabled" -> "false"
+          ))
 
         def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
         val outcome          = Right(ResponseWrapper(correlationId, ()))
@@ -75,16 +82,18 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
           body = Json.parse("""{}""")
         ).returns(Future.successful(outcome))
 
-        MockFeatureSwitches.isPassDeleteIntentEnabled.returns(false)
+        MockedSharedAppConfig.featureSwitchConfig.anyNumberOfTimes().returns(Configuration(
+          "passDeleteIntentHeader.enabled" -> "false"
+        ))
 
         await(connector.delete(request)) shouldBe outcome
       }
 
       "a valid request is made and `isPassDeleteIntentEnabled` feature switch is off and isDesMigrationEnabled is on" in new IfsTest with Test {
-        override lazy val excludedHeaders: scala.Seq[(String, String)] = super.excludedHeaders :+ ("intent" -> "IIR_DELETE")
-
         def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
-        MockFeatureSwitches.isDesIf_MigrationEnabled.returns(true)
+        MockedSharedAppConfig.featureSwitchConfig.once().returns(Configuration(
+            "desIf_Migration.enabled" -> "true"
+          ))
 
         val outcome = Right(ResponseWrapper(correlationId, ()))
 
@@ -93,7 +102,9 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
           body = Json.parse("""{}""")
         ).returns(Future.successful(outcome))
 
-        MockFeatureSwitches.isPassDeleteIntentEnabled.returns(false)
+        MockedSharedAppConfig.featureSwitchConfig.anyNumberOfTimes().returns(Configuration(
+          "passDeleteIntentHeader.enabled" -> "false"
+        ))
 
         await(connector.delete(request)) shouldBe outcome
       }
@@ -106,7 +117,9 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
         willDelete(url = s"$baseUrl/income-tax/${taxYear.asTysDownstream}/$nino/income-source/dividends/annual")
           .returns(Future.successful(outcome))
 
-        MockFeatureSwitches.isPassDeleteIntentEnabled.returns(false)
+        MockedSharedAppConfig.featureSwitchConfig.anyNumberOfTimes().returns(Configuration(
+          "passDeleteIntentHeader.enabled" -> "false"
+        ))
 
         await(connector.delete(request)) shouldBe outcome
       }
@@ -122,7 +135,7 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
 
     val connector: DeleteUkDividendsIncomeAnnualSummaryConnector = new DeleteUkDividendsIncomeAnnualSummaryConnector(
       http = mockHttpClient,
-      appConfig = mockAppConfig
+      appConfig = mockSharedAppConfig
     )
 
   }

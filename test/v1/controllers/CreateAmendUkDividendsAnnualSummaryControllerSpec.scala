@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,49 +16,39 @@
 
 package v1.controllers
 
-import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import api.models.audit.{AuditEvent, AuditResponse, FlattenedGenericAuditDetail}
-import api.models.auth.UserDetails
-import api.models.domain.{Nino, TaxYear}
-import api.models.errors._
-import api.models.outcomes.ResponseWrapper
-import config.MockAppConfig
-import play.api.libs.json.{JsObject, JsValue}
-import play.api.mvc.{AnyContentAsJson, Result}
 import play.api.Configuration
-import v1.mocks.requestParsers.MockCreateAmendUkDividendsAnnualSummaryRequestParser
+import play.api.libs.json.{JsObject, JsValue}
+import play.api.mvc.Result
+import shared.config.MockSharedAppConfig
+import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import shared.models.audit.{AuditEvent, AuditResponse, FlattenedGenericAuditDetail}
+import shared.models.auth.UserDetails
+import shared.models.domain.TaxYear
+import shared.models.errors._
+import shared.models.outcomes.ResponseWrapper
 import v1.mocks.services.MockCreateAmendUkDividendsAnnualSummaryService
-import v1.models.request.createAmendUkDividendsIncomeAnnualSummary.{
-  CreateAmendUkDividendsIncomeAnnualSummaryBody,
-  CreateAmendUkDividendsIncomeAnnualSummaryRawData,
-  CreateAmendUkDividendsIncomeAnnualSummaryRequest
-}
+import v1.mocks.validators.MockCreateAmendUkDividendsAnnualSummaryValidatorFactory
+import v1.models.request.createAmendUkDividendsIncomeAnnualSummary._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class CreateAmendUkDividendsAnnualSummaryControllerSpec
-    extends ControllerBaseSpec
+  extends ControllerBaseSpec
     with ControllerTestRunner
     with MockCreateAmendUkDividendsAnnualSummaryService
-    with MockCreateAmendUkDividendsAnnualSummaryRequestParser
-    with MockAppConfig {
+    with MockCreateAmendUkDividendsAnnualSummaryValidatorFactory
+    with MockSharedAppConfig {
 
   private val taxYear = "2019-20"
   private val mtdId   = "test-mtd-id"
 
   private val requestJson: JsObject = JsObject.empty
 
-  private val rawData: CreateAmendUkDividendsIncomeAnnualSummaryRawData = CreateAmendUkDividendsIncomeAnnualSummaryRawData(
-    nino = nino,
-    taxYear = taxYear,
-    body = AnyContentAsJson.apply(requestJson)
-  )
-
   private val requestModel: CreateAmendUkDividendsIncomeAnnualSummaryBody = CreateAmendUkDividendsIncomeAnnualSummaryBody(None, None)
 
   private val requestData: CreateAmendUkDividendsIncomeAnnualSummaryRequest = CreateAmendUkDividendsIncomeAnnualSummaryRequest(
-    nino = Nino(nino),
+    nino = parsedNino,
     taxYear = TaxYear.fromMtd(taxYear),
     body = requestModel
   )
@@ -66,9 +56,7 @@ class CreateAmendUkDividendsAnnualSummaryControllerSpec
   "CreateAmendUkDividendsAnnualSummaryController" should {
     "return a successful response with status 200 (OK)" when {
       "given a valid request" in new Test {
-        MockCreateAmendUkDividendsAnnualSummaryRequestParser
-          .parse(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockCreateAmendAmendUkDividendsAnnualSummaryService
           .createOrAmendAnnualSummary(requestData)
@@ -81,17 +69,13 @@ class CreateAmendUkDividendsAnnualSummaryControllerSpec
 
     "return the error as per spec" when {
       "the parser validation fails" in new Test {
-        MockCreateAmendUkDividendsAnnualSummaryRequestParser
-          .parse(rawData)
-          .returns(Left(ErrorWrapper(correlationId, NinoFormatError)))
+        willUseValidator(returning(NinoFormatError))
 
         runErrorTest(NinoFormatError)
       }
 
       "the service returns an error" in new Test {
-        MockCreateAmendUkDividendsAnnualSummaryRequestParser
-          .parse(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockCreateAmendAmendUkDividendsAnnualSummaryService
           .createOrAmendAnnualSummary(requestData)
@@ -107,20 +91,20 @@ class CreateAmendUkDividendsAnnualSummaryControllerSpec
     val controller = new CreateAmendUkDividendsAnnualSummaryController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
-      parser = mockCreateAmendUkDividendsAnnualSummaryRequestParser,
+      validatorFactory = mockCreateAmendUkDividendsAnnualSummaryValidatorFactory,
       service = mockCreateAmendUkDividendsAnnualSummaryService,
       cc = cc,
       idGenerator = mockIdGenerator,
       auditService = mockAuditService
     )
 
-    MockedAppConfig.featureSwitches.anyNumberOfTimes() returns Configuration(
+    MockedSharedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
       "supporting-agents-access-control.enabled" -> true
     )
 
-    MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
+    MockedSharedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
 
-    protected def callController(): Future[Result] = controller.createAmendUkDividendsAnnualSummary(nino, taxYear)(fakePutRequest(requestJson))
+    protected def callController(): Future[Result] = controller.createAmendUkDividendsAnnualSummary(validNino, taxYear)(fakeRequest.withBody(requestJson))
 
     def event(auditResponse: AuditResponse, requestBody: Option[JsValue]): AuditEvent[FlattenedGenericAuditDetail] =
       AuditEvent(
@@ -129,10 +113,12 @@ class CreateAmendUkDividendsAnnualSummaryControllerSpec
         detail = FlattenedGenericAuditDetail(
           versionNumber = Some("1.0"),
           userDetails = UserDetails(mtdId, "Individual", None),
-          params = Map("nino" -> nino, "taxYear" -> taxYear),
-          request = Some(requestJson),
+          params = Map("nino" -> validNino, "taxYear" -> taxYear),
           `X-CorrelationId` = correlationId,
-          auditResponse = auditResponse
+          auditResponse = auditResponse,
+          history = None,
+          futureYears = None,
+          itsaStatuses = None
         )
       )
 

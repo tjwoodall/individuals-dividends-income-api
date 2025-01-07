@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 package v1.mocks.services
 
-import api.controllers.RequestContext
-import api.services.ServiceOutcome
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
-import v1.models.request.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsAnnualIncomeSummaryRequest
+import shared.controllers.RequestContext
+import shared.services.ServiceOutcome
+import v1.models.request.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsIncomeAnnualSummaryRequest
 import v1.models.response.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsAnnualIncomeSummaryResponse
 import v1.services.RetrieveUkDividendsIncomeAnnualSummaryService
 
@@ -33,11 +33,11 @@ trait MockRetrieveUkDividendsAnnualIncomeSummaryService extends MockFactory {
 
   object MockRetrieveUkDividendsIncomeAnnualSummaryService {
 
-    def retrieveUkDividends(requestData: RetrieveUkDividendsAnnualIncomeSummaryRequest)
+    def retrieveUkDividends(requestData: RetrieveUkDividendsIncomeAnnualSummaryRequest)
         : CallHandler[Future[ServiceOutcome[RetrieveUkDividendsAnnualIncomeSummaryResponse]]] = {
       (
         mockRetrieveUkDividendsAnnualIncomeSummaryService
-          .retrieveUKDividendsIncomeAnnualSummary(_: RetrieveUkDividendsAnnualIncomeSummaryRequest)(
+          .retrieveUKDividendsIncomeAnnualSummary(_: RetrieveUkDividendsIncomeAnnualSummaryRequest)(
             _: RequestContext,
             _: ExecutionContext
           )
