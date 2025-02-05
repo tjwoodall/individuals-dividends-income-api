@@ -9,7 +9,7 @@ The Individuals Dividends Income API allows a developer to create, amend, retrie
 
 Run the microservice from the console using: `sbt run` (starts on port 7763 by default)
 
-Start the service manager profile: `sm --start MTDFB_INDIVIDUALS_DIVIDENDS_INCOME`
+Start the service manager profile: `sm2 --start MTDFB_INDIVIDUALS_DIVIDENDS_INCOME`
 
 ## Run Tests
 
@@ -22,7 +22,7 @@ Run integration tests: `sbt it:test`
 To view documentation locally, ensure the API is running, and run api-documentation-frontend:
 `./run_local_with_dependencies.sh`
 Then go to http://localhost:9680/api-documentation/docs/openapi/preview and use this port and version:
-`http://localhost:7761/api/conf/1.0/application.yaml`
+`http://localhost:7763/api/conf/1.0/application.yaml`
 
 ## Changelog
 
