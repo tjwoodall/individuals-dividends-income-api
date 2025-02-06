@@ -106,12 +106,12 @@ class CreateAmendUkDividendsAnnualSummaryControllerSpec
 
     protected def callController(): Future[Result] = controller.createAmendUkDividendsAnnualSummary(validNino, taxYear)(fakeRequest.withBody(requestJson))
 
-    def event(auditResponse: AuditResponse, requestBody: Option[JsValue]): AuditEvent[FlattenedGenericAuditDetail] =
+    def event(auditResponse: AuditResponse, requestBody: Option[JsValue]): AuditEvent[FlattenedGenericAuditDetail] = {
       AuditEvent(
         auditType = "CreateAndAmendUkDividendsIncome",
         transactionName = "create-amend-uk-dividends-income",
         detail = FlattenedGenericAuditDetail(
-          versionNumber = Some("1.0"),
+          versionNumber = Some("2.0"),
           userDetails = UserDetails(mtdId, "Individual", None),
           params = Map("nino" -> validNino, "taxYear" -> taxYear),
           `X-CorrelationId` = correlationId,
@@ -121,6 +121,7 @@ class CreateAmendUkDividendsAnnualSummaryControllerSpec
           itsaStatuses = None
         )
       )
+    }
 
   }
 

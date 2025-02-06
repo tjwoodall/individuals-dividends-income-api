@@ -106,7 +106,7 @@ class DeleteUkDividendsIncomeAnnualSummaryControllerSpec
         transactionName = "delete-uk-dividends-income",
         detail = FlattenedGenericAuditDetail(
           userDetails = UserDetails(mtdId, "Individual", None),
-          versionNumber = Some("1.0"),
+          versionNumber = Some("2.0"),
           params = Map("nino" -> validNino, "taxYear" -> taxYear),
           `X-CorrelationId` = correlationId,
           auditResponse = auditResponse,
