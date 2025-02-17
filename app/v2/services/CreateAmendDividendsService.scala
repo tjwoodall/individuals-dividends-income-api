@@ -17,6 +17,7 @@
 package v2.services
 
 import cats.implicits._
+import common.errors.RuleOutsideAmendmentWindowError
 import shared.controllers.RequestContext
 import shared.models.errors._
 import shared.services.{BaseService, ServiceOutcome}
@@ -39,6 +40,7 @@ class CreateAmendDividendsService @Inject() (connector: CreateAmendDividendsConn
     val errors = Map(
       "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
       "INVALID_TAX_YEAR"          -> TaxYearFormatError,
+      "OUTSIDE_AMENDMENT_WINDOW"  -> RuleOutsideAmendmentWindowError,
       "INVALID_CORRELATIONID"     -> InternalError,
       "INVALID_PAYLOAD"           -> InternalError,
       "SERVER_ERROR"              -> InternalError,
