@@ -17,6 +17,7 @@
 package v2.services
 
 import cats.implicits._
+import common.errors.RuleOutsideAmendmentWindowError
 import shared.controllers.RequestContext
 import shared.models.errors._
 import shared.services.{BaseService, ServiceOutcome}
@@ -60,7 +61,8 @@ class DeleteUkDividendsIncomeAnnualSummaryService @Inject() (connector: DeleteUk
       "INCOME_SOURCE_DATA_NOT_FOUND" -> NotFoundError,
       "PERIOD_NOT_FOUND"             -> NotFoundError,
       "PERIOD_ALREADY_DELETED"       -> NotFoundError,
-      "TAX_YEAR_NOT_SUPPORTED"       -> RuleTaxYearNotSupportedError
+      "TAX_YEAR_NOT_SUPPORTED"       -> RuleTaxYearNotSupportedError,
+      "OUTSIDE_AMENDMENT_WINDOW"     -> RuleOutsideAmendmentWindowError
     )
 
     errors ++ extraTysErrors

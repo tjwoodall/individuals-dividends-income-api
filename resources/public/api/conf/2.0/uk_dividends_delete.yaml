@@ -10,6 +10,7 @@ description: |
   |----------------------------------|------------------------------------------------|
   | DELETE                           | Simulates success response.                    |
   | NOT_FOUND                        | Simulates the scenario where no data is found. |
+  | OUTSIDE_AMENDMENT_WINDOW         | Simulates the scenario where request cannot be completed as it is outside the amendment window. |
   | REQUEST_CANNOT_BE_FULFILLED      | Simulates the scenario where the request could not be processed. |
   | STATEFUL                         | Performs a stateful delete.                    | 
 
@@ -47,6 +48,8 @@ responses:
             $ref: './common/errors.yaml#/components/examples/formatNino'
           FORMAT_TAX_YEAR:
             $ref: './common/errors.yaml#/components/examples/formatTaxYear'
+          RULE_OUTSIDE_AMENDMENT_WINDOW:
+            $ref: "./common/errors.yaml#/components/examples/ruleOutsideAmendmentWindow"
           RULE_TAX_YEAR_NOT_SUPPORTED:
             $ref: './common/errors.yaml#/components/examples/ruleTaxYearNotSupported'
           RULE_TAX_YEAR_RANGE_INVALID:
@@ -92,4 +95,3 @@ responses:
         examples:
           RULE_REQUEST_CANNOT_BE_FULFILLED:
             $ref: './common/errors.yaml#/components/examples/requestCannotBeFulfilled'
-

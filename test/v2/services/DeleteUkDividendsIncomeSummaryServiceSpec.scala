@@ -16,6 +16,7 @@
 
 package v2.services
 
+import common.errors.RuleOutsideAmendmentWindowError
 import shared.controllers.EndpointLogContext
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
@@ -77,7 +78,8 @@ class DeleteUkDividendsIncomeSummaryServiceSpec extends UnitSpec {
           ("INCOME_SOURCE_DATA_NOT_FOUND", NotFoundError),
           ("PERIOD_NOT_FOUND", NotFoundError),
           ("PERIOD_ALREADY_DELETED", NotFoundError),
-          ("TAX_YEAR_NOT_SUPPORTED", RuleTaxYearNotSupportedError)
+          ("TAX_YEAR_NOT_SUPPORTED", RuleTaxYearNotSupportedError),
+          ("OUTSIDE_AMENDMENT_WINDOW", RuleOutsideAmendmentWindowError)
         )
 
         (errors ++ extraTysErrors).foreach(args => (serviceError _).tupled(args))

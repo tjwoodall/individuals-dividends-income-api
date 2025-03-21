@@ -17,6 +17,7 @@
 package v2.services
 
 import cats.implicits._
+import common.errors.RuleOutsideAmendmentWindowError
 import shared.controllers.RequestContext
 import shared.models.errors._
 import shared.services.{BaseService, ServiceOutcome}
@@ -57,6 +58,7 @@ class CreateAmendUkDividendsAnnualSummaryService @Inject() (connector: CreateAme
       "INVALID_TAX_YEAR"           -> TaxYearFormatError,
       "INVALID_INCOMESOURCE_TYPE"  -> InternalError,
       "TAX_YEAR_NOT_SUPPORTED"     -> RuleTaxYearNotSupportedError,
+      "OUTSIDE_AMENDMENT_WINDOW"   -> RuleOutsideAmendmentWindowError,
       "INCOME_SOURCE_NOT_FOUND"    -> NotFoundError,
       "INCOMPATIBLE_INCOME_SOURCE" -> InternalError
     )

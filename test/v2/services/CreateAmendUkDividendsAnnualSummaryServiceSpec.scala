@@ -16,6 +16,7 @@
 
 package v2.services
 
+import common.errors.RuleOutsideAmendmentWindowError
 import shared.controllers.EndpointLogContext
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
@@ -84,6 +85,7 @@ class CreateAmendUkDividendsAnnualSummaryServiceSpec extends ServiceSpec {
           ("INVALID_TAX_YEAR", TaxYearFormatError),
           ("INVALID_INCOMESOURCE_TYPE", InternalError),
           ("TAX_YEAR_NOT_SUPPORTED", RuleTaxYearNotSupportedError),
+          ("OUTSIDE_AMENDMENT_WINDOW", RuleOutsideAmendmentWindowError),
           ("INCOME_SOURCE_NOT_FOUND", NotFoundError),
           ("INCOMPATIBLE_INCOME_SOURCE", InternalError)
         )

@@ -17,6 +17,7 @@
 package v2.endpoints
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import common.errors.RuleOutsideAmendmentWindowError
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
 import play.api.libs.json.Json
@@ -150,6 +151,7 @@ class DeleteUkDividendsIncomeAnnualSummaryControllerISpec extends IntegrationBas
           (NOT_FOUND, "INCOME_SOURCE_DATA_NOT_FOUND", NOT_FOUND, NotFoundError),
           (NOT_FOUND, "PERIOD_NOT_FOUND", NOT_FOUND, NotFoundError),
           (GONE, "PERIOD_ALREADY_DELETED", NOT_FOUND, NotFoundError),
+          (UNPROCESSABLE_ENTITY, "OUTSIDE_AMENDMENT_WINDOW", BAD_REQUEST, RuleOutsideAmendmentWindowError),
           (UNPROCESSABLE_ENTITY, "TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError)
         )
 
