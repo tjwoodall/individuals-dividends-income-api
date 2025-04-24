@@ -15,6 +15,12 @@ components:
         code: FORMAT_TAX_YEAR
         message: The taxYear format is invalid
 
+    formatEmploymentId:
+      description: The format of the supplied employment ID field is not valid.
+      value:
+        code: FORMAT_EMPLOYMENT_ID
+        message: The employment ID format is invalid
+
     ruleIncorrectOrEmptyBody:
       description: An empty or non-matching body was submitted.
       value:

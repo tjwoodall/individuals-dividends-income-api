@@ -1,0 +1,7 @@
+delete:
+  $ref: "./additional_directorship_dividend_delete.yaml"
+  summary: Delete Additional Directorship and Dividend Information
+  # {{#maybeTestOnly "2.0 additional-directorship-dividend-delete"}}{{/maybeTestOnly}}
+  security:
+    - User-Restricted:
+        - write:self-assessment

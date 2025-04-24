@@ -59,8 +59,17 @@ tags:
   - name: UK Dividends Income
     description: Resources relating to an individual's uk dividends
 
+# {{#if (enabled 'additional-directorship-dividend')}}
+  - name: Additional Directorship and Dividend Information
+    description: Provide taxable income for less common types of dividends income
+# {{/if}}
+
 paths:
   /individuals/dividends-income/{nino}/{taxYear}:
     $ref: "./dividends.yaml"
   /individuals/dividends-income/uk/{nino}/{taxYear}:
     $ref: "./uk_dividends.yaml"
+# {{#if (enabled 'additional-directorship-dividend')}}
+  /individuals/dividends-income/directorship/{nino}/{taxYear}/{employmentId}:
+    $ref: "./additional_directorship_dividend.yaml"
+# {{/if}}

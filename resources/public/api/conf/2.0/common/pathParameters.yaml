@@ -32,3 +32,24 @@ components:
         type: string
         example: 2021-22
       required: true
+
+    taxYearMinimum2025:
+      name: taxYear
+      in: path
+      description: |
+        The tax year to which the data applies. The start year and end year must not span two tax years.
+        The minimum tax year is 2025-26. No gaps are allowed, for example, 2025-27 is not valid.
+      schema:
+        type: string
+        example: 2025-26
+      required: true
+
+    employmentId:
+      name: employmentId
+      in: path
+      description: The unique identifier for the employment.
+      schema:
+        type: string
+        pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$
+        example: 4557ecb5-fd32-48cc-81f5-e6acd1099f3c
+      required: true
