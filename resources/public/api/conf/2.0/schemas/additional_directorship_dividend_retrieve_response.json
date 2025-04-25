@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": 	"Retrieve Additional Directorship and Dividend Information Response",
+  "description": "Retrieve Additional Directorship and Dividend Information Response",
+  "type": "object",
+  "properties": {
+    "companyDirector": {
+      "type": "boolean",
+      "description": "Indicates whether a taxable entity is a director or not.",
+      "example": true
+    },
+    "closeCompany": {
+      "type": "boolean",
+      "description": "Indicates whether the company is a close company. This field is only returned when companyDirector is true.",
+      "example": true
+    },
+    "directorshipCeasedDate": {
+      "type": "string",
+      "description": "Date when the directorship ceased. This will cease the rollover across tax years for custom employments that were created for Additional Dividends and Directorship. Must conform to the format YYYY-MM-DD",
+      "format": "date",
+      "example": "2024-04-06"
+    },
+    "companyName": {
+      "type": "string",
+      "description": "The name by which the company is registered with Companies House. This field is only returned when closeCompany is true.",
+      "example": "Comapny One",
+      "pattern": "^.{0,160}$"
+    },
+    "companyNumber": {
+      "type": "string",
+      "description": "The number by which the company is registered with Companies House. This field is only returned when closeCompany is true.",
+      "example": "36488522",
+      "pattern": "^(?:\\d{8}|[A-Za-z]{2}\\d{6})$"
+    },
+    "shareholding": {
+      "type": "number",
+      "description": "The percentage shareholding of the company. This field is only returned when closeCompany is true. A value of 0 indicates no shareholding. The value must be between 0 and 100 up to 2 decimal places.",
+      "example": 20.99,
+      "multipleOf": 0.01,
+      "minimum": 0,
+      "maximum": 100
+    },
+    "dividendReceived": {
+      "type": "number",
+      "description": "The amount of dividends received from the company. This field is only returned when closeCompany is true. A value of 0 indicates no dividends were received. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "example": 1024.99,
+      "multipleOf": 0.01,
+      "minimum": 0,
+      "maximum": 99999999999.99
+    },
+    "submittedOn": {
+      "type": "string",
+      "description": "The date and time of the submission. Must conform to the format YYYY-MM-DDThh:mm:ss.SSSZ",
+      "format": "date-time",
+      "example": "2025-08-24T14:15:22.802Z"
+    }
+  },
+  "additionalProperties": false,
+  "required": ["companyDirector", "submittedOn"]
+}
