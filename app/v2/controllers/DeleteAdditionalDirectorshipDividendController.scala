@@ -22,30 +22,30 @@ import shared.controllers._
 import shared.routing.Version
 import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import shared.utils.IdGenerator
-import v2.services.DeleteAdditionalDirectorshipDividendsService
+import v2.services.DeleteAdditionalDirectorshipDividendService
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class DeleteAdditionalDirectorshipDividendsController @Inject()(val authService: EnrolmentsAuthService,
-                                                                val lookupService: MtdIdLookupService,
-                                                                validatorFactory: DeleteAdditionalDirectorshipDividendsValidatorFactory,
-                                                                service: DeleteAdditionalDirectorshipDividendsService,
-                                                                auditService: AuditService,
-                                                                cc: ControllerComponents,
-                                                                val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: SharedAppConfig)
+class DeleteAdditionalDirectorshipDividendController @Inject()(val authService: EnrolmentsAuthService,
+                                                               val lookupService: MtdIdLookupService,
+                                                               validatorFactory: DeleteAdditionalDirectorshipDividendValidatorFactory,
+                                                               service: DeleteAdditionalDirectorshipDividendService,
+                                                               auditService: AuditService,
+                                                               cc: ControllerComponents,
+                                                               val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: SharedAppConfig)
     extends AuthorisedController(cc) {
 
-  val endpointName: String = "delete-additional-directorship-dividends"
+  val endpointName: String = "delete-additional-directorship-and-dividend-information"
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(
-      controllerName = "DeleteAdditionalDirectorshipDividendsController",
-      endpointName = "deleteAdditionalDirectorshipDividends"
+      controllerName = "DeleteAdditionalDirectorshipDividendController",
+      endpointName = "deleteAdditionalDirectorshipAndDividendInformation"
     )
 
-  def deleteAdditionalDirectorshipDividends(nino: String, taxYear: String, employmentId: String): Action[AnyContent] =
+  def delete(nino: String, taxYear: String, employmentId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
@@ -56,8 +56,8 @@ class DeleteAdditionalDirectorshipDividendsController @Inject()(val authService:
         .withService(service.delete)
         .withAuditing(AuditHandler(
           auditService = auditService,
-          auditType = "DeleteAdditionalDirectorshipDividends",
-          transactionName = "delete-additional-directorship-dividends",
+          auditType = "DeleteAdditionalDirectorshipDividend",
+          transactionName = "delete-additional-directorship-dividend",
           apiVersion = Version(request),
           params = Map("nino" -> nino, "taxYear" -> taxYear, "employmentId" -> employmentId),
           requestBody = None

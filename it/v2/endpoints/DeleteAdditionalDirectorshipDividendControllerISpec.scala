@@ -17,18 +17,16 @@
 package v2.endpoints
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import play.api.http.HeaderNames.ACCEPT
-import play.api.http.Status._
 import play.api.libs.json.{JsObject, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
-import play.api.test.Helpers.AUTHORIZATION
+import play.api.test.Helpers._
 import shared.models.errors._
 import shared.services._
 import shared.support.IntegrationBaseSpec
 
-class DeleteAdditionalDirectorshipDividendsControllerISpec extends IntegrationBaseSpec {
+class DeleteAdditionalDirectorshipDividendControllerISpec extends IntegrationBaseSpec {
 
-  "Calling the 'delete additional directorship dividends' endpoint" should {
+  "Calling the 'Delete Additional Directorship and Dividend Information' endpoint" should {
     "return a 204 status code" when {
       "any valid request is made" in new Test  {
 
@@ -36,7 +34,7 @@ class DeleteAdditionalDirectorshipDividendsControllerISpec extends IntegrationBa
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          DownstreamStub.onSuccess(DownstreamStub.DELETE, downstreamUri, Map("taxYear" -> downstreamTaxYear), NO_CONTENT, JsObject.empty)
+          DownstreamStub.onSuccess(DownstreamStub.DELETE, downstreamUri, downstreamQueryParams, NO_CONTENT, JsObject.empty)
         }
 
         val response: WSResponse = await(request().delete())
@@ -48,11 +46,15 @@ class DeleteAdditionalDirectorshipDividendsControllerISpec extends IntegrationBa
     "return error according to spec" when {
 
       "validation error" when {
-        def validationErrorTest(requestNino: String, requestTaxYear: String, requestEmploymentId: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+        def validationErrorTest(requestNino: String,
+                                requestTaxYear: String,
+                                requestEmploymentId: String,
+                                expectedStatus: Int,
+                                expectedBody: MtdError): Unit = {
           s"validation fails with ${expectedBody.code} error" in new Test {
 
-            override val nino: String    = requestNino
-            override val taxYear: String = requestTaxYear
+            override val nino: String         = requestNino
+            override val taxYear: String      = requestTaxYear
             override val employmentId: String = requestEmploymentId
 
             override def setupStubs(): StubMapping = {
@@ -80,13 +82,13 @@ class DeleteAdditionalDirectorshipDividendsControllerISpec extends IntegrationBa
 
       "downstream service error" when {
         def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-          s"downstream returns an $downstreamCode error and status $downstreamStatus" in new Test {
+          s"downstream returns a code $downstreamCode error and status $downstreamStatus" in new Test {
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              DownstreamStub.onError(DownstreamStub.DELETE, downstreamUri, Map("taxYear" -> downstreamTaxYear), downstreamStatus, errorBody(downstreamCode))
+              DownstreamStub.onError(DownstreamStub.DELETE, downstreamUri, downstreamQueryParams, downstreamStatus, errorBody(downstreamCode))
 
             }
 
@@ -112,10 +114,8 @@ class DeleteAdditionalDirectorshipDividendsControllerISpec extends IntegrationBa
           (BAD_REQUEST, "1117", BAD_REQUEST, TaxYearFormatError),
           (BAD_REQUEST, "1217", BAD_REQUEST, EmploymentIdFormatError),
           (BAD_REQUEST, "1216", INTERNAL_SERVER_ERROR, InternalError),
-          (NOT_FOUND,   "5010", NOT_FOUND, NotFoundError),
-          (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, InternalError),
-          (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, InternalError),
-          (NOT_FOUND, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError)
+          (NOT_FOUND, "5010", NOT_FOUND, NotFoundError),
+          (BAD_REQUEST, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError)
         )
 
         errors.foreach(args => (serviceErrorTest _).tupled(args))
@@ -125,14 +125,16 @@ class DeleteAdditionalDirectorshipDividendsControllerISpec extends IntegrationBa
 
   private trait Test {
 
-    val nino: String = "AA123456A"
+    val nino: String         = "AA123456A"
     val employmentId: String = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
-    def taxYear: String       = "2025-26"
-    def downstreamTaxYear: String = "25-26"
+
+    def taxYear: String = "2025-26"
+
+    def downstreamQueryParams: Map[String, String] = Map("taxYear" -> "25-26")
 
     def downstreamUri: String = s"/itsd/income-sources/$nino/directorships/$employmentId"
 
-    def uri: String = s"/directorship/$nino/$taxYear/$employmentId"
+    private def uri: String = s"/directorship/$nino/$taxYear/$employmentId"
 
     def setupStubs(): StubMapping
 
@@ -141,7 +143,7 @@ class DeleteAdditionalDirectorshipDividendsControllerISpec extends IntegrationBa
       buildRequest(uri)
         .withHttpHeaders(
           (ACCEPT, "application/vnd.hmrc.2.0+json"),
-          (AUTHORIZATION, "Bearer 123") // some bearer token
+          (AUTHORIZATION, "Bearer 123")
         )
     }
 

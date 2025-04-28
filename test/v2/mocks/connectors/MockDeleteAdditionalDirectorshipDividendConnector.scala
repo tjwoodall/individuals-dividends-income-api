@@ -20,20 +20,20 @@ import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import shared.connectors.DownstreamOutcome
 import uk.gov.hmrc.http.HeaderCarrier
-import v2.connectors.DeleteAdditionalDirectorshipDividendsConnector
-import v2.models.request.deleteAdditionalDirectorshipDividends.DeleteAdditionalDirectorshipDividendsRequest
+import v2.connectors.DeleteAdditionalDirectorshipDividendConnector
+import v2.models.request.deleteAdditionalDirectorshipDividend.DeleteAdditionalDirectorshipDividendRequest
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockDeleteAdditionalDirectorshipDividendsConnector extends MockFactory {
+trait MockDeleteAdditionalDirectorshipDividendConnector extends MockFactory {
 
-  val mockDeleteAdditionalDirectorshipDividendsConnector: DeleteAdditionalDirectorshipDividendsConnector = mock[DeleteAdditionalDirectorshipDividendsConnector]
+  val mockDeleteAdditionalDirectorshipDividendConnector: DeleteAdditionalDirectorshipDividendConnector = mock[DeleteAdditionalDirectorshipDividendConnector]
 
-  object MockDeleteAdditionalDirectorshipDividendsConnector {
+  object MockDeleteAdditionalDirectorshipDividendConnector {
 
-    def delete(request: DeleteAdditionalDirectorshipDividendsRequest): CallHandler[Future[DownstreamOutcome[Unit]]] =
-      (mockDeleteAdditionalDirectorshipDividendsConnector
-        .delete(_: DeleteAdditionalDirectorshipDividendsRequest)(_: HeaderCarrier, _: ExecutionContext, _: String))
+    def delete(request: DeleteAdditionalDirectorshipDividendRequest): CallHandler[Future[DownstreamOutcome[Unit]]] =
+      (mockDeleteAdditionalDirectorshipDividendConnector
+        .delete(_: DeleteAdditionalDirectorshipDividendRequest)(_: HeaderCarrier, _: ExecutionContext, _: String))
         .expects(request, *, *, *)
 
   }

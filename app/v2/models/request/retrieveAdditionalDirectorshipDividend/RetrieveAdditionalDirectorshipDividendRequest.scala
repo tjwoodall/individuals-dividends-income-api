@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-package v2.models.request.deleteAdditionalDirectorshipDividends
+package v2.models.request.retrieveAdditionalDirectorshipDividend
 
-import shared.models.domain.{Nino, TaxYear, EmploymentId}
+import shared.models.domain.{EmploymentId, Nino, TaxYear}
 
-case class DeleteAdditionalDirectorshipDividendsRequest(nino: Nino, taxYear: TaxYear, employmentId: EmploymentId)
+case class RetrieveAdditionalDirectorshipDividendRequest(nino: Nino, taxYear: TaxYear, employmentId: EmploymentId)

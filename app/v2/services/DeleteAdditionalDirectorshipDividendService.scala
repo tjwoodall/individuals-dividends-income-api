@@ -20,27 +20,24 @@ import cats.implicits._
 import shared.controllers.RequestContext
 import shared.models.errors._
 import shared.services.{BaseService, ServiceOutcome}
-import v2.connectors.DeleteAdditionalDirectorshipDividendsConnector
-import v2.models.request.deleteAdditionalDirectorshipDividends.DeleteAdditionalDirectorshipDividendsRequest
+import v2.connectors.DeleteAdditionalDirectorshipDividendConnector
+import v2.models.request.deleteAdditionalDirectorshipDividend.DeleteAdditionalDirectorshipDividendRequest
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class DeleteAdditionalDirectorshipDividendsService @Inject()(connector: DeleteAdditionalDirectorshipDividendsConnector) extends BaseService {
+class DeleteAdditionalDirectorshipDividendService @Inject()(connector: DeleteAdditionalDirectorshipDividendConnector) extends BaseService {
 
-  def delete(request: DeleteAdditionalDirectorshipDividendsRequest)(implicit ctx: RequestContext, ec: ExecutionContext): Future[ServiceOutcome[Unit]] =
-
+  def delete(request: DeleteAdditionalDirectorshipDividendRequest)(implicit ctx: RequestContext, ec: ExecutionContext): Future[ServiceOutcome[Unit]] =
     connector.delete(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
 
-
-  private val downstreamErrorMap: Map[String, MtdError] =
-     Map(
-      "1215" -> NinoFormatError,
-      "1117" -> TaxYearFormatError,
-      "1217" -> EmploymentIdFormatError,
-      "5010" -> NotFoundError,
-      "1216" -> InternalError
-    )
+  private val downstreamErrorMap: Map[String, MtdError] = Map(
+    "1215" -> NinoFormatError,
+    "1117" -> TaxYearFormatError,
+    "1217" -> EmploymentIdFormatError,
+    "1216" -> InternalError,
+    "5010" -> NotFoundError
+  )
 
 }

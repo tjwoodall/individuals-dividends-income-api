@@ -19,48 +19,39 @@ package v2.controllers
 import play.api.Configuration
 import play.api.libs.json.JsValue
 import play.api.mvc.Result
-import shared.config.MockSharedAppConfig
 import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import shared.models.domain.{EmploymentId, TaxYear}
 import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
-import shared.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
-import shared.utils.MockIdGenerator
-import v2.mocks.services.MockDeleteAdditionalDirectorshipDividendsService
-import v2.mocks.validators.MockDeleteAdditionalDirectorshipDividendsValidatorFactory
-import v2.models.request.deleteAdditionalDirectorshipDividends.DeleteAdditionalDirectorshipDividendsRequest
+import v2.mocks.services.MockDeleteAdditionalDirectorshipDividendService
+import v2.mocks.validators.MockDeleteAdditionalDirectorshipDividendValidatorFactory
+import v2.models.request.deleteAdditionalDirectorshipDividend.DeleteAdditionalDirectorshipDividendRequest
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class DeleteAdditionalDirectorshipDividendsControllerSpec
+class DeleteAdditionalDirectorshipDividendControllerSpec
   extends ControllerBaseSpec
     with ControllerTestRunner
-    with MockEnrolmentsAuthService
-    with MockMtdIdLookupService
-    with MockAuditService
-    with MockDeleteAdditionalDirectorshipDividendsService
-    with MockDeleteAdditionalDirectorshipDividendsValidatorFactory
-    with MockIdGenerator
-    with MockSharedAppConfig {
+    with MockDeleteAdditionalDirectorshipDividendService
+    with MockDeleteAdditionalDirectorshipDividendValidatorFactory {
 
-  val taxYear: String = "2025-26"
-  val employmentId        = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
-  val parsedEmploymentId: EmploymentId = EmploymentId(employmentId)
+  private val taxYear: String      = "2025-26"
+  private val employmentId: String = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
 
-  val requestData: DeleteAdditionalDirectorshipDividendsRequest = DeleteAdditionalDirectorshipDividendsRequest(
+  private val requestData: DeleteAdditionalDirectorshipDividendRequest = DeleteAdditionalDirectorshipDividendRequest(
     nino = parsedNino,
     taxYear = TaxYear.fromMtd(taxYear),
-    employmentId = parsedEmploymentId
+    employmentId = EmploymentId(employmentId)
   )
 
-  "DeleteAdditionalDirectorshipDividendsController" should {
+  "DeleteAdditionalDirectorshipDividendController" should {
     "return a successful response with status 204 (NO_CONTENT)" when {
       "given a valid request" in new Test {
         willUseValidator(returningSuccess(requestData))
 
-        MockDeleteAdditionalDirectorshipDividendsService
+        MockDeleteAdditionalDirectorshipDividendService
           .delete(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, ()))))
 
@@ -78,7 +69,7 @@ class DeleteAdditionalDirectorshipDividendsControllerSpec
       "service returns an error" in new Test {
         willUseValidator(returningSuccess(requestData))
 
-        MockDeleteAdditionalDirectorshipDividendsService
+        MockDeleteAdditionalDirectorshipDividendService
           .delete(requestData)
           .returns(Future.successful(Left(ErrorWrapper(correlationId, EmploymentIdFormatError))))
 
@@ -89,11 +80,11 @@ class DeleteAdditionalDirectorshipDividendsControllerSpec
 
   trait Test extends ControllerTest with AuditEventChecking[GenericAuditDetail] {
 
-    val controller = new DeleteAdditionalDirectorshipDividendsController(
+    val controller: DeleteAdditionalDirectorshipDividendController = new DeleteAdditionalDirectorshipDividendController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
-      validatorFactory = mockDeleteAdditionalDirectorshipDividendsValidatorFactory,
-      service = mockDeleteAdditionalDirectorshipDividendsService,
+      validatorFactory = mockDeleteAdditionalDirectorshipDividendValidatorFactory,
+      service = mockDeleteAdditionalDirectorshipDividendService,
       auditService = mockAuditService,
       cc = cc,
       idGenerator = mockIdGenerator
@@ -105,12 +96,12 @@ class DeleteAdditionalDirectorshipDividendsControllerSpec
 
     MockedSharedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
 
-    protected def callController(): Future[Result] = controller.deleteAdditionalDirectorshipDividends(validNino, taxYear, employmentId)(fakeRequest)
+    protected def callController(): Future[Result] = controller.delete(validNino, taxYear, employmentId)(fakeRequest)
 
     def event(auditResponse: AuditResponse, requestBody: Option[JsValue]): AuditEvent[GenericAuditDetail] =
       AuditEvent(
-        auditType = "DeleteAdditionalDirectorshipDividends",
-        transactionName = "delete-additional-directorship-dividends",
+        auditType = "DeleteAdditionalDirectorshipDividend",
+        transactionName = "delete-additional-directorship-dividend",
         detail = GenericAuditDetail(
           userType = "Individual",
           versionNumber = apiVersion.name,

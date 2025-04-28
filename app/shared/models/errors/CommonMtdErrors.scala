@@ -23,9 +23,9 @@ import play.api.http.Status._
 // Format Errors
 object NinoFormatError extends MtdError("FORMAT_NINO", "The NINO format is invalid", BAD_REQUEST)
 
-object EmploymentIdFormatError extends MtdError("FORMAT_EMPLOYMENT_ID", "The employment ID format is invalid", BAD_REQUEST)
-
 object TaxYearFormatError extends MtdError("FORMAT_TAX_YEAR", "The taxYear format is invalid", BAD_REQUEST)
+
+object EmploymentIdFormatError extends MtdError("FORMAT_EMPLOYMENT_ID", "The employment ID format is invalid", BAD_REQUEST)
 
 object ToDateFormatError extends MtdError(code = "FORMAT_TO_DATE", message = "The toDate format is invalid", BAD_REQUEST)
 

@@ -20,21 +20,22 @@ import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import shared.controllers.RequestContext
 import shared.services.ServiceOutcome
-import v2.models.request.deleteAdditionalDirectorshipDividends.DeleteAdditionalDirectorshipDividendsRequest
-import v2.services.DeleteAdditionalDirectorshipDividendsService
+import v2.models.request.retrieveAdditionalDirectorshipDividend.RetrieveAdditionalDirectorshipDividendRequest
+import v2.models.response.retrieveAdditionalDirectorshipDividend.RetrieveAdditionalDirectorshipDividendResponse
+import v2.services.RetrieveAdditionalDirectorshipDividendService
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockDeleteAdditionalDirectorshipDividendsService extends MockFactory {
+trait MockRetrieveAdditionalDirectorshipDividendService extends MockFactory {
 
-  val mockDeleteAdditionalDirectorshipDividendsService: DeleteAdditionalDirectorshipDividendsService = mock[DeleteAdditionalDirectorshipDividendsService]
+  val mockRetrieveAdditionalDirectorshipDividendService: RetrieveAdditionalDirectorshipDividendService = mock[RetrieveAdditionalDirectorshipDividendService]
 
-  object MockDeleteAdditionalDirectorshipDividendsService {
+  object MockRetrieveAdditionalDirectorshipDividendService {
 
-    def delete(requestData: DeleteAdditionalDirectorshipDividendsRequest): CallHandler[Future[ServiceOutcome[Unit]]] = {
+    def retrieve(requestData: RetrieveAdditionalDirectorshipDividendRequest): CallHandler[Future[ServiceOutcome[RetrieveAdditionalDirectorshipDividendResponse]]] = {
       (
-        mockDeleteAdditionalDirectorshipDividendsService
-          .delete(_: DeleteAdditionalDirectorshipDividendsRequest)(
+        mockRetrieveAdditionalDirectorshipDividendService
+          .retrieve(_: RetrieveAdditionalDirectorshipDividendRequest)(
             _: RequestContext,
             _: ExecutionContext
           )

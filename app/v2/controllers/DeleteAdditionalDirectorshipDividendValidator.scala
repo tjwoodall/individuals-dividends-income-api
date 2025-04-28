@@ -22,17 +22,17 @@ import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.{ResolveEmploymentId, ResolveNino, ResolveTaxYearMinimum}
 import shared.models.domain.TaxYear
 import shared.models.errors.MtdError
-import v2.models.request.deleteAdditionalDirectorshipDividends.DeleteAdditionalDirectorshipDividendsRequest
+import v2.models.request.deleteAdditionalDirectorshipDividend.DeleteAdditionalDirectorshipDividendRequest
 
-class DeleteAdditionalDirectorshipDividendsValidator(nino:String, taxYear: String, employmentId: String) extends Validator[DeleteAdditionalDirectorshipDividendsRequest] {
+class DeleteAdditionalDirectorshipDividendValidator(nino:String, taxYear: String, employmentId: String) extends Validator[DeleteAdditionalDirectorshipDividendRequest] {
 
   private val resolveTaxYear = ResolveTaxYearMinimum(TaxYear.fromMtd("2025-26"))
 
-  override def validate: Validated[Seq[MtdError], DeleteAdditionalDirectorshipDividendsRequest] =
+  override def validate: Validated[Seq[MtdError], DeleteAdditionalDirectorshipDividendRequest] =
     (
       ResolveNino(nino),
       resolveTaxYear(taxYear),
       ResolveEmploymentId(employmentId)
-    ).mapN(DeleteAdditionalDirectorshipDividendsRequest)
+    ).mapN(DeleteAdditionalDirectorshipDividendRequest)
 
 }

@@ -150,6 +150,7 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
       |}
     """.stripMargin
   )
+
   val multipleTopLevelErrorCodesJson: JsValue = Json.parse(
     """
       |[
@@ -286,6 +287,7 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
       }
     }
   }
+
   private def handleBvrsCorrectly[A](httpReads: HttpReads[DownstreamOutcome[A]]): Unit = {
 
     val singleBvrJson = Json.parse("""

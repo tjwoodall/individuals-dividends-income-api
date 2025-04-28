@@ -18,14 +18,14 @@ package v2.mocks.validators
 
 import org.scalamock.handlers.CallHandler
 import shared.controllers.validators.{MockValidatorFactory, Validator}
-import v2.controllers.DeleteAdditionalDirectorshipDividendsValidatorFactory
-import v2.models.request.deleteAdditionalDirectorshipDividends.DeleteAdditionalDirectorshipDividendsRequest
+import v2.controllers.DeleteAdditionalDirectorshipDividendValidatorFactory
+import v2.models.request.deleteAdditionalDirectorshipDividend.DeleteAdditionalDirectorshipDividendRequest
 
-trait MockDeleteAdditionalDirectorshipDividendsValidatorFactory extends MockValidatorFactory[DeleteAdditionalDirectorshipDividendsRequest] {
+trait MockDeleteAdditionalDirectorshipDividendValidatorFactory extends MockValidatorFactory[DeleteAdditionalDirectorshipDividendRequest] {
 
-  val mockDeleteAdditionalDirectorshipDividendsValidatorFactory: DeleteAdditionalDirectorshipDividendsValidatorFactory = mock[DeleteAdditionalDirectorshipDividendsValidatorFactory]
+  val mockDeleteAdditionalDirectorshipDividendValidatorFactory: DeleteAdditionalDirectorshipDividendValidatorFactory = mock[DeleteAdditionalDirectorshipDividendValidatorFactory]
 
-  def validator(): CallHandler[Validator[DeleteAdditionalDirectorshipDividendsRequest]] =
-    (mockDeleteAdditionalDirectorshipDividendsValidatorFactory.validator(_: String, _: String, _: String)).expects(*, *, *)
+  def validator(): CallHandler[Validator[DeleteAdditionalDirectorshipDividendRequest]] =
+    (mockDeleteAdditionalDirectorshipDividendValidatorFactory.validator(_: String, _: String, _: String)).expects(*, *, *)
 
 }

@@ -19,23 +19,26 @@ package v2.connectors
 import shared.config.SharedAppConfig
 import shared.connectors.DownstreamUri.HipUri
 import shared.connectors.httpparsers.StandardDownstreamHttpParser._
-import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
+import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome, DownstreamUri}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v2.models.request.deleteAdditionalDirectorshipDividends.DeleteAdditionalDirectorshipDividendsRequest
+import v2.models.request.deleteAdditionalDirectorshipDividend.DeleteAdditionalDirectorshipDividendRequest
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class DeleteAdditionalDirectorshipDividendsConnector @Inject()(val http: HttpClient, val appConfig: SharedAppConfig) extends BaseDownstreamConnector {
+class DeleteAdditionalDirectorshipDividendConnector @Inject()(val http: HttpClient, val appConfig: SharedAppConfig) extends BaseDownstreamConnector {
 
-  def delete(
-      request: DeleteAdditionalDirectorshipDividendsRequest)(implicit hc: HeaderCarrier, ec: ExecutionContext, correlationId: String): Future[DownstreamOutcome[Unit]] = {
+  def delete(request: DeleteAdditionalDirectorshipDividendRequest)(implicit
+                                                                   hc: HeaderCarrier,
+                                                                   ec: ExecutionContext,
+                                                                   correlationId: String): Future[DownstreamOutcome[Unit]] = {
 
     import request._
 
-    val downstreamUri =
-        HipUri(s"itsd/income-sources/$nino/directorships/$employmentId?taxYear=${taxYear.asTysDownstream}")
+    val downstreamUri: DownstreamUri[Unit] =
+      HipUri[Unit](s"itsd/income-sources/$nino/directorships/$employmentId?taxYear=${taxYear.asTysDownstream}")
+
     delete(uri = downstreamUri)
   }
 

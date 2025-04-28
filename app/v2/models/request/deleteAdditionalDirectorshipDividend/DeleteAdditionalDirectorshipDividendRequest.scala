@@ -14,17 +14,8 @@
  * limitations under the License.
  */
 
-package v2.controllers
+package v2.models.request.deleteAdditionalDirectorshipDividend
 
-import shared.controllers.validators.Validator
-import v2.models.request.deleteAdditionalDirectorshipDividends.DeleteAdditionalDirectorshipDividendsRequest
+import shared.models.domain.{Nino, TaxYear, EmploymentId}
 
-import javax.inject.Singleton
-
-@Singleton
-class DeleteAdditionalDirectorshipDividendsValidatorFactory {
-
-  def validator(nino: String, taxYear: String, employmentId: String): Validator[DeleteAdditionalDirectorshipDividendsRequest] =
-    new DeleteAdditionalDirectorshipDividendsValidator(nino, taxYear, employmentId)
-
-}
+case class DeleteAdditionalDirectorshipDividendRequest(nino: Nino, taxYear: TaxYear, employmentId: EmploymentId)
