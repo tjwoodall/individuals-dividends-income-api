@@ -11,7 +11,7 @@
     },
     "closeCompany": {
       "type": "boolean",
-      "description": "Indicates whether the company is a close company. This field is only returned when companyDirector is true.",
+      "description": "Indicates whether the company is a close company. This field is always returned when companyDirector is true.",
       "example": true
     },
     "directorshipCeasedDate": {
@@ -22,19 +22,19 @@
     },
     "companyName": {
       "type": "string",
-      "description": "The name by which the company is registered with Companies House. This field is only returned when closeCompany is true.",
+      "description": "The name by which the company is registered with Companies House. This field is always returned when closeCompany is true.",
       "example": "Comapny One",
       "pattern": "^.{0,160}$"
     },
     "companyNumber": {
       "type": "string",
-      "description": "The number by which the company is registered with Companies House. This field is only returned when closeCompany is true.",
+      "description": "The number by which the company is registered with Companies House. This field is always returned when closeCompany is true.",
       "example": "36488522",
       "pattern": "^(?:\\d{8}|[A-Za-z]{2}\\d{6})$"
     },
     "shareholding": {
       "type": "number",
-      "description": "The percentage shareholding of the company. This field is only returned when closeCompany is true. A value of 0 indicates no shareholding. The value must be between 0 and 100 up to 2 decimal places.",
+      "description": "The percentage shareholding of the company. This field is always returned when closeCompany is true. A value of 0 indicates no shareholding. The value must be between 0 and 100 up to 2 decimal places.",
       "example": 20.99,
       "multipleOf": 0.01,
       "minimum": 0,
@@ -42,7 +42,7 @@
     },
     "dividendReceived": {
       "type": "number",
-      "description": "The amount of dividends received from the company. This field is only returned when closeCompany is true. A value of 0 indicates no dividends were received. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "description": "The amount of dividends received from the company. This field is always returned when closeCompany is true. A value of 0 indicates no dividends were received. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "example": 1024.99,
       "multipleOf": 0.01,
       "minimum": 0,
