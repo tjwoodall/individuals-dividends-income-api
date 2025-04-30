@@ -25,7 +25,7 @@ object RetrieveAdditionalDirectorshipDividendFixtures {
   val responseModel: RetrieveAdditionalDirectorshipDividendResponse = RetrieveAdditionalDirectorshipDividendResponse(
     companyDirector = true,
     closeCompany = Some(true),
-    directorshipCeasedDate = Some("2024-04-06"),
+    directorshipCeasedDate = Some("2025-07-01"),
     companyName = Some("Company One"),
     companyNumber = Some("36488522"),
     shareholding = Some(20.95),
@@ -38,7 +38,7 @@ object RetrieveAdditionalDirectorshipDividendFixtures {
       |{
       |  "companyDirector": true,
       |  "closeCompany": true,
-      |  "directorshipCeasedDate": "2024-04-06",
+      |  "directorshipCeasedDate": "2025-07-01",
       |  "companyName": "Company One",
       |  "companyNumber": "36488522",
       |  "shareholding": 20.95,
