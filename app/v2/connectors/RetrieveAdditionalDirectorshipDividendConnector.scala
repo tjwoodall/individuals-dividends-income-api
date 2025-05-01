@@ -24,9 +24,10 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v2.models.request.retrieveAdditionalDirectorshipDividend.RetrieveAdditionalDirectorshipDividendRequest
 import v2.models.response.retrieveAdditionalDirectorshipDividend.RetrieveAdditionalDirectorshipDividendResponse
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class RetrieveAdditionalDirectorshipDividendConnector @Inject()(val http: HttpClient, val appConfig: SharedAppConfig) extends BaseDownstreamConnector {
 
   def retrieve(request: RetrieveAdditionalDirectorshipDividendRequest)(implicit

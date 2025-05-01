@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,10 +28,20 @@ class ResolveStringPatternSpec extends UnitSpec {
   private val resolveTaxYearPattern = ResolveStringPattern(taxYearRegex, TaxYearFormatError)
 
   "ResolveStringPattern" should {
-    "return the input value" when {
+    "return no errors" when {
       "given a matching string" in {
         val result = resolveTaxYearPattern("2024-25")
         result shouldBe Valid("2024-25")
+      }
+
+      "given a matching string in an Option" in {
+        val result = resolveTaxYearPattern(Option("2024-25"))
+        result shouldBe Valid(Some("2024-25"))
+      }
+
+      "given an empty Option" in {
+        val result = resolveTaxYearPattern(None)
+        result shouldBe Valid(None)
       }
 
       "given a matching string via the legacy apply() function" in {
