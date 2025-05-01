@@ -21,25 +21,61 @@ components:
         code: FORMAT_EMPLOYMENT_ID
         message: The employment ID format is invalid
 
+    formatCompanyName:
+      description: The format of the supplied company name field is not valid.
+      value:
+        code: FORMAT_COMPANY_NAME
+        message: The company name format is invalid
+
+    formatCompanyNumber:
+      description: The format of the supplied company number field is not valid.
+      value:
+        code: FORMAT_COMPANY_NUMBER
+        message: The company number format is invalid
+
+    formatDirectorshipCeasedDate:
+      description: The format of the supplied directorship ceased date field is not valid.
+      value:
+        code: FORMAT_DIRECTORSHIP_CEASED_DATE
+        message: The directorship ceased date format is invalid
+
     ruleIncorrectOrEmptyBody:
       description: An empty or non-matching body was submitted.
       value:
         code: RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED
         message: An empty or non-matching body was submitted
 
-    ruleTaxYearNotSupported:
-      description: |
-        The specified tax year is not supported.
-        Either the tax year specified is before the minimum tax year value, or it is after the maximum tax year value.
+    ruleMissingCloseCompany:
+      description: Close company field is required for directors.
       value:
-        code: RULE_TAX_YEAR_NOT_SUPPORTED
-        message: The tax year specified does not lie within the supported range
+        code: RULE_MISSING_CLOSE_COMPANY
+        message: closeCompany is required when companyDirector is set to true
+
+    ruleMissingCloseCompanyDetails:
+      description: Close company details are required when the company is a close company.
+      value:
+        code: RULE_MISSING_CLOSE_COMPANY_DETAILS
+        message: Close company details are required when closeCompany is set to true
 
     ruleTaxYearNotSupportedMinus4Years:
       description: |
         The specified tax year is not supported.
         That is, the tax year specified is before the minimum tax year value.
         The tax year must not exceed current tax year minus 4.
+      value:
+        code: RULE_TAX_YEAR_NOT_SUPPORTED
+        message: The tax year specified does not lie within the supported range
+
+    ruleDirectorshipCeasedDate:
+      description: The directorship ceased date must be within the tax year.
+      value:
+        code: RULE_DIRECTORSHIP_CEASED_DATE
+        message: The directorship ceased date must be within the tax year
+
+    ruleTaxYearNotSupported:
+      description: |
+        The specified tax year is not supported.
+        Either the tax year specified is before the minimum tax year value, or it is after the maximum tax year value.
       value:
         code: RULE_TAX_YEAR_NOT_SUPPORTED
         message: The tax year specified does not lie within the supported range
