@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Create And Amend Additional Directorship Dividend Request",
-  "description": "Create And Amend Additional Directorship Dividend Request",
+  "title": "Create or Amend Additional Directorship Dividend Request",
+  "description": "Create or Amend Additional Directorship Dividend Request",
   "type": "object",
   "properties": {
     "companyDirector": {
