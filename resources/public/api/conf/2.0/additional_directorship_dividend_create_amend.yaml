@@ -1,6 +1,6 @@
-summary: Create and Amend Additional Directorship and Dividend Information
+summary: Create or Amend Additional Directorship and Dividend Information
 description: |
-  This endpoint enables you to create and amend additional directorship/dividend information under each employment ID.
+  This endpoint enables you to create or amend additional directorship/dividend information under each employment ID.
   A National Insurance number, tax year and employment ID must be provided.
   
   ###  Test data
@@ -45,6 +45,12 @@ responses:
     headers:
       X-CorrelationId:
         $ref: './common/headers.yaml#/components/parameters/correlationId'
+      Deprecation:
+        $ref: "./common/headers.yaml#/components/parameters/deprecationHeader"
+      Sunset:
+        $ref: "./common/headers.yaml#/components/parameters/sunsetHeader"
+      Link:
+        $ref: "./common/headers.yaml#/components/parameters/linkHeader"
 
   "400":
     description: Bad request
