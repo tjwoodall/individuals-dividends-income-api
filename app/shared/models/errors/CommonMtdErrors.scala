@@ -57,6 +57,12 @@ object ValueFormatError extends MtdError("FORMAT_VALUE", "The value must be betw
 
 }
 
+object CompanyNameFormatError extends MtdError("FORMAT_COMPANY_NAME", "The company name format is invalid", BAD_REQUEST)
+
+object CompanyNumberFormatError extends MtdError("FORMAT_COMPANY_NUMBER", "The company number format is invalid", BAD_REQUEST)
+
+object DirectorshipCeasedDateFormatError extends MtdError("FORMAT_DIRECTORSHIP_CEASED_DATE", "The directorship ceased date format is invalid", BAD_REQUEST)
+
 object CalculationIdFormatError extends MtdError("FORMAT_CALCULATION_ID", "The provided calculation ID is invalid", BAD_REQUEST)
 
 object StringFormatError extends MtdError(code = "FORMAT_STRING", message = "The supplied string format is not valid", BAD_REQUEST)
@@ -132,6 +138,12 @@ object RuleEndBeforeStartDateError
     extends MtdError("RULE_END_DATE_BEFORE_START_DATE", "The supplied accounting period end date is before the start date", BAD_REQUEST)
 
 object RuleCountryCodeError extends MtdError("RULE_COUNTRY_CODE", "The country code is not a valid ISO 3166-1 alpha-3 country code", BAD_REQUEST)
+
+object RuleMissingCloseCompanyError extends MtdError("RULE_MISSING_CLOSE_COMPANY", "closeCompany is required when companyDirector is set to true", BAD_REQUEST)
+
+object RuleMissingCloseCompanyDetailsError extends MtdError("RULE_MISSING_CLOSE_COMPANY_DETAILS", "Close company details are required when closeCompany is set to true", BAD_REQUEST)
+
+object RuleDirectorshipCeasedDateError extends MtdError("RULE_DIRECTORSHIP_CEASED_DATE", "The directorship ceased date must be within the tax year", BAD_REQUEST)
 
 //Stub Errors
 object RuleIncorrectGovTestScenarioError extends MtdError("RULE_INCORRECT_GOV_TEST_SCENARIO", "The Gov-Test-Scenario was not found", BAD_REQUEST)

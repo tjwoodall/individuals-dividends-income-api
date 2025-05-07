@@ -6,5 +6,6 @@ PUT        /uk/:nino/:taxYear       v2.controllers.CreateAmendUkDividendsAnnualS
 GET        /uk/:nino/:taxYear       v2.controllers.RetrieveUkDividendsAnnualIncomeSummaryController.retrieveUkDividends(nino: String, taxYear: String)
 DELETE     /uk/:nino/:taxYear       v2.controllers.DeleteUkDividendsIncomeAnnualSummaryController.deleteUkDividends(nino: String, taxYear: String)
 
+PUT        /directorship/:nino/:taxYear/:employmentId       v2.controllers.CreateAmendAdditionalDirectorshipDividendController.createAmend(nino: String, taxYear: String, employmentId: String)
 GET        /directorship/:nino/:taxYear/:employmentId       v2.controllers.RetrieveAdditionalDirectorshipDividendController.retrieve(nino: String, taxYear: String, employmentId: String)
 DELETE     /directorship/:nino/:taxYear/:employmentId       v2.controllers.DeleteAdditionalDirectorshipDividendController.delete(nino: String, taxYear: String, employmentId: String)
