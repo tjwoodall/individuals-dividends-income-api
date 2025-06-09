@@ -3,6 +3,8 @@ description: |
   This endpoint enables you to delete additional directorship/dividend information under each employment ID.
   A National Insurance number, tax year and employment ID must be provided.
   
+  <strong>Note:</strong> To obtain the employment ID, use the List Employments endpoint in the [Individuals Employments Income API](/api-documentation/docs/api/service/individuals-employments-income-api).
+  
   ### Test data
   Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
   

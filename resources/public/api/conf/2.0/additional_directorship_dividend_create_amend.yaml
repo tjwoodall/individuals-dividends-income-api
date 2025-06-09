@@ -3,7 +3,9 @@ description: |
   This endpoint enables you to create or amend additional directorship/dividend information under each employment ID.
   A National Insurance number, tax year and employment ID must be provided.
   
-  ###  Test data
+  <strong>Note:</strong> To obtain the employment ID, use the List Employments endpoint in the [Individuals Employments Income API](/api-documentation/docs/api/service/individuals-employments-income-api).
+  
+  ### Test data
   Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
   
   | Header Value (Gov-Test-Scenario) | Scenario                                                                                                                      |
@@ -11,7 +13,7 @@ description: |
   | N/A - DEFAULT                    | Simulates success response.                                                                                                   |
   | NOT_FOUND                        | Simulates the scenario where no data is found.                                                                                |
   | REQUEST_CANNOT_BE_FULFILLED      | Simulates the scenario where the request cannot be fulfilled for various reasons other than the ones triggering other errors. |
-  | STATEFUL                         | Performs a stateful create or amend.                                                                                                   |
+  | STATEFUL                         | Performs a stateful create or amend.                                                                                          |
 
 tags:
   - Additional Directorship and Dividend Information
