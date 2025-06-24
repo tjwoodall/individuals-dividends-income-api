@@ -20,6 +20,7 @@ import shared.connectors.{ConnectorSpec, DownstreamOutcome}
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.outcomes.ResponseWrapper
 import v2.models.request.deleteDividends.DeleteDividendsRequest
+import uk.gov.hmrc.http.StringContextOps
 
 import scala.concurrent.Future
 
@@ -33,7 +34,7 @@ class DeleteDividendsConnectorSpec extends ConnectorSpec {
         def taxYear: TaxYear                               = TaxYear.fromMtd("2021-22")
         val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
 
-        willDelete(s"$baseUrl/income-tax/income/dividends/$nino/${taxYear.asMtd}") returns Future.successful(outcome)
+        willDelete(url"$baseUrl/income-tax/income/dividends/$nino/${taxYear.asMtd}") returns Future.successful(outcome)
 
         val result: DownstreamOutcome[Unit] = await(connector.delete(request))
         result shouldBe outcome
@@ -45,7 +46,7 @@ class DeleteDividendsConnectorSpec extends ConnectorSpec {
         def taxYear: TaxYear                               = TaxYear.fromMtd("2023-24")
         val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
 
-        willDelete(s"$baseUrl/income-tax/income/dividends/23-24/$nino") returns Future.successful(outcome)
+        willDelete(url"$baseUrl/income-tax/income/dividends/23-24/$nino") returns Future.successful(outcome)
 
         val result: DownstreamOutcome[Unit] = await(connector.delete(request))
         result shouldBe outcome

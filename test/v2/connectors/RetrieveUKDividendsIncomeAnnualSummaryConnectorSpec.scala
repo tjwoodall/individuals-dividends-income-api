@@ -22,6 +22,7 @@ import shared.models.domain.{Nino, TaxYear}
 import shared.models.outcomes.ResponseWrapper
 import v2.models.request.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsIncomeAnnualSummaryRequest
 import v2.models.response.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsAnnualIncomeSummaryResponse
+import uk.gov.hmrc.http.StringContextOps
 
 import scala.concurrent.Future
 
@@ -52,7 +53,7 @@ class RetrieveUKDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec 
 
           val outcome = Right(ResponseWrapper(correlationId, validResponse))
 
-          willGet(s"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/$taxYearDownstream")
+          willGet(url"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/$taxYearDownstream")
             .returns(Future.successful(outcome))
         }
       }
@@ -72,7 +73,7 @@ class RetrieveUKDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec 
 
           val outcome = Right(ResponseWrapper(correlationId, validResponse))
 
-          willGet(s"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/$taxYearDownstream")
+          willGet(url"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/$taxYearDownstream")
             .returns(Future.successful(outcome))
 
           await(connector.retrieveUKDividendsIncomeAnnualSummary(request)) shouldBe outcome
@@ -88,7 +89,7 @@ class RetrieveUKDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec 
 
           val outcome = Right(ResponseWrapper(correlationId, validResponse))
 
-          willGet(s"$baseUrl/income-tax/${taxYear.asTysDownstream}/$nino/income-source/dividends/annual")
+          willGet(url"$baseUrl/income-tax/${taxYear.asTysDownstream}/$nino/income-source/dividends/annual")
             .returns(Future.successful(outcome))
 
           await(connector.retrieveUKDividendsIncomeAnnualSummary(request)) shouldBe outcome

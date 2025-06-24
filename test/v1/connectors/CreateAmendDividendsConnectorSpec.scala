@@ -20,6 +20,7 @@ import shared.connectors.ConnectorSpec
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.outcomes.ResponseWrapper
 import v1.models.request.createAmendDividends.{CreateAmendDividendsRequest, CreateAmendDividendsRequestBody}
+import uk.gov.hmrc.http.StringContextOps
 
 import scala.concurrent.Future
 
@@ -52,7 +53,7 @@ class CreateAmendDividendsConnectorSpec extends ConnectorSpec {
         def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
 
         willPut(
-          url = s"$baseUrl/income-tax/income/dividends/$nino/2019-20",
+          url = url"$baseUrl/income-tax/income/dividends/$nino/2019-20",
           body = createAmendDividendsRequestBody
         ) returns Future.successful(outcome)
 
@@ -63,7 +64,7 @@ class CreateAmendDividendsConnectorSpec extends ConnectorSpec {
         def taxYear: TaxYear = TaxYear.fromMtd("2023-24")
 
         willPut(
-          url = s"$baseUrl/income-tax/income/dividends/23-24/$nino",
+          url = url"$baseUrl/income-tax/income/dividends/23-24/$nino",
           body = createAmendDividendsRequestBody
         ) returns Future.successful(outcome)
 

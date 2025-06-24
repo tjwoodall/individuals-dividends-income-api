@@ -22,6 +22,7 @@ import shared.connectors.ConnectorSpec
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.outcomes.ResponseWrapper
 import v2.models.request.deleteUkDividendsIncomeAnnualSummary.DeleteUkDividendsIncomeAnnualSummaryRequest
+import uk.gov.hmrc.http.StringContextOps
 
 import scala.concurrent.Future
 
@@ -38,7 +39,7 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
         val outcome = Right(ResponseWrapper(correlationId, ()))
 
         willPost(
-          url = s"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}",
+          url = url"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}",
           body = Json.parse("""{}""")
         ).returns(Future.successful(outcome))
 
@@ -58,7 +59,7 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
         val outcome          = Right(ResponseWrapper(correlationId, ()))
 
         willPost(
-          url = s"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}",
+          url = url"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}",
           body = Json.parse("""{}""")
         ).returns(Future.successful(outcome))
 
@@ -78,7 +79,7 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
         val outcome          = Right(ResponseWrapper(correlationId, ()))
 
         willPost(
-          url = s"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}",
+          url = url"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}",
           body = Json.parse("""{}""")
         ).returns(Future.successful(outcome))
 
@@ -98,7 +99,7 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
         val outcome = Right(ResponseWrapper(correlationId, ()))
 
         willPost(
-          url = s"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}",
+          url = url"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}",
           body = Json.parse("""{}""")
         ).returns(Future.successful(outcome))
 
@@ -114,7 +115,7 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
         def taxYear: TaxYear = TaxYear.fromMtd("2023-24")
         val outcome          = Right(ResponseWrapper(correlationId, ()))
 
-        willDelete(url = s"$baseUrl/income-tax/${taxYear.asTysDownstream}/$nino/income-source/dividends/annual")
+        willDelete(url = url"$baseUrl/income-tax/${taxYear.asTysDownstream}/$nino/income-source/dividends/annual")
           .returns(Future.successful(outcome))
 
         MockedSharedAppConfig.featureSwitchConfig.anyNumberOfTimes().returns(Configuration(

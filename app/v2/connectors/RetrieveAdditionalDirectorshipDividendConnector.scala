@@ -20,7 +20,8 @@ import shared.config.SharedAppConfig
 import shared.connectors.DownstreamUri.HipUri
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome, DownstreamUri}
 import shared.connectors.httpparsers.StandardDownstreamHttpParser._
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.client.HttpClientV2
 import v2.models.request.retrieveAdditionalDirectorshipDividend.RetrieveAdditionalDirectorshipDividendRequest
 import v2.models.response.retrieveAdditionalDirectorshipDividend.RetrieveAdditionalDirectorshipDividendResponse
 
@@ -28,7 +29,7 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class RetrieveAdditionalDirectorshipDividendConnector @Inject()(val http: HttpClient, val appConfig: SharedAppConfig) extends BaseDownstreamConnector {
+class RetrieveAdditionalDirectorshipDividendConnector @Inject()(val http: HttpClientV2, val appConfig: SharedAppConfig) extends BaseDownstreamConnector {
 
   def retrieve(request: RetrieveAdditionalDirectorshipDividendRequest)(implicit
                                                                        hc: HeaderCarrier,

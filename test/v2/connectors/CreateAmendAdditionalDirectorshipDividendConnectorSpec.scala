@@ -22,6 +22,7 @@ import shared.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import shared.models.outcomes.ResponseWrapper
 import v2.fixtures.CreateAmendAdditionalDirectorshipDividendFixtures.minimumRequestBodyModel
 import v2.models.request.createAmendAdditionalDirectorshipDividend._
+import uk.gov.hmrc.http.StringContextOps
 
 import scala.concurrent.Future
 
@@ -37,7 +38,7 @@ class CreateAmendAdditionalDirectorshipDividendConnectorSpec extends ConnectorSp
         val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
 
         willPut(
-          url = s"$baseUrl/itsd/income-sources/$nino/directorships/$employmentId?taxYear=${taxYear.asTysDownstream}",
+          url = url"$baseUrl/itsd/income-sources/$nino/directorships/$employmentId?taxYear=${taxYear.asTysDownstream}",
           body = minimumRequestBodyModel
         ).returns(Future.successful(outcome))
 
@@ -54,7 +55,7 @@ class CreateAmendAdditionalDirectorshipDividendConnectorSpec extends ConnectorSp
           Left(ResponseWrapper(correlationId, downstreamErrorResponse))
 
         willPut(
-          url = s"$baseUrl/itsd/income-sources/$nino/directorships/$employmentId?taxYear=${taxYear.asTysDownstream}",
+          url = url"$baseUrl/itsd/income-sources/$nino/directorships/$employmentId?taxYear=${taxYear.asTysDownstream}",
           body = minimumRequestBodyModel
         ).returns(Future.successful(errorOutcome))
 

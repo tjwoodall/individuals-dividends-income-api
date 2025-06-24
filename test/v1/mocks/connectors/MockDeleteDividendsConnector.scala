@@ -18,6 +18,7 @@ package v1.mocks.connectors
 
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
+import org.scalatest.TestSuite
 import shared.connectors.DownstreamOutcome
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.connectors.DeleteDividendsConnector
@@ -25,7 +26,7 @@ import v1.models.request.deleteDividends.DeleteDividendsRequest
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockDeleteDividendsConnector extends MockFactory {
+trait MockDeleteDividendsConnector extends TestSuite with MockFactory {
 
   val mockDeleteDividendsConnector: DeleteDividendsConnector = mock[DeleteDividendsConnector]
 

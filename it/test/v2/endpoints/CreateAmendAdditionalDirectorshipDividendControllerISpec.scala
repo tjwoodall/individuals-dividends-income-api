@@ -17,7 +17,7 @@
 package v2.endpoints
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import play.api.libs.json.{JsBoolean, JsObject, JsString, JsValue, Json}
+import play.api.libs.json._
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers._
 import shared.models.errors._

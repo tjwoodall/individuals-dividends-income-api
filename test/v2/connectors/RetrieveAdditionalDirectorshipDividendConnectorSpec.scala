@@ -23,6 +23,7 @@ import shared.models.outcomes.ResponseWrapper
 import v2.models.request.retrieveAdditionalDirectorshipDividend.RetrieveAdditionalDirectorshipDividendRequest
 import v2.models.response.retrieveAdditionalDirectorshipDividend.RetrieveAdditionalDirectorshipDividendResponse
 import v2.fixtures.RetrieveAdditionalDirectorshipDividendFixtures._
+import uk.gov.hmrc.http.StringContextOps
 
 import scala.concurrent.Future
 
@@ -38,7 +39,7 @@ class RetrieveAdditionalDirectorshipDividendConnectorSpec extends ConnectorSpec 
         val outcome: Right[Nothing, ResponseWrapper[RetrieveAdditionalDirectorshipDividendResponse]] =
           Right(ResponseWrapper(correlationId, responseModel))
 
-        willGet(url = s"$baseUrl/itsd/income-sources/$nino/directorships/$employmentId?taxYear=${taxYear.asTysDownstream}")
+        willGet(url = url"$baseUrl/itsd/income-sources/$nino/directorships/$employmentId?taxYear=${taxYear.asTysDownstream}")
           .returns(Future.successful(outcome))
 
         val result: DownstreamOutcome[RetrieveAdditionalDirectorshipDividendResponse] =
@@ -55,7 +56,7 @@ class RetrieveAdditionalDirectorshipDividendConnectorSpec extends ConnectorSpec 
           Left(ResponseWrapper(correlationId, downstreamErrorResponse))
 
         willGet(
-          url = s"$baseUrl/itsd/income-sources/$nino/directorships/$employmentId?taxYear=${taxYear.asTysDownstream}"
+          url = url"$baseUrl/itsd/income-sources/$nino/directorships/$employmentId?taxYear=${taxYear.asTysDownstream}"
         )
           .returns(Future.successful(errorOutcome))
 

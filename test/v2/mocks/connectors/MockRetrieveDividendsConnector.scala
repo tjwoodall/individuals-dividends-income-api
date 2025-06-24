@@ -18,6 +18,7 @@ package v2.mocks.connectors
 
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
+import org.scalatest.TestSuite
 import shared.connectors.DownstreamOutcome
 import uk.gov.hmrc.http.HeaderCarrier
 import v2.connectors.RetrieveDividendsConnector
@@ -26,7 +27,7 @@ import v2.models.response.retrieveDividends.RetrieveDividendsResponse
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockRetrieveDividendsConnector extends MockFactory {
+trait MockRetrieveDividendsConnector extends TestSuite with MockFactory {
 
   val mockRetrieveDividendsConnector = mock[RetrieveDividendsConnector]
 

@@ -22,14 +22,15 @@ import shared.config.SharedAppConfig
 import shared.connectors.DownstreamUri.{DesUri, IfsUri, TaxYearSpecificIfsUri}
 import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.client.HttpClientV2
 import v1.models.request.deleteUkDividendsIncomeAnnualSummary.DeleteUkDividendsIncomeAnnualSummaryRequest
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class DeleteUkDividendsIncomeAnnualSummaryConnector @Inject() (val http: HttpClient, val appConfig: SharedAppConfig)
+class DeleteUkDividendsIncomeAnnualSummaryConnector @Inject() (val http: HttpClientV2, val appConfig: SharedAppConfig)
     extends BaseDownstreamConnector {
 
   def delete(request: DeleteUkDividendsIncomeAnnualSummaryRequest)(implicit

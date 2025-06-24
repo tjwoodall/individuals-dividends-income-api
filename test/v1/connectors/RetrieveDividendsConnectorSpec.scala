@@ -21,6 +21,7 @@ import shared.models.domain.{Nino, TaxYear}
 import shared.models.outcomes.ResponseWrapper
 import v1.fixtures.RetrieveDividendsFixtures.responseModel
 import v1.models.request.retrieveDividends.RetrieveDividendsRequest
+import uk.gov.hmrc.http.StringContextOps
 
 import scala.concurrent.Future
 
@@ -32,7 +33,7 @@ class RetrieveDividendsConnectorSpec extends ConnectorSpec {
       "a valid request is made" in new IfsTest with Test {
         val taxYear = "2019-20"
 
-        willGet(url = s"$baseUrl/income-tax/income/dividends/AA111111A/2019-20").returns(Future.successful(outcome))
+        willGet(url = url"$baseUrl/income-tax/income/dividends/AA111111A/2019-20").returns(Future.successful(outcome))
 
         await(connector.retrieve(request)) shouldBe outcome
       }
@@ -42,7 +43,7 @@ class RetrieveDividendsConnectorSpec extends ConnectorSpec {
       "a valid request is made" in new TysIfsTest with Test {
         val taxYear = "2023-24"
 
-        willGet(url = s"$baseUrl/income-tax/income/dividends/23-24/AA111111A").returns(Future.successful(outcome))
+        willGet(url = url"$baseUrl/income-tax/income/dividends/23-24/AA111111A").returns(Future.successful(outcome))
 
         await(connector.retrieve(request)) shouldBe outcome
       }

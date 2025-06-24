@@ -18,6 +18,7 @@ package v2.mocks.services
 
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
+import org.scalatest.TestSuite
 import shared.controllers.RequestContext
 import shared.services.ServiceOutcome
 import v2.models.request.deleteAdditionalDirectorshipDividend.DeleteAdditionalDirectorshipDividendRequest
@@ -25,7 +26,7 @@ import v2.services.DeleteAdditionalDirectorshipDividendService
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockDeleteAdditionalDirectorshipDividendService extends MockFactory {
+trait MockDeleteAdditionalDirectorshipDividendService extends TestSuite with MockFactory {
 
   val mockDeleteAdditionalDirectorshipDividendService: DeleteAdditionalDirectorshipDividendService = mock[DeleteAdditionalDirectorshipDividendService]
 

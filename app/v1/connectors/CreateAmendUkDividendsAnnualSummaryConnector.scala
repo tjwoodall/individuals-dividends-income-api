@@ -22,14 +22,15 @@ import shared.config.SharedAppConfig
 import shared.connectors.DownstreamUri.{DesUri, IfsUri, TaxYearSpecificIfsUri}
 import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.client.HttpClientV2
 import v1.models.request.createAmendUkDividendsIncomeAnnualSummary.CreateAmendUkDividendsIncomeAnnualSummaryRequest
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CreateAmendUkDividendsAnnualSummaryConnector @Inject() (val http: HttpClient, val appConfig: SharedAppConfig)
+class CreateAmendUkDividendsAnnualSummaryConnector @Inject() (val http: HttpClientV2, val appConfig: SharedAppConfig)
     extends BaseDownstreamConnector {
 
   def createAmendUkDividends(request: CreateAmendUkDividendsIncomeAnnualSummaryRequest)(implicit

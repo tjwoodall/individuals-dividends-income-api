@@ -21,6 +21,7 @@ import shared.models.domain.{EmploymentId, Nino, TaxYear}
 import shared.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import shared.models.outcomes.ResponseWrapper
 import v2.models.request.deleteAdditionalDirectorshipDividend.DeleteAdditionalDirectorshipDividendRequest
+import uk.gov.hmrc.http.StringContextOps
 
 import scala.concurrent.Future
 
@@ -35,7 +36,7 @@ class DeleteAdditionalDirectorshipDividendConnectorSpec extends ConnectorSpec {
       "the downstream call is successful and tax year specific" in new HipTest with Test {
         val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
 
-        willDelete(s"$baseUrl/itsd/income-sources/$nino/directorships/$employmentId?taxYear=${taxYear.asTysDownstream}")
+        willDelete(url"$baseUrl/itsd/income-sources/$nino/directorships/$employmentId?taxYear=${taxYear.asTysDownstream}")
           .returns(Future.successful(outcome))
 
         val result: DownstreamOutcome[Unit] = await(connector.delete(request))
@@ -50,7 +51,7 @@ class DeleteAdditionalDirectorshipDividendConnectorSpec extends ConnectorSpec {
         val errorOutcome: Left[ResponseWrapper[DownstreamErrors], Nothing] =
           Left(ResponseWrapper(correlationId, downstreamErrorResponse))
 
-        willDelete(s"$baseUrl/itsd/income-sources/$nino/directorships/$employmentId?taxYear=${taxYear.asTysDownstream}")
+        willDelete(url"$baseUrl/itsd/income-sources/$nino/directorships/$employmentId?taxYear=${taxYear.asTysDownstream}")
           .returns(Future.successful(errorOutcome))
 
         val result: DownstreamOutcome[Unit] = await(connector.delete(request))
