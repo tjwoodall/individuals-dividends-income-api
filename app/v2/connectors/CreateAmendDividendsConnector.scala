@@ -17,7 +17,7 @@
 package v2.connectors
 
 import shared.config.SharedAppConfig
-import shared.connectors.DownstreamUri.{IfsUri, TaxYearSpecificIfsUri}
+import shared.connectors.DownstreamUri.IfsUri
 import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -38,7 +38,7 @@ class CreateAmendDividendsConnector @Inject() (val http: HttpClientV2, val appCo
     import request._
 
     val uri = if (taxYear.useTaxYearSpecificApi) {
-      TaxYearSpecificIfsUri[Unit](s"income-tax/income/dividends/${taxYear.asTysDownstream}/$nino")
+      IfsUri[Unit](s"income-tax/income/dividends/${taxYear.asTysDownstream}/$nino")
     } else {
       // MTD format used pre-TYS
       IfsUri[Unit](s"income-tax/income/dividends/$nino/${taxYear.asMtd}")

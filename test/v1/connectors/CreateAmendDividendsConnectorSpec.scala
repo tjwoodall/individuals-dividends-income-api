@@ -60,7 +60,7 @@ class CreateAmendDividendsConnectorSpec extends ConnectorSpec {
         await(connector.createAmendDividends(createAmendDividendsRequest)) shouldBe outcome
       }
 
-      "work for a success scenario (TYS)" in new TysIfsTest with Test {
+      "work for a success scenario (TYS)" in new IfsTest with Test {
         def taxYear: TaxYear = TaxYear.fromMtd("2023-24")
 
         willPut(

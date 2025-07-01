@@ -40,7 +40,7 @@ class RetrieveDividendsConnectorSpec extends ConnectorSpec {
     }
 
     "return the expected response for a TYS request" when {
-      "a valid request is made" in new TysIfsTest with Test {
+      "a valid request is made" in new IfsTest with Test {
         val taxYear = "2023-24"
 
         willGet(url = url"$baseUrl/income-tax/income/dividends/23-24/AA111111A").returns(Future.successful(outcome))
