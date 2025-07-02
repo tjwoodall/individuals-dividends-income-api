@@ -42,7 +42,7 @@ class DeleteDividendsConnectorSpec extends ConnectorSpec {
     }
 
     "return a 200 result on delete for a TYS request" when {
-      "the downstream call is successful and tax year specific" in new TysIfsTest with Test {
+      "the downstream call is successful and tax year specific" in new IfsTest with Test {
         def taxYear: TaxYear                               = TaxYear.fromMtd("2023-24")
         val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
 

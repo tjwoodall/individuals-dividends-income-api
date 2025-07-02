@@ -19,7 +19,7 @@ package v1.connectors
 import config.DividendsIncomeFeatureSwitches
 import play.api.libs.json.JsObject
 import shared.config.SharedAppConfig
-import shared.connectors.DownstreamUri.{DesUri, IfsUri, TaxYearSpecificIfsUri}
+import shared.connectors.DownstreamUri.{DesUri, IfsUri}
 import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -46,7 +46,7 @@ class DeleteUkDividendsIncomeAnnualSummaryConnector @Inject() (val http: HttpCli
 
     if (taxYear.useTaxYearSpecificApi) {
       delete(
-        uri = TaxYearSpecificIfsUri[Unit](s"income-tax/${taxYear.asTysDownstream}/${nino.nino}/income-source/dividends/annual")
+        uri = IfsUri[Unit](s"income-tax/${taxYear.asTysDownstream}/${nino.nino}/income-source/dividends/annual")
       )
     } else if (DividendsIncomeFeatureSwitches().isDesIfMigrationEnabled) {
       post(
