@@ -146,4 +146,4 @@ object RuleMissingCloseCompanyDetailsError extends MtdError("RULE_MISSING_CLOSE_
 object RuleDirectorshipCeasedDateError extends MtdError("RULE_DIRECTORSHIP_CEASED_DATE", "The directorship ceased date must be within the tax year", BAD_REQUEST)
 
 //Stub Errors
-object RuleIncorrectGovTestScenarioError extends MtdError("RULE_INCORRECT_GOV_TEST_SCENARIO", "The Gov-Test-Scenario was not found", BAD_REQUEST)
+object RuleIncorrectGovTestScenarioError extends MtdError("RULE_INCORRECT_GOV_TEST_SCENARIO", "The supplied Gov-Test-Scenario is not valid", BAD_REQUEST)
