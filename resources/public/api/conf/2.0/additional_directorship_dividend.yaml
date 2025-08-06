@@ -1,0 +1,20 @@
+get:
+  $ref: "./additional_directorship_dividend_retrieve.yaml"
+  summary: Retrieve Additional Directorship and Dividend Information [test only]
+  security:
+    - User-Restricted:
+        - read:self-assessment
+
+delete:
+  $ref: "./additional_directorship_dividend_delete.yaml"
+  summary: Delete Additional Directorship and Dividend Information [test only]
+  security:
+    - User-Restricted:
+        - write:self-assessment
+
+put:
+  $ref: "./additional_directorship_dividend_create_amend.yaml"
+  summary: Create or Amend Additional Directorship and Dividend Information [test only]
+  security:
+    - User-Restricted:
+        - write:self-assessment
