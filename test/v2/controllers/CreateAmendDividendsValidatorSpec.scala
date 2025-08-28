@@ -235,12 +235,32 @@ class CreateAmendDividendsValidatorSpec extends UnitSpec {
     """.stripMargin
   )
 
+  private val validStockDividendRequestBodyJsonWithoutCustomerRef: JsValue = Json.parse(
+    """
+      |{
+      |   "stockDividend": {
+      |      "grossAmount": 12321.25
+      |   }
+      |}
+    """.stripMargin
+  )
+
   private val invalidRedeemableSharesRequestBodyJson: JsValue = Json.parse(
     """
       |{
       |   "redeemableShares": {
       |      "customerReference": "my shares",
       |      "grossAmount": -12345.75
+      |   }
+      |}
+    """.stripMargin
+  )
+
+  private val validRedeemableSharesRequestBodyJsonWithoutCustomerRef: JsValue = Json.parse(
+    """
+      |{
+      |   "redeemableShares": {
+      |      "grossAmount": 12321.25
       |   }
       |}
     """.stripMargin
@@ -257,12 +277,32 @@ class CreateAmendDividendsValidatorSpec extends UnitSpec {
     """.stripMargin
   )
 
+  private val validBonusIssuesOfSecuritiesRequestBodyJsonWithoutCustomerRef: JsValue = Json.parse(
+    """
+      |{
+      |   "bonusIssuesOfSecurities": {
+      |      "grossAmount": 12321.25
+      |   }
+      |}
+    """.stripMargin
+  )
+
   private val invalidCloseCompanyLoansWrittenOffRequestBodyJson: JsValue = Json.parse(
     """
       |{
       |   "closeCompanyLoansWrittenOff": {
       |      "customerReference": "write off",
       |      "grossAmount": -13700.55
+      |   }
+      |}
+    """.stripMargin
+  )
+
+  private val validCloseCompanyLoansWrittenOffRequestBodyJsonWithoutCustomerRef: JsValue = Json.parse(
+    """
+      |{
+      |   "closeCompanyLoansWrittenOff": {
+      |      "grossAmount": 12321.25
       |   }
       |}
     """.stripMargin
@@ -337,7 +377,7 @@ class CreateAmendDividendsValidatorSpec extends UnitSpec {
 
   "running a validation" should {
     "return no errors" when {
-      "a valid request is supplied" in {
+      "a valid request with all fields is supplied" in {
         val result: Either[ErrorWrapper, CreateAmendDividendsRequest] =
           validator(validNino, validTaxYear, validRequestBodyJson).validateAndWrapResult()
 
@@ -399,6 +439,86 @@ class CreateAmendDividendsValidatorSpec extends UnitSpec {
             CreateAmendCommonDividends(
               customerReference = Some("write off"),
               grossAmount = 13700.55
+            ))
+        )
+
+        result shouldBe Right(CreateAmendDividendsRequest(parsedNino, parsedTaxYear, createAmendDividendsRequestBody))
+      }
+
+      "a valid request with a stock dividend without customer ref is supplied" in {
+        val result: Either[ErrorWrapper, CreateAmendDividendsRequest] =
+          validator(validNino, validTaxYear, validStockDividendRequestBodyJsonWithoutCustomerRef).validateAndWrapResult()
+
+        val createAmendDividendsRequestBody = CreateAmendDividendsRequestBody(
+          None,
+          None,
+          Some(
+            CreateAmendCommonDividends(
+              None,
+              grossAmount = 12321.25
+            )),
+          None,
+          None,
+          None
+        )
+
+        result shouldBe Right(CreateAmendDividendsRequest(parsedNino, parsedTaxYear, createAmendDividendsRequestBody))
+      }
+
+      "a valid request with redeemable shares without customer ref is supplied" in {
+        val result: Either[ErrorWrapper, CreateAmendDividendsRequest] =
+          validator(validNino, validTaxYear, validRedeemableSharesRequestBodyJsonWithoutCustomerRef).validateAndWrapResult()
+
+        val createAmendDividendsRequestBody = CreateAmendDividendsRequestBody(
+          None,
+          None,
+          None,
+          Some(
+            CreateAmendCommonDividends(
+              None,
+              grossAmount = 12321.25
+            )),
+          None,
+          None
+        )
+
+        result shouldBe Right(CreateAmendDividendsRequest(parsedNino, parsedTaxYear, createAmendDividendsRequestBody))
+      }
+
+      "a valid request with bonus issues of security without customer ref is supplied" in {
+        val result: Either[ErrorWrapper, CreateAmendDividendsRequest] =
+          validator(validNino, validTaxYear, validBonusIssuesOfSecuritiesRequestBodyJsonWithoutCustomerRef).validateAndWrapResult()
+
+        val createAmendDividendsRequestBody = CreateAmendDividendsRequestBody(
+          None,
+          None,
+          None,
+          None,
+          Some(
+            CreateAmendCommonDividends(
+              None,
+              grossAmount = 12321.25
+            )),
+          None
+        )
+
+        result shouldBe Right(CreateAmendDividendsRequest(parsedNino, parsedTaxYear, createAmendDividendsRequestBody))
+      }
+
+      "a valid request with close company loans written off without customer ref is supplied" in {
+        val result: Either[ErrorWrapper, CreateAmendDividendsRequest] =
+          validator(validNino, validTaxYear, validCloseCompanyLoansWrittenOffRequestBodyJsonWithoutCustomerRef).validateAndWrapResult()
+
+        val createAmendDividendsRequestBody = CreateAmendDividendsRequestBody(
+          None,
+          None,
+          None,
+          None,
+          None,
+          Some(
+            CreateAmendCommonDividends(
+              None,
+              grossAmount = 12321.25
             ))
         )
 
