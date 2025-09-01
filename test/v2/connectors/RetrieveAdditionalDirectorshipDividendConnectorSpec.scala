@@ -68,7 +68,7 @@ class RetrieveAdditionalDirectorshipDividendConnectorSpec extends ConnectorSpec 
     }
   }
 
-  trait Test { _: ConnectorTest =>
+  trait Test { self: ConnectorTest =>
 
     protected val connector: RetrieveAdditionalDirectorshipDividendConnector =
       new RetrieveAdditionalDirectorshipDividendConnector(http = mockHttpClient, appConfig = mockSharedAppConfig)
@@ -78,6 +78,7 @@ class RetrieveAdditionalDirectorshipDividendConnectorSpec extends ConnectorSpec 
       taxYear = taxYear,
       employmentId = employmentId
     )
+
   }
 
 }

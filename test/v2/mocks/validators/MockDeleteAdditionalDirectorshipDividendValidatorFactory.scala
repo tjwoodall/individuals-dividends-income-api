@@ -23,7 +23,8 @@ import v2.models.request.deleteAdditionalDirectorshipDividend.DeleteAdditionalDi
 
 trait MockDeleteAdditionalDirectorshipDividendValidatorFactory extends MockValidatorFactory[DeleteAdditionalDirectorshipDividendRequest] {
 
-  val mockDeleteAdditionalDirectorshipDividendValidatorFactory: DeleteAdditionalDirectorshipDividendValidatorFactory = mock[DeleteAdditionalDirectorshipDividendValidatorFactory]
+  val mockDeleteAdditionalDirectorshipDividendValidatorFactory: DeleteAdditionalDirectorshipDividendValidatorFactory =
+    mock[DeleteAdditionalDirectorshipDividendValidatorFactory]
 
   def validator(): CallHandler[Validator[DeleteAdditionalDirectorshipDividendRequest]] =
     (mockDeleteAdditionalDirectorshipDividendValidatorFactory.validator(_: String, _: String, _: String)).expects(*, *, *)

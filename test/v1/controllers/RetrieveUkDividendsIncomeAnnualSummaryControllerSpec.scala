@@ -21,7 +21,7 @@ import play.api.libs.json.Json
 import play.api.mvc.Result
 import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import shared.models.domain.TaxYear
-import shared.models.errors._
+import shared.models.errors.*
 import shared.models.outcomes.ResponseWrapper
 import v1.mocks.services.MockRetrieveUkDividendsAnnualIncomeSummaryService
 import v1.mocks.validators.MockRetrieveUkDividendsIncomeAnnualSummaryValidatorFactory
@@ -93,7 +93,7 @@ class RetrieveUkDividendsIncomeAnnualSummaryControllerSpec
 
   trait Test extends ControllerTest {
 
-    val controller = new RetrieveUkDividendsAnnualIncomeSummaryController(
+    val controller: RetrieveUkDividendsAnnualIncomeSummaryController = new RetrieveUkDividendsAnnualIncomeSummaryController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       validatorFactory = mockRetrieveUkDividendsAnnualIncomeSummaryValidatorFactory,

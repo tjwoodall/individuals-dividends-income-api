@@ -20,7 +20,7 @@ import config.DividendsIncomeFeatureSwitches
 import play.api.http.Status.OK
 import shared.config.SharedAppConfig
 import shared.connectors.DownstreamUri.{DesUri, IfsUri}
-import shared.connectors.httpparsers.StandardDownstreamHttpParser._
+import shared.connectors.httpparsers.StandardDownstreamHttpParser.*
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.client.HttpClientV2
@@ -38,7 +38,7 @@ class CreateAmendUkDividendsAnnualSummaryConnector @Inject() (val http: HttpClie
       ec: ExecutionContext,
       correlationId: String): Future[DownstreamOutcome[Unit]] = {
 
-    import request._
+    import request.*
 
     implicit val successCode: SuccessCode = SuccessCode(OK)
 

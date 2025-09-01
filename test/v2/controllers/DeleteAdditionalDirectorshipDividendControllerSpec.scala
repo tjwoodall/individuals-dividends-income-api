@@ -32,7 +32,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class DeleteAdditionalDirectorshipDividendControllerSpec
-  extends ControllerBaseSpec
+    extends ControllerBaseSpec
     with ControllerTestRunner
     with MockDeleteAdditionalDirectorshipDividendService
     with MockDeleteAdditionalDirectorshipDividendValidatorFactory {

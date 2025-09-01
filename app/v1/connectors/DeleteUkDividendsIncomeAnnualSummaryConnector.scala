@@ -20,7 +20,7 @@ import config.DividendsIncomeFeatureSwitches
 import play.api.libs.json.JsObject
 import shared.config.SharedAppConfig
 import shared.connectors.DownstreamUri.{DesUri, IfsUri}
-import shared.connectors.httpparsers.StandardDownstreamHttpParser._
+import shared.connectors.httpparsers.StandardDownstreamHttpParser.*
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.client.HttpClientV2
@@ -38,7 +38,7 @@ class DeleteUkDividendsIncomeAnnualSummaryConnector @Inject() (val http: HttpCli
       ec: ExecutionContext,
       correlationId: String): Future[DownstreamOutcome[Unit]] = {
 
-    import request._
+    import request.*
 
     val intent = if (DividendsIncomeFeatureSwitches().isPassDeleteIntentEnabled) Some("DELETE") else None
 

@@ -27,4 +27,5 @@ class CreateAmendAdditionalDirectorshipDividendValidatorFactory {
 
   def validator(nino: String, taxYear: String, employmentId: String, body: JsValue): Validator[CreateAmendAdditionalDirectorshipDividendRequest] =
     new CreateAmendAdditionalDirectorshipDividendValidator(nino, taxYear, employmentId, body)
+
 }

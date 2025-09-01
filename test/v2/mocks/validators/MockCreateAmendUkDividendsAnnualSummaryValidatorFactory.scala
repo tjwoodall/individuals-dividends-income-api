@@ -24,7 +24,8 @@ import v2.models.request.createAmendUkDividendsIncomeAnnualSummary.CreateAmendUk
 
 trait MockCreateAmendUkDividendsAnnualSummaryValidatorFactory extends MockValidatorFactory[CreateAmendUkDividendsIncomeAnnualSummaryRequest] {
 
-  val mockCreateAmendUkDividendsAnnualSummaryValidatorFactory: CreateAmendUkDividendsIncomeAnnualSummaryValidatorFactory = mock[CreateAmendUkDividendsIncomeAnnualSummaryValidatorFactory]
+  val mockCreateAmendUkDividendsAnnualSummaryValidatorFactory: CreateAmendUkDividendsIncomeAnnualSummaryValidatorFactory =
+    mock[CreateAmendUkDividendsIncomeAnnualSummaryValidatorFactory]
 
   def validator(): CallHandler[Validator[CreateAmendUkDividendsIncomeAnnualSummaryRequest]] =
     (mockCreateAmendUkDividendsAnnualSummaryValidatorFactory.validator(_: String, _: String, _: JsValue)).expects(*, *, *)

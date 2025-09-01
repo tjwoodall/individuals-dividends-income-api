@@ -23,19 +23,19 @@ import shared.config.MockSharedAppConfig
 import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import shared.models.domain.TaxYear
-import shared.models.errors._
+import shared.models.errors.*
 import shared.models.outcomes.ResponseWrapper
 import shared.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import shared.utils.MockIdGenerator
 import v1.mocks.services.MockCreateAmendDividendsService
 import v1.mocks.validators.MockCreateAmendDividendsValidatorFactory
-import v1.models.request.createAmendDividends._
+import v1.models.request.createAmendDividends.*
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class CreateAmendDividendsControllerSpec
-  extends ControllerBaseSpec
+    extends ControllerBaseSpec
     with ControllerTestRunner
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
@@ -219,7 +219,7 @@ class CreateAmendDividendsControllerSpec
 
   trait Test extends ControllerTest with AuditEventChecking[GenericAuditDetail] {
 
-    val controller = new CreateAmendDividendsController(
+    val controller: CreateAmendDividendsController = new CreateAmendDividendsController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       validatorFactory = mockCreateAmendDividendsValidatorFactory,

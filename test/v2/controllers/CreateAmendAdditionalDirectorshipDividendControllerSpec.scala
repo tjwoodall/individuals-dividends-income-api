@@ -33,7 +33,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class CreateAmendAdditionalDirectorshipDividendControllerSpec
-  extends ControllerBaseSpec
+    extends ControllerBaseSpec
     with ControllerTestRunner
     with MockCreateAmendAdditionalDirectorshipDividendService
     with MockCreateAmendAdditionalDirectorshipDividendValidatorFactory {
@@ -98,7 +98,8 @@ class CreateAmendAdditionalDirectorshipDividendControllerSpec
 
     MockedSharedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
 
-    protected def callController(): Future[Result] = controller.createAmend(validNino, taxYear, employmentId)(fakePostRequest(validFullRequestBodyJson))
+    protected def callController(): Future[Result] =
+      controller.createAmend(validNino, taxYear, employmentId)(fakePostRequest(validFullRequestBodyJson))
 
     def event(auditResponse: AuditResponse, requestBody: Option[JsValue]): AuditEvent[GenericAuditDetail] =
       AuditEvent(

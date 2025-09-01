@@ -26,12 +26,13 @@ object CreateAmendUkDividendsIncomeAnnualSummaryRulesValidator extends RulesVali
 
   private val resolveParsedNumber = ResolveParsedNumber()
 
-  override def validateBusinessRules(parsed: CreateAmendUkDividendsIncomeAnnualSummaryRequest): Validated[Seq[MtdError], CreateAmendUkDividendsIncomeAnnualSummaryRequest] = {
+  override def validateBusinessRules(
+      parsed: CreateAmendUkDividendsIncomeAnnualSummaryRequest): Validated[Seq[MtdError], CreateAmendUkDividendsIncomeAnnualSummaryRequest] = {
     import parsed.body._
 
     combine(
       resolveParsedNumber(ukDividends, "/ukDividends"),
-      resolveParsedNumber(otherUkDividends, "/otherUkDividends"),
+      resolveParsedNumber(otherUkDividends, "/otherUkDividends")
     ).onSuccess(parsed)
   }
 

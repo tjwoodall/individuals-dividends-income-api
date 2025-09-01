@@ -30,7 +30,7 @@ class CreateAmendDividendsConnectorSpec extends ConnectorSpec {
 
   private val createAmendDividendsRequestBody: CreateAmendDividendsRequestBody = CreateAmendDividendsRequestBody(None, None, None, None, None, None)
 
-  trait Test { _: ConnectorTest =>
+  trait Test { self: ConnectorTest =>
     def taxYear: TaxYear
 
     val createAmendDividendsRequest: CreateAmendDividendsRequest = CreateAmendDividendsRequest(

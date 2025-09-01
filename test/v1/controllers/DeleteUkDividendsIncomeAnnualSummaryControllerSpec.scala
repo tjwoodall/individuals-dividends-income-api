@@ -24,7 +24,7 @@ import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import shared.models.audit.{AuditEvent, AuditResponse, FlattenedGenericAuditDetail}
 import shared.models.auth.UserDetails
 import shared.models.domain.{Nino, TaxYear}
-import shared.models.errors._
+import shared.models.errors.*
 import shared.models.outcomes.ResponseWrapper
 import v1.mocks.services.MockDeleteUkDividendsIncomeAnnualSummaryService
 import v1.mocks.validators.MockDeleteUkDividendsIncomeAnnualSummaryValidatorFactory
@@ -82,7 +82,7 @@ class DeleteUkDividendsIncomeAnnualSummaryControllerSpec
 
   trait Test extends ControllerTest with AuditEventChecking[FlattenedGenericAuditDetail] {
 
-    val controller = new DeleteUkDividendsIncomeAnnualSummaryController(
+    val controller: DeleteUkDividendsIncomeAnnualSummaryController = new DeleteUkDividendsIncomeAnnualSummaryController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       validatorFactory = mockDeleteUkDividendsIncomeAnnualSummaryValidatorFactory,

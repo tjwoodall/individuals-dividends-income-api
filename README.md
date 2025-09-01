@@ -5,6 +5,13 @@
 
 The Individuals Dividends Income API allows a developer to create, amend, retrieve and delete data relating to Dividends Income.
 
+## Requirements
+
+- Scala 3.x.x
+- Java 11
+- sbt 1.10.x
+- [Service Manager V2](https://github.com/hmrc/sm2)
+
 ## Development Setup
 
 Run the microservice from the console using: `sbt run` (starts on port 7763 by default)
@@ -15,7 +22,7 @@ Start the service manager profile: `sm2 --start MTDFB_INDIVIDUALS_DIVIDENDS_INCO
 
 Run unit tests: `sbt test`
 
-Run integration tests: `sbt it:test`
+Run integration tests: `sbt it/test`
 
 ## Viewing Open API Spec (OAS) docs
 

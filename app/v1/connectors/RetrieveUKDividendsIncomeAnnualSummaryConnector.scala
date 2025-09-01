@@ -19,7 +19,7 @@ package v1.connectors
 import config.DividendsIncomeFeatureSwitches
 import shared.config.SharedAppConfig
 import shared.connectors.DownstreamUri.{DesUri, IfsUri}
-import shared.connectors.httpparsers.StandardDownstreamHttpParser._
+import shared.connectors.httpparsers.StandardDownstreamHttpParser.*
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.client.HttpClientV2
@@ -34,18 +34,17 @@ class RetrieveUKDividendsIncomeAnnualSummaryConnector @Inject() (val http: HttpC
     extends BaseDownstreamConnector {
 
   def retrieveUKDividendsIncomeAnnualSummary(request: RetrieveUkDividendsIncomeAnnualSummaryRequest)(implicit
-                                                                                                     hc: HeaderCarrier,
-                                                                                                     ec: ExecutionContext,
-                                                                                                     correlationId: String): Future[DownstreamOutcome[RetrieveUkDividendsAnnualIncomeSummaryResponse]] = {
+      hc: HeaderCarrier,
+      ec: ExecutionContext,
+      correlationId: String): Future[DownstreamOutcome[RetrieveUkDividendsAnnualIncomeSummaryResponse]] = {
 
-    import request._
+    import request.*
 
     val path = s"income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}"
 
     val downstreamUri =
       if (taxYear.useTaxYearSpecificApi) {
-        IfsUri[RetrieveUkDividendsAnnualIncomeSummaryResponse](
-          s"income-tax/${taxYear.asTysDownstream}/$nino/income-source/dividends/annual")
+        IfsUri[RetrieveUkDividendsAnnualIncomeSummaryResponse](s"income-tax/${taxYear.asTysDownstream}/$nino/income-source/dividends/annual")
       } else if (DividendsIncomeFeatureSwitches().isDesIfMigrationEnabled) {
         IfsUri[RetrieveUkDividendsAnnualIncomeSummaryResponse](path)
       } else {

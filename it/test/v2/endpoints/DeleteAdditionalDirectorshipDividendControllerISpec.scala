@@ -19,16 +19,17 @@ package v2.endpoints
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.libs.json.{JsObject, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
-import play.api.test.Helpers._
-import shared.models.errors._
-import shared.services._
+import play.api.test.Helpers.*
+import shared.models.errors.*
+import shared.services.*
 import shared.support.IntegrationBaseSpec
+import play.api.libs.ws.DefaultBodyReadables.readableAsString
 
 class DeleteAdditionalDirectorshipDividendControllerISpec extends IntegrationBaseSpec {
 
   "Calling the 'Delete Additional Directorship and Dividend Information' endpoint" should {
     "return a 204 status code" when {
-      "any valid request is made" in new Test  {
+      "any valid request is made" in new Test {
 
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
@@ -72,12 +73,12 @@ class DeleteAdditionalDirectorshipDividendControllerISpec extends IntegrationBas
 
         val input = Seq(
           ("AA1123A", "2025-26", "4557ecb5-fd32-48cc-81f5-e6acd1099f3c", BAD_REQUEST, NinoFormatError),
-          ("AA123456A", "20477", "4557ecb5-fd32-48cc-81f5-e6acd1099f3c",  BAD_REQUEST, TaxYearFormatError),
-          ("AA123456A", "2025-26",  "ABCDE12345FG", BAD_REQUEST, EmploymentIdFormatError),
-          ("AA123456A", "2025-27",  "4557ecb5-fd32-48cc-81f5-e6acd1099f3c", BAD_REQUEST, RuleTaxYearRangeInvalidError),
-          ("AA123456A", "2024-25",  "4557ecb5-fd32-48cc-81f5-e6acd1099f3c", BAD_REQUEST, RuleTaxYearNotSupportedError)
+          ("AA123456A", "20477", "4557ecb5-fd32-48cc-81f5-e6acd1099f3c", BAD_REQUEST, TaxYearFormatError),
+          ("AA123456A", "2025-26", "ABCDE12345FG", BAD_REQUEST, EmploymentIdFormatError),
+          ("AA123456A", "2025-27", "4557ecb5-fd32-48cc-81f5-e6acd1099f3c", BAD_REQUEST, RuleTaxYearRangeInvalidError),
+          ("AA123456A", "2024-25", "4557ecb5-fd32-48cc-81f5-e6acd1099f3c", BAD_REQUEST, RuleTaxYearNotSupportedError)
         )
-        input.foreach(args => (validationErrorTest _).tupled(args))
+        input.foreach(args => validationErrorTest.tupled(args))
       }
 
       "downstream service error" when {
@@ -118,7 +119,7 @@ class DeleteAdditionalDirectorshipDividendControllerISpec extends IntegrationBas
           (BAD_REQUEST, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError)
         )
 
-        errors.foreach(args => (serviceErrorTest _).tupled(args))
+        errors.foreach(args => serviceErrorTest.tupled(args))
       }
     }
   }

@@ -17,20 +17,22 @@
 package v2.endpoints
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import play.api.libs.json._
+import play.api.libs.json.*
 import play.api.libs.ws.{WSRequest, WSResponse}
-import play.api.test.Helpers._
-import shared.models.errors._
+import play.api.test.Helpers.*
+import shared.models.errors.*
 import shared.models.utils.JsonErrorValidators
-import shared.services._
+import shared.services.*
 import shared.support.IntegrationBaseSpec
 import v2.fixtures.CreateAmendAdditionalDirectorshipDividendFixtures.{validFullRequestBodyJson, validMinimumRequestBodyJson}
+import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
+import play.api.libs.ws.DefaultBodyReadables.readableAsString
 
 class CreateAmendAdditionalDirectorshipDividendControllerISpec extends IntegrationBaseSpec with JsonErrorValidators {
 
   "Calling the 'Create or Amend Additional Directorship and Dividend Information' endpoint" should {
     "return a 204 status code" when {
-      "any valid request is made" in new Test  {
+      "any valid request is made" in new Test {
 
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
@@ -95,10 +97,10 @@ class CreateAmendAdditionalDirectorshipDividendControllerISpec extends Integrati
 
         val input = Seq(
           ("AA1123A", "2025-26", "4557ecb5-fd32-48cc-81f5-e6acd1099f3c", validFullRequestBodyJson, BAD_REQUEST, NinoFormatError, None),
-          ("AA123456A", "2025", "4557ecb5-fd32-48cc-81f5-e6acd1099f3c",  validFullRequestBodyJson, BAD_REQUEST, TaxYearFormatError, None),
-          ("AA123456A", "2025-26",  "ABCDE12345FG", validFullRequestBodyJson, BAD_REQUEST, EmploymentIdFormatError, None),
-          ("AA123456A", "2025-27",  "4557ecb5-fd32-48cc-81f5-e6acd1099f3c", validFullRequestBodyJson, BAD_REQUEST, RuleTaxYearRangeInvalidError, None),
-          ("AA123456A", "2024-25",  "4557ecb5-fd32-48cc-81f5-e6acd1099f3c", validFullRequestBodyJson, BAD_REQUEST, RuleTaxYearNotSupportedError, None),
+          ("AA123456A", "2025", "4557ecb5-fd32-48cc-81f5-e6acd1099f3c", validFullRequestBodyJson, BAD_REQUEST, TaxYearFormatError, None),
+          ("AA123456A", "2025-26", "ABCDE12345FG", validFullRequestBodyJson, BAD_REQUEST, EmploymentIdFormatError, None),
+          ("AA123456A", "2025-27", "4557ecb5-fd32-48cc-81f5-e6acd1099f3c", validFullRequestBodyJson, BAD_REQUEST, RuleTaxYearRangeInvalidError, None),
+          ("AA123456A", "2024-25", "4557ecb5-fd32-48cc-81f5-e6acd1099f3c", validFullRequestBodyJson, BAD_REQUEST, RuleTaxYearNotSupportedError, None),
           ("AA123456A", "2025-26", "4557ecb5-fd32-48cc-81f5-e6acd1099f3c", JsObject.empty, BAD_REQUEST, RuleIncorrectOrEmptyBodyError, None),
           (
             "AA123456A",
@@ -156,7 +158,7 @@ class CreateAmendAdditionalDirectorshipDividendControllerISpec extends Integrati
           )
         )
 
-        input.foreach(args => (validationErrorTest _).tupled(args))
+        input.foreach(args => validationErrorTest.tupled(args))
       }
 
       "downstream service error" when {
@@ -201,7 +203,7 @@ class CreateAmendAdditionalDirectorshipDividendControllerISpec extends Integrati
           (UNPROCESSABLE_ENTITY, "1218", INTERNAL_SERVER_ERROR, InternalError)
         )
 
-        errors.foreach(args => (serviceErrorTest _).tupled(args))
+        errors.foreach(args => serviceErrorTest.tupled(args))
       }
     }
   }

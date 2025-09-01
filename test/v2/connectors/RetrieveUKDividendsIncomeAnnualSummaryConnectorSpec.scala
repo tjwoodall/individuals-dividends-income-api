@@ -98,7 +98,7 @@ class RetrieveUKDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec 
     }
   }
 
-  trait Test { _: ConnectorTest =>
+  trait Test { self: ConnectorTest =>
     def taxYear: TaxYear
 
     protected val connector: RetrieveUKDividendsIncomeAnnualSummaryConnector =

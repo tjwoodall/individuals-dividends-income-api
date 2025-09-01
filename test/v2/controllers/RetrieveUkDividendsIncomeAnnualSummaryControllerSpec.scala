@@ -93,7 +93,7 @@ class RetrieveUkDividendsIncomeAnnualSummaryControllerSpec
 
   trait Test extends ControllerTest {
 
-    val controller = new RetrieveUkDividendsAnnualIncomeSummaryController(
+    val controller: RetrieveUkDividendsAnnualIncomeSummaryController = new RetrieveUkDividendsAnnualIncomeSummaryController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       validatorFactory = mockRetrieveUkDividendsAnnualIncomeSummaryValidatorFactory,

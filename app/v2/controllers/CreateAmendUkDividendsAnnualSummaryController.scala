@@ -29,13 +29,14 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class CreateAmendUkDividendsAnnualSummaryController @Inject() (val authService: EnrolmentsAuthService,
-                                                               val lookupService: MtdIdLookupService,
-                                                               validatorFactory: CreateAmendUkDividendsIncomeAnnualSummaryValidatorFactory,
-                                                               service: CreateAmendUkDividendsAnnualSummaryService,
-                                                               auditService: AuditService,
-                                                               cc: ControllerComponents,
-                                                               val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: SharedAppConfig)
+class CreateAmendUkDividendsAnnualSummaryController @Inject() (
+    val authService: EnrolmentsAuthService,
+    val lookupService: MtdIdLookupService,
+    validatorFactory: CreateAmendUkDividendsIncomeAnnualSummaryValidatorFactory,
+    service: CreateAmendUkDividendsAnnualSummaryService,
+    auditService: AuditService,
+    cc: ControllerComponents,
+    val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: SharedAppConfig)
     extends AuthorisedController(cc) {
 
   val endpointName: String = "create-amend-uk-dividends-annual-summary"

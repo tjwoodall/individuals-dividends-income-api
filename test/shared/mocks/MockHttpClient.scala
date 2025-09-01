@@ -45,23 +45,23 @@ trait MockHttpClient extends TestSuite with MockFactory {
       (mockHttpClient
         .get(_: URL)(_: HeaderCarrier))
         .expects(assertArgs { (actualUrl: URL, hc: HeaderCarrier) =>
-        {
-          val expectedURL = UrlUtils.appendQueryParams(url.toString, parameters)
-          actualUrl.toString shouldBe expectedURL
+          {
+            val expectedURL = UrlUtils.appendQueryParams(url.toString, parameters)
+            actualUrl.toString shouldBe expectedURL
 
-          val headersForUrl = hc.headersForUrl(config)(actualUrl.toString)
-          assertHeaders(headersForUrl, requiredHeaders, excludedHeaders)
-        }
+            val headersForUrl = hc.headersForUrl(config)(actualUrl.toString)
+            assertHeaders(headersForUrl, requiredHeaders, excludedHeaders)
+          }
         })
         .returns(mockRequestBuilder)
-      (mockRequestBuilder.execute(_: HttpReads[T], _: ExecutionContext)).expects(*, *)
+      (mockRequestBuilder.execute[T](using _: HttpReads[T], _: ExecutionContext)).expects(*, *)
     }
 
     def post[T](url: URL,
-                   config: HeaderCarrier.Config,
-                   body: JsValue,
-                   requiredHeaders: Seq[(String, String)] = Seq.empty,
-                   excludedHeaders: Seq[(String, String)] = Seq.empty): CallHandler[Future[T]] = {
+                config: HeaderCarrier.Config,
+                body: JsValue,
+                requiredHeaders: Seq[(String, String)] = Seq.empty,
+                excludedHeaders: Seq[(String, String)] = Seq.empty): CallHandler[Future[T]] = {
       (mockHttpClient
         .post(_: URL)(_: HeaderCarrier))
         .expects(assertArgs { (actualUrl: URL, hc: HeaderCarrier) =>
@@ -75,19 +75,17 @@ trait MockHttpClient extends TestSuite with MockFactory {
         .returns(mockRequestBuilder)
 
       (mockRequestBuilder
-        .withBody(_: JsValue)(_: BodyWritable[JsValue], _: Tag[JsValue], _: ExecutionContext))
+        .withBody(_: JsValue)(using _: BodyWritable[JsValue], _: Tag[JsValue], _: ExecutionContext))
         .expects(body, *, *, *)
         .returns(mockRequestBuilder)
-      (mockRequestBuilder
-        .execute(_: HttpReads[T], _: ExecutionContext))
-        .expects(*, *)
+      (mockRequestBuilder.execute[T](using _: HttpReads[T], _: ExecutionContext)).expects(*, *)
     }
 
     def put[T](url: URL,
-                  config: HeaderCarrier.Config,
-                  body: JsValue,
-                  requiredHeaders: Seq[(String, String)] = Seq.empty,
-                  excludedHeaders: Seq[(String, String)] = Seq.empty): CallHandler[Future[T]] = {
+               config: HeaderCarrier.Config,
+               body: JsValue,
+               requiredHeaders: Seq[(String, String)] = Seq.empty,
+               excludedHeaders: Seq[(String, String)] = Seq.empty): CallHandler[Future[T]] = {
       (mockHttpClient
         .put(_: URL)(_: HeaderCarrier))
         .expects(assertArgs { (actualUrl: URL, hc: HeaderCarrier) =>
@@ -101,12 +99,10 @@ trait MockHttpClient extends TestSuite with MockFactory {
         .returns(mockRequestBuilder)
 
       (mockRequestBuilder
-        .withBody(_: JsValue)(_: BodyWritable[JsValue], _: Tag[JsValue], _: ExecutionContext))
+        .withBody(_: JsValue)(using _: BodyWritable[JsValue], _: Tag[JsValue], _: ExecutionContext))
         .expects(body, *, *, *)
         .returns(mockRequestBuilder)
-      (mockRequestBuilder
-        .execute(_: HttpReads[T], _: ExecutionContext))
-        .expects(*, *)
+      (mockRequestBuilder.execute[T](using _: HttpReads[T], _: ExecutionContext)).expects(*, *)
     }
 
     def delete[T](url: URL,
@@ -125,7 +121,7 @@ trait MockHttpClient extends TestSuite with MockFactory {
         })
         .returns(mockRequestBuilder)
 
-      (mockRequestBuilder.execute(_: HttpReads[T], _: ExecutionContext)).expects(*, *)
+      (mockRequestBuilder.execute[T](using _: HttpReads[T], _: ExecutionContext)).expects(*, *)
     }
 
     private def assertHeaders[T, I](actualHeaders: Seq[(String, String)],
@@ -135,5 +131,7 @@ trait MockHttpClient extends TestSuite with MockFactory {
       actualHeaders should contain allElementsOf requiredHeaders
       actualHeaders should contain noElementsOf excludedHeaders
     }
+
   }
+
 }

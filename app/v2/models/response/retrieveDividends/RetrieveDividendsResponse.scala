@@ -39,7 +39,7 @@ object RetrieveDividendsResponse extends JsonUtils {
       (JsPath \ "redeemableShares").readNullable[RedeemableShares] and
       (JsPath \ "bonusIssuesOfSecurities").readNullable[BonusIssuesOfSecurities] and
       (JsPath \ "closeCompanyLoansWrittenOff").readNullable[CloseCompanyLoansWrittenOff]
-  )(RetrieveDividendsResponse.apply _)
+  )(RetrieveDividendsResponse.apply)
 
   implicit val writes: OWrites[RetrieveDividendsResponse] = Json.writes[RetrieveDividendsResponse]
 

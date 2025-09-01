@@ -29,11 +29,13 @@ import scala.concurrent.{ExecutionContext, Future}
 
 trait MockRetrieveAdditionalDirectorshipDividendService extends TestSuite with MockFactory {
 
-  val mockRetrieveAdditionalDirectorshipDividendService: RetrieveAdditionalDirectorshipDividendService = mock[RetrieveAdditionalDirectorshipDividendService]
+  val mockRetrieveAdditionalDirectorshipDividendService: RetrieveAdditionalDirectorshipDividendService =
+    mock[RetrieveAdditionalDirectorshipDividendService]
 
   object MockRetrieveAdditionalDirectorshipDividendService {
 
-    def retrieve(requestData: RetrieveAdditionalDirectorshipDividendRequest): CallHandler[Future[ServiceOutcome[RetrieveAdditionalDirectorshipDividendResponse]]] = {
+    def retrieve(requestData: RetrieveAdditionalDirectorshipDividendRequest)
+        : CallHandler[Future[ServiceOutcome[RetrieveAdditionalDirectorshipDividendResponse]]] = {
       (
         mockRetrieveAdditionalDirectorshipDividendService
           .retrieve(_: RetrieveAdditionalDirectorshipDividendRequest)(

@@ -16,9 +16,9 @@
 
 package v1.services
 
-import cats.implicits._
+import cats.implicits.*
 import shared.controllers.RequestContext
-import shared.models.errors._
+import shared.models.errors.*
 import shared.services.{BaseService, ServiceOutcome}
 import v1.connectors.RetrieveUKDividendsIncomeAnnualSummaryConnector
 import v1.models.request.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsIncomeAnnualSummaryRequest
@@ -31,8 +31,8 @@ import scala.concurrent.{ExecutionContext, Future}
 class RetrieveUkDividendsIncomeAnnualSummaryService @Inject() (connector: RetrieveUKDividendsIncomeAnnualSummaryConnector) extends BaseService {
 
   def retrieveUKDividendsIncomeAnnualSummary(request: RetrieveUkDividendsIncomeAnnualSummaryRequest)(implicit
-                                                                                                     ctx: RequestContext,
-                                                                                                     ec: ExecutionContext): Future[ServiceOutcome[RetrieveUkDividendsAnnualIncomeSummaryResponse]] = {
+      ctx: RequestContext,
+      ec: ExecutionContext): Future[ServiceOutcome[RetrieveUkDividendsAnnualIncomeSummaryResponse]] = {
 
     connector.retrieveUKDividendsIncomeAnnualSummary(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
   }

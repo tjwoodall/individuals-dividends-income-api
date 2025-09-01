@@ -36,6 +36,6 @@ class CreateAmendDividendsValidator(nino: String, taxYear: String, body: JsValue
       ResolveNino(nino),
       resolveTaxYear(taxYear),
       resolveJson(body)
-    ).mapN(CreateAmendDividendsRequest) andThen CreateAmendDividendsRulesValidator.validateBusinessRules
+    ).mapN(CreateAmendDividendsRequest.apply) andThen CreateAmendDividendsRulesValidator.validateBusinessRules
 
 }

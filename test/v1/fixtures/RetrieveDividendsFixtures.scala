@@ -18,7 +18,7 @@ package v1.fixtures
 
 import play.api.libs.json.{JsValue, Json}
 import shared.models.domain.Timestamp
-import v1.models.response.retrieveDividends._
+import v1.models.response.retrieveDividends.*
 
 object RetrieveDividendsFixtures {
 

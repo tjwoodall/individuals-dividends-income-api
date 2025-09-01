@@ -69,7 +69,7 @@ class RetrieveAdditionalDirectorshipDividendServiceSpec extends ServiceSpec {
           ("5010", NotFoundError)
         )
 
-        errors.foreach(args => (serviceError _).tupled(args))
+        errors.foreach(args => serviceError.tupled(args))
       }
     }
   }

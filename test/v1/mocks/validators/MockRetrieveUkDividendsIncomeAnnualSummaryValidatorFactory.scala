@@ -23,8 +23,10 @@ import v1.models.request.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDivide
 
 trait MockRetrieveUkDividendsIncomeAnnualSummaryValidatorFactory extends MockValidatorFactory[RetrieveUkDividendsIncomeAnnualSummaryRequest] {
 
-  val mockRetrieveUkDividendsAnnualIncomeSummaryValidatorFactory: RetrieveUkDividendsIncomeAnnualSummaryValidatorFactory = mock[RetrieveUkDividendsIncomeAnnualSummaryValidatorFactory]
+  val mockRetrieveUkDividendsAnnualIncomeSummaryValidatorFactory: RetrieveUkDividendsIncomeAnnualSummaryValidatorFactory =
+    mock[RetrieveUkDividendsIncomeAnnualSummaryValidatorFactory]
 
-    def validator(): CallHandler[Validator[RetrieveUkDividendsIncomeAnnualSummaryRequest]] =
-        (mockRetrieveUkDividendsAnnualIncomeSummaryValidatorFactory.validator(_: String, _: String)).expects(*, *)
+  def validator(): CallHandler[Validator[RetrieveUkDividendsIncomeAnnualSummaryRequest]] =
+    (mockRetrieveUkDividendsAnnualIncomeSummaryValidatorFactory.validator(_: String, _: String)).expects(*, *)
+
 }

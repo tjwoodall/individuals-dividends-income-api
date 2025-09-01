@@ -29,18 +29,21 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class RetrieveAdditionalDirectorshipDividendConnector @Inject()(val http: HttpClientV2, val appConfig: SharedAppConfig) extends BaseDownstreamConnector {
+class RetrieveAdditionalDirectorshipDividendConnector @Inject() (val http: HttpClientV2, val appConfig: SharedAppConfig)
+    extends BaseDownstreamConnector {
 
   def retrieve(request: RetrieveAdditionalDirectorshipDividendRequest)(implicit
-                                                                       hc: HeaderCarrier,
-                                                                       ec: ExecutionContext,
-                                                                       correlationId: String): Future[DownstreamOutcome[RetrieveAdditionalDirectorshipDividendResponse]] = {
+      hc: HeaderCarrier,
+      ec: ExecutionContext,
+      correlationId: String): Future[DownstreamOutcome[RetrieveAdditionalDirectorshipDividendResponse]] = {
 
     import request._
 
     val downstreamUri: DownstreamUri[RetrieveAdditionalDirectorshipDividendResponse] =
-      HipUri[RetrieveAdditionalDirectorshipDividendResponse](s"itsd/income-sources/$nino/directorships/$employmentId?taxYear=${taxYear.asTysDownstream}")
+      HipUri[RetrieveAdditionalDirectorshipDividendResponse](
+        s"itsd/income-sources/$nino/directorships/$employmentId?taxYear=${taxYear.asTysDownstream}")
 
     get(uri = downstreamUri)
   }
+
 }

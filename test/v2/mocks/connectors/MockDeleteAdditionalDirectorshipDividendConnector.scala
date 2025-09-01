@@ -28,7 +28,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 trait MockDeleteAdditionalDirectorshipDividendConnector extends TestSuite with MockFactory {
 
-  val mockDeleteAdditionalDirectorshipDividendConnector: DeleteAdditionalDirectorshipDividendConnector = mock[DeleteAdditionalDirectorshipDividendConnector]
+  val mockDeleteAdditionalDirectorshipDividendConnector: DeleteAdditionalDirectorshipDividendConnector =
+    mock[DeleteAdditionalDirectorshipDividendConnector]
 
   object MockDeleteAdditionalDirectorshipDividendConnector {
 

@@ -29,13 +29,21 @@ import scala.concurrent.{ExecutionContext, Future}
 
 trait MockRetrieveAdditionalDirectorshipDividendConnector extends TestSuite with MockFactory {
 
-  val mockRetrieveAdditionalDirectorshipDividendConnector: RetrieveAdditionalDirectorshipDividendConnector = mock[RetrieveAdditionalDirectorshipDividendConnector]
+  val mockRetrieveAdditionalDirectorshipDividendConnector: RetrieveAdditionalDirectorshipDividendConnector =
+    mock[RetrieveAdditionalDirectorshipDividendConnector]
 
   object MockRetrieveAdditionalDirectorshipDividendConnector {
 
-    def retrieve(requestData: RetrieveAdditionalDirectorshipDividendRequest): CallHandler[Future[DownstreamOutcome[RetrieveAdditionalDirectorshipDividendResponse]]] =
-      (mockRetrieveAdditionalDirectorshipDividendConnector
-        .retrieve(_: RetrieveAdditionalDirectorshipDividendRequest)(_: HeaderCarrier, _: ExecutionContext, _: String))
+    def retrieve(requestData: RetrieveAdditionalDirectorshipDividendRequest)
+        : CallHandler[Future[DownstreamOutcome[RetrieveAdditionalDirectorshipDividendResponse]]] =
+      (
+        mockRetrieveAdditionalDirectorshipDividendConnector
+          .retrieve(_: RetrieveAdditionalDirectorshipDividendRequest)(
+            _: HeaderCarrier,
+            _: ExecutionContext,
+            _: String
+          )
+        )
         .expects(requestData, *, *, *)
 
   }

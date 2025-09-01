@@ -19,13 +19,15 @@ package v2.endpoints
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import common.errors.RuleOutsideAmendmentWindowError
 import play.api.http.HeaderNames.ACCEPT
-import play.api.http.Status._
+import play.api.http.Status.*
 import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
-import shared.models.errors._
+import shared.models.errors.*
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.{IntegrationBaseSpec, WireMockMethods}
+import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
+import play.api.libs.ws.DefaultBodyReadables.readableAsString
 
 class CreateAmendUkDividendsAnnualSummaryControllerISpec extends IntegrationBaseSpec with WireMockMethods {
 
@@ -106,15 +108,10 @@ class CreateAmendUkDividendsAnnualSummaryControllerISpec extends IntegrationBase
           ("AA123456A", "2020-22", requestJson, BAD_REQUEST, RuleTaxYearRangeInvalidError),
           ("AA123456A", "2016-17", requestJson, BAD_REQUEST, RuleTaxYearNotSupportedError),
           ("AA123456A", "2020-21", JsObject.empty, BAD_REQUEST, RuleIncorrectOrEmptyBodyError),
-          (
-            "AA123456A",
-            "2020-21",
-            Json.parse("""{ "ukDividends": -10.99 }"""),
-            BAD_REQUEST,
-            ValueFormatError.copy(paths = Some(Seq("/ukDividends"))))
+          ("AA123456A", "2020-21", Json.parse("""{ "ukDividends": -10.99 }"""), BAD_REQUEST, ValueFormatError.copy(paths = Some(Seq("/ukDividends"))))
         )
 
-        input.foreach(args => (validationErrorTest _).tupled(args))
+        input.foreach(args => validationErrorTest.tupled(args))
       }
 
       "downstream service error" when {
@@ -170,7 +167,7 @@ class CreateAmendUkDividendsAnnualSummaryControllerISpec extends IntegrationBase
           (UNPROCESSABLE_ENTITY, "INCOMPATIBLE_INCOME_SOURCE", INTERNAL_SERVER_ERROR, InternalError)
         )
 
-        (errors ++ extraTysErrors).foreach(args => (serviceErrorTest _).tupled(args))
+        (errors ++ extraTysErrors).foreach(args => serviceErrorTest.tupled(args))
       }
     }
   }

@@ -34,9 +34,9 @@ class RetrieveUKDividendsIncomeAnnualSummaryConnector @Inject() (val http: HttpC
     extends BaseDownstreamConnector {
 
   def retrieveUKDividendsIncomeAnnualSummary(request: RetrieveUkDividendsIncomeAnnualSummaryRequest)(implicit
-                                                                                                     hc: HeaderCarrier,
-                                                                                                     ec: ExecutionContext,
-                                                                                                     correlationId: String): Future[DownstreamOutcome[RetrieveUkDividendsAnnualIncomeSummaryResponse]] = {
+      hc: HeaderCarrier,
+      ec: ExecutionContext,
+      correlationId: String): Future[DownstreamOutcome[RetrieveUkDividendsAnnualIncomeSummaryResponse]] = {
 
     import request._
 
@@ -44,8 +44,7 @@ class RetrieveUKDividendsIncomeAnnualSummaryConnector @Inject() (val http: HttpC
 
     val downstreamUri =
       if (taxYear.useTaxYearSpecificApi) {
-        IfsUri[RetrieveUkDividendsAnnualIncomeSummaryResponse](
-          s"income-tax/${taxYear.asTysDownstream}/$nino/income-source/dividends/annual")
+        IfsUri[RetrieveUkDividendsAnnualIncomeSummaryResponse](s"income-tax/${taxYear.asTysDownstream}/$nino/income-source/dividends/annual")
       } else if (DividendsIncomeFeatureSwitches().isDesIfMigrationEnabled) {
         IfsUri[RetrieveUkDividendsAnnualIncomeSummaryResponse](path)
       } else {

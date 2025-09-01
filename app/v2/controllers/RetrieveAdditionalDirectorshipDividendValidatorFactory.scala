@@ -23,6 +23,8 @@ import javax.inject.Singleton
 
 @Singleton
 class RetrieveAdditionalDirectorshipDividendValidatorFactory {
+
   def validator(nino: String, taxYear: String, employmentId: String): Validator[RetrieveAdditionalDirectorshipDividendRequest] =
     new RetrieveAdditionalDirectorshipDividendValidator(nino, taxYear, employmentId)
+
 }

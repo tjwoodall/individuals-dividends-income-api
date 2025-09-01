@@ -23,9 +23,10 @@ import v2.models.request.retrieveAdditionalDirectorshipDividend.RetrieveAddition
 
 trait MockRetrieveAdditionalDirectorshipDividendValidatorFactory extends MockValidatorFactory[RetrieveAdditionalDirectorshipDividendRequest] {
 
-  val mockRetrieveAdditionalDirectorshipDividendValidatorFactory: RetrieveAdditionalDirectorshipDividendValidatorFactory = mock[RetrieveAdditionalDirectorshipDividendValidatorFactory]
+  val mockRetrieveAdditionalDirectorshipDividendValidatorFactory: RetrieveAdditionalDirectorshipDividendValidatorFactory =
+    mock[RetrieveAdditionalDirectorshipDividendValidatorFactory]
 
   def validator(): CallHandler[Validator[RetrieveAdditionalDirectorshipDividendRequest]] =
-    (mockRetrieveAdditionalDirectorshipDividendValidatorFactory.validator(_: String, _: String, _:String)).expects(*, *, *)
+    (mockRetrieveAdditionalDirectorshipDividendValidatorFactory.validator(_: String, _: String, _: String)).expects(*, *, *)
 
 }

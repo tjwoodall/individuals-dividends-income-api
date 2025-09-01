@@ -23,9 +23,9 @@ import shared.routing.{Version1, Version2}
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class DividendsIncomeDefinitionFactory @Inject()(protected val appConfig: SharedAppConfig) extends ApiDefinitionFactory {
+class DividendsIncomeDefinitionFactory @Inject() (protected val appConfig: SharedAppConfig) extends ApiDefinitionFactory {
 
-    lazy val definition: Definition =
+  val definition: Definition =
     Definition(
       api = APIDefinition(
         name = "Individuals Dividends Income (MTD)",
@@ -47,4 +47,5 @@ class DividendsIncomeDefinitionFactory @Inject()(protected val appConfig: Shared
         requiresTrust = None
       )
     )
+
 }

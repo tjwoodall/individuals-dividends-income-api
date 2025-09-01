@@ -27,13 +27,14 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class RetrieveAdditionalDirectorshipDividendController @Inject()(val authService: EnrolmentsAuthService,
-                                                                 val lookupService: MtdIdLookupService,
-                                                                 validatorFactory: RetrieveAdditionalDirectorshipDividendValidatorFactory,
-                                                                 service: RetrieveAdditionalDirectorshipDividendService,
-                                                                 cc: ControllerComponents,
-                                                                 val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: SharedAppConfig)
-  extends AuthorisedController(cc) {
+class RetrieveAdditionalDirectorshipDividendController @Inject() (
+    val authService: EnrolmentsAuthService,
+    val lookupService: MtdIdLookupService,
+    validatorFactory: RetrieveAdditionalDirectorshipDividendValidatorFactory,
+    service: RetrieveAdditionalDirectorshipDividendService,
+    cc: ControllerComponents,
+    val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: SharedAppConfig)
+    extends AuthorisedController(cc) {
 
   override val endpointName: String = "retrieve-additional-directorship-and-dividend-information"
 
@@ -56,4 +57,5 @@ class RetrieveAdditionalDirectorshipDividendController @Inject()(val authService
 
       requestHandler.handleRequest()
     }
+
 }

@@ -24,7 +24,8 @@ import shared.models.domain.TaxYear
 import shared.models.errors.MtdError
 import v2.models.request.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsIncomeAnnualSummaryRequest
 
-class RetrieveUkDividendsIncomeAnnualSummaryValidator(nino: String, taxYear: String) extends Validator[RetrieveUkDividendsIncomeAnnualSummaryRequest] {
+class RetrieveUkDividendsIncomeAnnualSummaryValidator(nino: String, taxYear: String)
+    extends Validator[RetrieveUkDividendsIncomeAnnualSummaryRequest] {
 
   private val resolveTaxYear = ResolveTaxYearMinimum(TaxYear.fromMtd("2017-18"))
 
@@ -32,6 +33,6 @@ class RetrieveUkDividendsIncomeAnnualSummaryValidator(nino: String, taxYear: Str
     (
       ResolveNino(nino),
       resolveTaxYear(taxYear)
-    ).mapN(RetrieveUkDividendsIncomeAnnualSummaryRequest)
+    ).mapN(RetrieveUkDividendsIncomeAnnualSummaryRequest.apply)
 
 }

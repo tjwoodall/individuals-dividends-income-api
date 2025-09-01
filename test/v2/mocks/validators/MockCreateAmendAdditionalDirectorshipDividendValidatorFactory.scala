@@ -24,9 +24,10 @@ import v2.models.request.createAmendAdditionalDirectorshipDividend.CreateAmendAd
 
 trait MockCreateAmendAdditionalDirectorshipDividendValidatorFactory extends MockValidatorFactory[CreateAmendAdditionalDirectorshipDividendRequest] {
 
-  val mockCreateAmendAdditionalDirectorshipDividendValidatorFactory: CreateAmendAdditionalDirectorshipDividendValidatorFactory = mock[CreateAmendAdditionalDirectorshipDividendValidatorFactory]
+  val mockCreateAmendAdditionalDirectorshipDividendValidatorFactory: CreateAmendAdditionalDirectorshipDividendValidatorFactory =
+    mock[CreateAmendAdditionalDirectorshipDividendValidatorFactory]
 
   def validator(): CallHandler[Validator[CreateAmendAdditionalDirectorshipDividendRequest]] =
-    (mockCreateAmendAdditionalDirectorshipDividendValidatorFactory.validator(_: String, _: String, _:String, _: JsValue)).expects(*, *, *, *)
+    (mockCreateAmendAdditionalDirectorshipDividendValidatorFactory.validator(_: String, _: String, _: String, _: JsValue)).expects(*, *, *, *)
 
 }

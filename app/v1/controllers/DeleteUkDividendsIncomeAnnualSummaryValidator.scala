@@ -32,6 +32,6 @@ class DeleteUkDividendsIncomeAnnualSummaryValidator(nino: String, taxYear: Strin
     (
       ResolveNino(nino),
       resolveTaxYear(taxYear)
-    ).mapN(DeleteUkDividendsIncomeAnnualSummaryRequest)
+    ).mapN(DeleteUkDividendsIncomeAnnualSummaryRequest.apply)
 
 }

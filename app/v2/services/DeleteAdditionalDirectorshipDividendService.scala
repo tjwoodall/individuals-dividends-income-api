@@ -27,7 +27,7 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class DeleteAdditionalDirectorshipDividendService @Inject()(connector: DeleteAdditionalDirectorshipDividendConnector) extends BaseService {
+class DeleteAdditionalDirectorshipDividendService @Inject() (connector: DeleteAdditionalDirectorshipDividendConnector) extends BaseService {
 
   def delete(request: DeleteAdditionalDirectorshipDividendRequest)(implicit ctx: RequestContext, ec: ExecutionContext): Future[ServiceOutcome[Unit]] =
     connector.delete(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))

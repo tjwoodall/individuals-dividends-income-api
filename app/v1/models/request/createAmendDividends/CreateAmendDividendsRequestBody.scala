@@ -16,7 +16,7 @@
 
 package v1.models.request.createAmendDividends
 
-import play.api.libs.functional.syntax._
+import play.api.libs.functional.syntax.*
 import play.api.libs.json.{JsPath, OWrites, Reads}
 import utils.JsonUtils
 
@@ -37,7 +37,7 @@ object CreateAmendDividendsRequestBody extends JsonUtils {
       (JsPath \ "redeemableShares").readNullable[CreateAmendCommonDividends] and
       (JsPath \ "bonusIssuesOfSecurities").readNullable[CreateAmendCommonDividends] and
       (JsPath \ "closeCompanyLoansWrittenOff").readNullable[CreateAmendCommonDividends]
-  )(CreateAmendDividendsRequestBody.apply _)
+  )(CreateAmendDividendsRequestBody.apply)
 
   implicit val writes: OWrites[CreateAmendDividendsRequestBody] = (
     (JsPath \ "foreignDividend").writeNullable[Seq[CreateAmendForeignDividendItem]] and
@@ -46,6 +46,6 @@ object CreateAmendDividendsRequestBody extends JsonUtils {
       (JsPath \ "redeemableShares").writeNullable[CreateAmendCommonDividends] and
       (JsPath \ "bonusIssuesOfSecurities").writeNullable[CreateAmendCommonDividends] and
       (JsPath \ "closeCompanyLoansWrittenOff").writeNullable[CreateAmendCommonDividends]
-  )(unlift(CreateAmendDividendsRequestBody.unapply))
+  )(w => Tuple.fromProductTyped(w))
 
 }

@@ -20,7 +20,7 @@ import play.api.Configuration
 import play.api.mvc.Result
 import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import shared.models.domain.TaxYear
-import shared.models.errors._
+import shared.models.errors.*
 import shared.models.outcomes.ResponseWrapper
 import v1.fixtures.RetrieveDividendsFixtures
 import v1.fixtures.RetrieveDividendsFixtures.responseModel
@@ -83,7 +83,7 @@ class RetrieveDividendsControllerSpec
 
   trait Test extends ControllerTest {
 
-    val controller = new RetrieveDividendsController(
+    val controller: RetrieveDividendsController = new RetrieveDividendsController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       validatorFactory = mockRetrieveDividendsValidatorFactory,

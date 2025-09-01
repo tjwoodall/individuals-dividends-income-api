@@ -30,10 +30,11 @@ object CreateAmendAdditionalDirectorshipDividendRulesValidator extends RulesVali
 
   private def resolveParsedNumber(max: BigDecimal): ResolveParsedNumber = ResolveParsedNumber(0, max)
 
-  private val companyNameRegex: Regex = "^.{0,160}$".r
+  private val companyNameRegex: Regex   = "^.{0,160}$".r
   private val companyNumberRegex: Regex = "^(?:\\d{8}|[A-Za-z]{2}\\d{6})$".r
 
-  override def validateBusinessRules(parsed: CreateAmendAdditionalDirectorshipDividendRequest): Validated[Seq[MtdError], CreateAmendAdditionalDirectorshipDividendRequest] = {
+  override def validateBusinessRules(
+      parsed: CreateAmendAdditionalDirectorshipDividendRequest): Validated[Seq[MtdError], CreateAmendAdditionalDirectorshipDividendRequest] = {
     import parsed.body._
 
     combine(
@@ -67,8 +68,7 @@ object CreateAmendAdditionalDirectorshipDividendRulesValidator extends RulesVali
       case _ => valid
     }
 
-  private def validateNumericFields(shareholding: Option[BigDecimal],
-                                    dividendReceived: Option[BigDecimal]): Validated[Seq[MtdError], Unit] =
+  private def validateNumericFields(shareholding: Option[BigDecimal], dividendReceived: Option[BigDecimal]): Validated[Seq[MtdError], Unit] =
     combine(
       resolveParsedNumber(max = 100)(shareholding, "/shareholding"),
       resolveParsedNumber(max = 99999999999.99)(dividendReceived, "/dividendReceived")
@@ -90,4 +90,5 @@ object CreateAmendAdditionalDirectorshipDividendRulesValidator extends RulesVali
         }
       }
     }
+
 }

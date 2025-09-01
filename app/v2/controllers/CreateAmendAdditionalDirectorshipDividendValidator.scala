@@ -25,10 +25,8 @@ import shared.models.domain.TaxYear
 import shared.models.errors.MtdError
 import v2.models.request.createAmendAdditionalDirectorshipDividend._
 
-class CreateAmendAdditionalDirectorshipDividendValidator(nino: String,
-                                                         taxYear: String,
-                                                         employmentId: String,
-                                                         body: JsValue) extends Validator[CreateAmendAdditionalDirectorshipDividendRequest] {
+class CreateAmendAdditionalDirectorshipDividendValidator(nino: String, taxYear: String, employmentId: String, body: JsValue)
+    extends Validator[CreateAmendAdditionalDirectorshipDividendRequest] {
 
   private val resolveJson = ResolveNonEmptyJsonObject.resolver[CreateAmendAdditionalDirectorshipDividendRequestBody]
 
@@ -40,6 +38,7 @@ class CreateAmendAdditionalDirectorshipDividendValidator(nino: String,
       resolveTaxYear(taxYear),
       ResolveEmploymentId(employmentId),
       resolveJson(body)
-    ).mapN(CreateAmendAdditionalDirectorshipDividendRequest) andThen CreateAmendAdditionalDirectorshipDividendRulesValidator.validateBusinessRules
+    ).mapN(
+      CreateAmendAdditionalDirectorshipDividendRequest.apply) andThen CreateAmendAdditionalDirectorshipDividendRulesValidator.validateBusinessRules
 
 }

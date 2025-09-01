@@ -18,7 +18,7 @@ package v1.models.response.retrieveDividends
 
 import play.api.libs.json.{JsError, JsObject, Json}
 import shared.utils.UnitSpec
-import v1.fixtures.RetrieveDividendsFixtures._
+import v1.fixtures.RetrieveDividendsFixtures.*
 
 class BonusIssuesOfSecuritiesSpec extends UnitSpec {
 

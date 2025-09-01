@@ -16,7 +16,7 @@
 
 package v1.models.response.retrieveDividends
 
-import play.api.libs.functional.syntax._
+import play.api.libs.functional.syntax.*
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 
 case class StockDividend(customerReference: Option[String], grossAmount: BigDecimal)
@@ -26,7 +26,7 @@ object StockDividend {
   implicit val reads: Reads[StockDividend] = (
     (JsPath \ "customerReference").readNullable[String] and
       (JsPath \ "grossAmount").read[BigDecimal]
-  )(StockDividend.apply _)
+  )(StockDividend.apply)
 
   implicit val writes: OWrites[StockDividend] = Json.writes[StockDividend]
 }

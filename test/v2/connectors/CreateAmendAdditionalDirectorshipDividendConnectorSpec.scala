@@ -66,7 +66,7 @@ class CreateAmendAdditionalDirectorshipDividendConnectorSpec extends ConnectorSp
     }
   }
 
-  private trait Test { _: ConnectorTest =>
+  private trait Test { self: ConnectorTest =>
 
     protected val connector: CreateAmendAdditionalDirectorshipDividendConnector =
       new CreateAmendAdditionalDirectorshipDividendConnector(http = mockHttpClient, appConfig = mockSharedAppConfig)
@@ -77,6 +77,7 @@ class CreateAmendAdditionalDirectorshipDividendConnectorSpec extends ConnectorSp
       employmentId = employmentId,
       body = minimumRequestBodyModel
     )
+
   }
 
 }

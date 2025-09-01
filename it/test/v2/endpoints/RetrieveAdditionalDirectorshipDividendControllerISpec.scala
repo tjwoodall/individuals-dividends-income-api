@@ -19,9 +19,9 @@ package v2.endpoints
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.libs.json.Json
 import play.api.libs.ws.{WSRequest, WSResponse}
-import play.api.test.Helpers._
-import shared.models.errors._
-import shared.services._
+import play.api.test.Helpers.*
+import shared.models.errors.*
+import shared.services.*
 import shared.support.IntegrationBaseSpec
 import v2.fixtures.RetrieveAdditionalDirectorshipDividendFixtures.responseJson
 
@@ -80,7 +80,7 @@ class RetrieveAdditionalDirectorshipDividendControllerISpec extends IntegrationB
           ("AA123456A", "2015-16", "4557ecb5-fd32-48cc-81f5-e6acd1099f3c", BAD_REQUEST, RuleTaxYearNotSupportedError)
         )
 
-        input.foreach(args => (validationErrorTest _).tupled(args))
+        input.foreach(args => validationErrorTest.tupled(args))
       }
 
       "downstream service error" when {
@@ -120,7 +120,7 @@ class RetrieveAdditionalDirectorshipDividendControllerISpec extends IntegrationB
           (BAD_REQUEST, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError)
         )
 
-        errors.foreach(args => (serviceErrorTest _).tupled(args))
+        errors.foreach(args => serviceErrorTest.tupled(args))
       }
     }
   }

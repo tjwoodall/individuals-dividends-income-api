@@ -64,4 +64,5 @@ object CreateAmendAdditionalDirectorshipDividendFixtures {
       |}
     """.stripMargin
   )
+
 }

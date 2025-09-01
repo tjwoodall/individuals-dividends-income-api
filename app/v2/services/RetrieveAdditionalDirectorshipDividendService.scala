@@ -28,10 +28,11 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class RetrieveAdditionalDirectorshipDividendService @Inject()(connector: RetrieveAdditionalDirectorshipDividendConnector) extends BaseService {
+class RetrieveAdditionalDirectorshipDividendService @Inject() (connector: RetrieveAdditionalDirectorshipDividendConnector) extends BaseService {
 
-  def retrieve(request: RetrieveAdditionalDirectorshipDividendRequest)(implicit ctx: RequestContext, ec: ExecutionContext)
-  : Future[ServiceOutcome[RetrieveAdditionalDirectorshipDividendResponse]] = {
+  def retrieve(request: RetrieveAdditionalDirectorshipDividendRequest)(implicit
+      ctx: RequestContext,
+      ec: ExecutionContext): Future[ServiceOutcome[RetrieveAdditionalDirectorshipDividendResponse]] = {
     connector.retrieve(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
   }
 
@@ -42,4 +43,5 @@ class RetrieveAdditionalDirectorshipDividendService @Inject()(connector: Retriev
     "1216" -> InternalError,
     "5010" -> NotFoundError
   )
+
 }

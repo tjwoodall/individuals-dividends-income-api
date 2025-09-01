@@ -39,7 +39,8 @@ class DeleteAdditionalDirectorshipDividendValidatorSpec extends UnitSpec {
   "running a validation" should {
     "return no errors" when {
       "a valid request is supplied" in {
-        val result: Either[ErrorWrapper, DeleteAdditionalDirectorshipDividendRequest] = validator(validNino, validTaxYear, validEmploymentId).validateAndWrapResult()
+        val result: Either[ErrorWrapper, DeleteAdditionalDirectorshipDividendRequest] =
+          validator(validNino, validTaxYear, validEmploymentId).validateAndWrapResult()
 
         result shouldBe Right(DeleteAdditionalDirectorshipDividendRequest(parsedNino, parsedTaxYear, parsedEmploymentId))
       }
@@ -47,7 +48,8 @@ class DeleteAdditionalDirectorshipDividendValidatorSpec extends UnitSpec {
 
     "return NinoFormatError error" when {
       "an invalid nino is supplied" in {
-        val result: Either[ErrorWrapper, DeleteAdditionalDirectorshipDividendRequest] = validator("A12344A", validTaxYear, validEmploymentId).validateAndWrapResult()
+        val result: Either[ErrorWrapper, DeleteAdditionalDirectorshipDividendRequest] =
+          validator("A12344A", validTaxYear, validEmploymentId).validateAndWrapResult()
 
         result shouldBe Left(ErrorWrapper(correlationId, NinoFormatError))
       }
@@ -55,7 +57,8 @@ class DeleteAdditionalDirectorshipDividendValidatorSpec extends UnitSpec {
 
     "return TaxYearFormatError error" when {
       "an invalid tax year is supplied" in {
-        val result: Either[ErrorWrapper, DeleteAdditionalDirectorshipDividendRequest] = validator(validNino, "20245", validEmploymentId).validateAndWrapResult()
+        val result: Either[ErrorWrapper, DeleteAdditionalDirectorshipDividendRequest] =
+          validator(validNino, "20245", validEmploymentId).validateAndWrapResult()
 
         result shouldBe Left(ErrorWrapper(correlationId, TaxYearFormatError))
       }
@@ -63,7 +66,8 @@ class DeleteAdditionalDirectorshipDividendValidatorSpec extends UnitSpec {
 
     "return RuleTaxYearRangeInvalidError error" when {
       "an invalid tax year range is supplied" in {
-        val result: Either[ErrorWrapper, DeleteAdditionalDirectorshipDividendRequest] = validator(validNino, "2023-25", validEmploymentId).validateAndWrapResult()
+        val result: Either[ErrorWrapper, DeleteAdditionalDirectorshipDividendRequest] =
+          validator(validNino, "2023-25", validEmploymentId).validateAndWrapResult()
 
         result shouldBe Left(ErrorWrapper(correlationId, RuleTaxYearRangeInvalidError))
       }
@@ -71,7 +75,8 @@ class DeleteAdditionalDirectorshipDividendValidatorSpec extends UnitSpec {
 
     "return RuleTaxYearNotSupportedError error" when {
       "an unsupported tax year is supplied" in {
-        val result: Either[ErrorWrapper, DeleteAdditionalDirectorshipDividendRequest] = validator(validNino, "2024-25", validEmploymentId).validateAndWrapResult()
+        val result: Either[ErrorWrapper, DeleteAdditionalDirectorshipDividendRequest] =
+          validator(validNino, "2024-25", validEmploymentId).validateAndWrapResult()
 
         result shouldBe Left(ErrorWrapper(correlationId, RuleTaxYearNotSupportedError))
       }
@@ -79,7 +84,8 @@ class DeleteAdditionalDirectorshipDividendValidatorSpec extends UnitSpec {
 
     "return EmploymentIdFormatError error" when {
       "an invalid employment ID is supplied" in {
-        val result: Either[ErrorWrapper, DeleteAdditionalDirectorshipDividendRequest] = validator(validNino, validTaxYear, "4557ecb5-fd32-48cc-81f5").validateAndWrapResult()
+        val result: Either[ErrorWrapper, DeleteAdditionalDirectorshipDividendRequest] =
+          validator(validNino, validTaxYear, "4557ecb5-fd32-48cc-81f5").validateAndWrapResult()
 
         result shouldBe Left(ErrorWrapper(correlationId, EmploymentIdFormatError))
       }
@@ -87,7 +93,8 @@ class DeleteAdditionalDirectorshipDividendValidatorSpec extends UnitSpec {
 
     "return multiple errors" when {
       "request supplied has multiple errors" in {
-        val result: Either[ErrorWrapper, DeleteAdditionalDirectorshipDividendRequest] = validator("A12344A", "20245", "4557ecb5-fd32-48cc-81f5").validateAndWrapResult()
+        val result: Either[ErrorWrapper, DeleteAdditionalDirectorshipDividendRequest] =
+          validator("A12344A", "20245", "4557ecb5-fd32-48cc-81f5").validateAndWrapResult()
 
         result shouldBe Left(ErrorWrapper(correlationId, BadRequestError, Some(List(EmploymentIdFormatError, NinoFormatError, TaxYearFormatError))))
       }

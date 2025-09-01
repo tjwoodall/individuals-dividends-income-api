@@ -19,9 +19,9 @@ package config
 import play.api.Configuration
 import shared.config.{FeatureSwitches, SharedAppConfig}
 
-case class DividendsIncomeFeatureSwitches private(protected val featureSwitchConfig: Configuration) extends FeatureSwitches {
+case class DividendsIncomeFeatureSwitches private (protected val featureSwitchConfig: Configuration) extends FeatureSwitches {
 
-  val isDesIfMigrationEnabled: Boolean = isEnabled("desIf_Migration")
+  val isDesIfMigrationEnabled: Boolean   = isEnabled("desIf_Migration")
   val isPassDeleteIntentEnabled: Boolean = isEnabled("passDeleteIntentHeader")
 }
 

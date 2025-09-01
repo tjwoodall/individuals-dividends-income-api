@@ -16,7 +16,7 @@
 
 package v1.models.request.createAmendDividends
 
-import play.api.libs.functional.syntax._
+import play.api.libs.functional.syntax.*
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 
 case class CreateAmendDividendIncomeReceivedWhilstAbroadItem(countryCode: String,
@@ -36,6 +36,6 @@ object CreateAmendDividendIncomeReceivedWhilstAbroadItem {
       (JsPath \ "specialWithholdingTax").writeNullable[BigDecimal] and
       (JsPath \ "foreignTaxCreditRelief").writeNullable[Boolean] and
       (JsPath \ "taxableAmount").write[BigDecimal]
-  )(unlift(CreateAmendDividendIncomeReceivedWhilstAbroadItem.unapply))
+  )(w => Tuple.fromProductTyped(w))
 
 }

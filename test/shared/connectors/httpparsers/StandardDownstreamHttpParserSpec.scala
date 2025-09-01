@@ -16,7 +16,7 @@
 
 package shared.connectors.httpparsers
 
-import play.api.http.Status._
+import play.api.http.Status.*
 import play.api.libs.json.{JsValue, Json, Reads}
 import shared.connectors.DownstreamOutcome
 import shared.models.errors._
@@ -112,6 +112,48 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
         val httpResponse = HttpResponse(PARTIAL_CONTENT, "", headers = Map("CorrelationId" -> List(correlationId)))
 
         httpReads.read(method, url, httpResponse) shouldBe Right(ResponseWrapper(correlationId, ()))
+      }
+    }
+  }
+
+  "validateJson" when {
+    implicit val reads: Reads[SomeDataObject] = Json.reads[SomeDataObject]
+
+    "the JSON is valid" should {
+      "return the parsed model" in {
+        val validJsonResponse: HttpResponse = HttpResponse(
+          OK,
+          expectedJson,
+          Map("CorrelationId" -> Seq(correlationId))
+        )
+
+        val result: Option[SomeDataObject] = validJsonResponse.validateJson[SomeDataObject]
+
+        result shouldBe Some(downstreamResponseData)
+      }
+    }
+
+    "the JSON is invalid" should {
+      "return None" in {
+        val invalidJsonResponse: HttpResponse = HttpResponse(
+          OK,
+          Json.obj("data"     -> 1234),
+          Map("CorrelationId" -> Seq(correlationId))
+        )
+
+        val result: Option[SomeDataObject] = invalidJsonResponse.validateJson[SomeDataObject]
+
+        result shouldBe None
+      }
+    }
+
+    "the response contains no JSON" should {
+      "return None" in {
+        val emptyResponse: HttpResponse = HttpResponse(OK, "", Map("CorrelationId" -> Seq(correlationId)))
+
+        val result: Option[SomeDataObject] = emptyResponse.validateJson[SomeDataObject]
+
+        result shouldBe None
       }
     }
   }
@@ -266,11 +308,16 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
     "receiving a response with multiple HIP errors containing top level error codes" should {
       "return a Left ResponseWrapper containing the extracted error codes" in {
         val httpResponse = HttpResponse(
-          UNPROCESSABLE_ENTITY, multipleTopLevelErrorCodesJson, Map("CorrelationId" -> List(correlationId))
+          UNPROCESSABLE_ENTITY,
+          multipleTopLevelErrorCodesJson,
+          Map("CorrelationId" -> List(correlationId))
         )
 
         httpReads.read(method, url, httpResponse) shouldBe Left(
-          ResponseWrapper(correlationId, DownstreamErrors(List(DownstreamErrorCode("1117"), DownstreamErrorCode("1215"), DownstreamErrorCode("1216"), DownstreamErrorCode("1217"))))
+          ResponseWrapper(
+            correlationId,
+            DownstreamErrors(
+              List(DownstreamErrorCode("1117"), DownstreamErrorCode("1215"), DownstreamErrorCode("1216"), DownstreamErrorCode("1217"))))
         )
       }
     }
@@ -278,11 +325,16 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
     "receiving a response with multiple HIP errors containing error codes in response array" should {
       "return a Left ResponseWrapper containing the extracted error codes" in {
         val httpResponse = HttpResponse(
-          BAD_REQUEST, multipleErrorCodesInResponseJson, Map("CorrelationId" -> List(correlationId))
+          BAD_REQUEST,
+          multipleErrorCodesInResponseJson,
+          Map("CorrelationId" -> List(correlationId))
         )
 
         httpReads.read(method, url, httpResponse) shouldBe Left(
-          ResponseWrapper(correlationId, DownstreamErrors(List(DownstreamErrorCode("1117"), DownstreamErrorCode("1215"), DownstreamErrorCode("1216"), DownstreamErrorCode("1217"))))
+          ResponseWrapper(
+            correlationId,
+            DownstreamErrors(
+              List(DownstreamErrorCode("1117"), DownstreamErrorCode("1215"), DownstreamErrorCode("1216"), DownstreamErrorCode("1217"))))
         )
       }
     }

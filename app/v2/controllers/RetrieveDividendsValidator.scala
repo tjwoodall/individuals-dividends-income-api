@@ -32,6 +32,6 @@ class RetrieveDividendsValidator(nino: String, taxYear: String) extends Validato
     (
       ResolveNino(nino),
       resolveTaxYear(taxYear)
-    ).mapN(RetrieveDividendsRequest)
+    ).mapN(RetrieveDividendsRequest.apply)
 
 }

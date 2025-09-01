@@ -28,7 +28,8 @@ import v2.models.request.createAmendUkDividendsIncomeAnnualSummary.{
   CreateAmendUkDividendsIncomeAnnualSummaryRequest
 }
 
-class CreateAmendUkDividendsIncomeAnnualSummaryValidator(nino: String, taxYear: String, body: JsValue) extends Validator[CreateAmendUkDividendsIncomeAnnualSummaryRequest] {
+class CreateAmendUkDividendsIncomeAnnualSummaryValidator(nino: String, taxYear: String, body: JsValue)
+    extends Validator[CreateAmendUkDividendsIncomeAnnualSummaryRequest] {
 
   private val resolveJson = ResolveNonEmptyJsonObject.resolver[CreateAmendUkDividendsIncomeAnnualSummaryBody]
 
@@ -39,6 +40,7 @@ class CreateAmendUkDividendsIncomeAnnualSummaryValidator(nino: String, taxYear: 
       ResolveNino(nino),
       resolveTaxYear(taxYear),
       resolveJson(body)
-    ).mapN(CreateAmendUkDividendsIncomeAnnualSummaryRequest) andThen CreateAmendUkDividendsIncomeAnnualSummaryRulesValidator.validateBusinessRules
+    ).mapN(
+      CreateAmendUkDividendsIncomeAnnualSummaryRequest.apply) andThen CreateAmendUkDividendsIncomeAnnualSummaryRulesValidator.validateBusinessRules
 
 }

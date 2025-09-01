@@ -36,10 +36,7 @@ class CreateAmendAdditionalDirectorshipDividendValidatorSpec extends UnitSpec wi
   private val parsedTaxYear: TaxYear           = TaxYear.fromMtd(validTaxYear)
   private val parsedEmploymentId: EmploymentId = EmploymentId(validEmploymentId)
 
-  private def validator(nino: String,
-                        taxYear: String,
-                        employmentId: String,
-                        body: JsValue): CreateAmendAdditionalDirectorshipDividendValidator =
+  private def validator(nino: String, taxYear: String, employmentId: String, body: JsValue): CreateAmendAdditionalDirectorshipDividendValidator =
     new CreateAmendAdditionalDirectorshipDividendValidator(nino, taxYear, employmentId, body)
 
   "running a validation" should {
@@ -55,7 +52,8 @@ class CreateAmendAdditionalDirectorshipDividendValidatorSpec extends UnitSpec wi
         val result: Either[ErrorWrapper, CreateAmendAdditionalDirectorshipDividendRequest] =
           validator(validNino, validTaxYear, validEmploymentId, validMinimumRequestBodyJson).validateAndWrapResult()
 
-        result shouldBe Right(CreateAmendAdditionalDirectorshipDividendRequest(parsedNino, parsedTaxYear, parsedEmploymentId, minimumRequestBodyModel))
+        result shouldBe Right(
+          CreateAmendAdditionalDirectorshipDividendRequest(parsedNino, parsedTaxYear, parsedEmploymentId, minimumRequestBodyModel))
       }
     }
 

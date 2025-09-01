@@ -71,7 +71,7 @@ class CreateAmendAdditionalDirectorshipDividendServiceSpec extends ServiceSpec {
           ("1218", InternalError)
         )
 
-        errors.foreach(args => (serviceError _).tupled(args))
+        errors.foreach(args => serviceError.tupled(args))
       }
     }
   }

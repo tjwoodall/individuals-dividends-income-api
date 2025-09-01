@@ -28,12 +28,13 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CreateAmendAdditionalDirectorshipDividendConnector @Inject()(val http: HttpClientV2, val appConfig: SharedAppConfig) extends BaseDownstreamConnector {
+class CreateAmendAdditionalDirectorshipDividendConnector @Inject() (val http: HttpClientV2, val appConfig: SharedAppConfig)
+    extends BaseDownstreamConnector {
 
   def createAmend(request: CreateAmendAdditionalDirectorshipDividendRequest)(implicit
-                                                                             hc: HeaderCarrier,
-                                                                             ec: ExecutionContext,
-                                                                             correlationId: String): Future[DownstreamOutcome[Unit]] = {
+      hc: HeaderCarrier,
+      ec: ExecutionContext,
+      correlationId: String): Future[DownstreamOutcome[Unit]] = {
     import request._
 
     val downstreamUri: DownstreamUri[Unit] =
@@ -41,4 +42,5 @@ class CreateAmendAdditionalDirectorshipDividendConnector @Inject()(val http: Htt
 
     put(body = request.body, uri = downstreamUri)
   }
+
 }

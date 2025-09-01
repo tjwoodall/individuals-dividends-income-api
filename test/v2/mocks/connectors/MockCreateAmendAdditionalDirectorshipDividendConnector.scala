@@ -34,8 +34,14 @@ trait MockCreateAmendAdditionalDirectorshipDividendConnector extends TestSuite w
   object MockCreateAmendAdditionalDirectorshipDividendConnector {
 
     def createAmend(request: CreateAmendAdditionalDirectorshipDividendRequest): CallHandler[Future[DownstreamOutcome[Unit]]] =
-      (mockCreateAmendAdditionalDirectorshipDividendConnector
-        .createAmend(_: CreateAmendAdditionalDirectorshipDividendRequest)(_: HeaderCarrier, _: ExecutionContext, _: String))
+      (
+        mockCreateAmendAdditionalDirectorshipDividendConnector
+          .createAmend(_: CreateAmendAdditionalDirectorshipDividendRequest)(
+            _: HeaderCarrier,
+            _: ExecutionContext,
+            _: String
+          )
+        )
         .expects(request, *, *, *)
 
   }

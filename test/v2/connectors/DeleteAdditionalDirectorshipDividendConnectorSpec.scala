@@ -61,7 +61,7 @@ class DeleteAdditionalDirectorshipDividendConnectorSpec extends ConnectorSpec {
     }
   }
 
-  trait Test { _: ConnectorTest =>
+  trait Test { self: ConnectorTest =>
 
     protected val connector: DeleteAdditionalDirectorshipDividendConnector =
       new DeleteAdditionalDirectorshipDividendConnector(http = mockHttpClient, appConfig = mockSharedAppConfig)
@@ -71,6 +71,7 @@ class DeleteAdditionalDirectorshipDividendConnectorSpec extends ConnectorSpec {
       taxYear = taxYear,
       employmentId = employmentId
     )
+
   }
 
 }

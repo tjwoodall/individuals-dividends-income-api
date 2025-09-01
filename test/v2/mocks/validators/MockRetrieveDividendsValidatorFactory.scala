@@ -23,9 +23,9 @@ import v2.models.request.retrieveDividends.RetrieveDividendsRequest
 
 trait MockRetrieveDividendsValidatorFactory extends MockValidatorFactory[RetrieveDividendsRequest] {
 
-      val mockRetrieveDividendsValidatorFactory: RetrieveDividendsValidatorFactory = mock[RetrieveDividendsValidatorFactory]
+  val mockRetrieveDividendsValidatorFactory: RetrieveDividendsValidatorFactory = mock[RetrieveDividendsValidatorFactory]
 
-      def validator(): CallHandler[Validator[RetrieveDividendsRequest]] =
-     (mockRetrieveDividendsValidatorFactory.validator(_: String, _: String)).expects(*, *)
+  def validator(): CallHandler[Validator[RetrieveDividendsRequest]] =
+    (mockRetrieveDividendsValidatorFactory.validator(_: String, _: String)).expects(*, *)
 
 }

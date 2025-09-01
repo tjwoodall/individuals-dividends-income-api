@@ -82,7 +82,7 @@ class DeleteUkDividendsIncomeAnnualSummaryControllerSpec
 
   trait Test extends ControllerTest with AuditEventChecking[FlattenedGenericAuditDetail] {
 
-    val controller = new DeleteUkDividendsIncomeAnnualSummaryController(
+    val controller: DeleteUkDividendsIncomeAnnualSummaryController = new DeleteUkDividendsIncomeAnnualSummaryController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       validatorFactory = mockDeleteUkDividendsIncomeAnnualSummaryValidatorFactory,

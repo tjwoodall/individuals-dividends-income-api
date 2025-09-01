@@ -24,17 +24,17 @@ import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import shared.models.audit.{AuditEvent, AuditResponse, FlattenedGenericAuditDetail}
 import shared.models.auth.UserDetails
 import shared.models.domain.TaxYear
-import shared.models.errors._
+import shared.models.errors.*
 import shared.models.outcomes.ResponseWrapper
 import v1.mocks.services.MockCreateAmendUkDividendsAnnualSummaryService
 import v1.mocks.validators.MockCreateAmendUkDividendsAnnualSummaryValidatorFactory
-import v1.models.request.createAmendUkDividendsIncomeAnnualSummary._
+import v1.models.request.createAmendUkDividendsIncomeAnnualSummary.*
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class CreateAmendUkDividendsAnnualSummaryControllerSpec
-  extends ControllerBaseSpec
+    extends ControllerBaseSpec
     with ControllerTestRunner
     with MockCreateAmendUkDividendsAnnualSummaryService
     with MockCreateAmendUkDividendsAnnualSummaryValidatorFactory
@@ -88,7 +88,7 @@ class CreateAmendUkDividendsAnnualSummaryControllerSpec
 
   trait Test extends ControllerTest with AuditEventChecking[FlattenedGenericAuditDetail] {
 
-    val controller = new CreateAmendUkDividendsAnnualSummaryController(
+    val controller: CreateAmendUkDividendsAnnualSummaryController = new CreateAmendUkDividendsAnnualSummaryController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       validatorFactory = mockCreateAmendUkDividendsAnnualSummaryValidatorFactory,
@@ -104,7 +104,8 @@ class CreateAmendUkDividendsAnnualSummaryControllerSpec
 
     MockedSharedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
 
-    protected def callController(): Future[Result] = controller.createAmendUkDividendsAnnualSummary(validNino, taxYear)(fakeRequest.withBody(requestJson))
+    protected def callController(): Future[Result] =
+      controller.createAmendUkDividendsAnnualSummary(validNino, taxYear)(fakeRequest.withBody(requestJson))
 
     def event(auditResponse: AuditResponse, requestBody: Option[JsValue]): AuditEvent[FlattenedGenericAuditDetail] =
       AuditEvent(

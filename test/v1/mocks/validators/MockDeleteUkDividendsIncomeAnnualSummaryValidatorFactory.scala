@@ -23,9 +23,10 @@ import v1.models.request.deleteUkDividendsIncomeAnnualSummary.DeleteUkDividendsI
 
 trait MockDeleteUkDividendsIncomeAnnualSummaryValidatorFactory extends MockValidatorFactory[DeleteUkDividendsIncomeAnnualSummaryRequest] {
 
-    val mockDeleteUkDividendsIncomeAnnualSummaryValidatorFactory: DeleteUkDividendsIncomeAnnualSummaryValidatorFactory = mock[DeleteUkDividendsIncomeAnnualSummaryValidatorFactory]
+  val mockDeleteUkDividendsIncomeAnnualSummaryValidatorFactory: DeleteUkDividendsIncomeAnnualSummaryValidatorFactory =
+    mock[DeleteUkDividendsIncomeAnnualSummaryValidatorFactory]
 
-    def validator(): CallHandler[Validator[DeleteUkDividendsIncomeAnnualSummaryRequest]] =
-      (mockDeleteUkDividendsIncomeAnnualSummaryValidatorFactory.validator(_: String, _: String)).expects(*, *)
+  def validator(): CallHandler[Validator[DeleteUkDividendsIncomeAnnualSummaryRequest]] =
+    (mockDeleteUkDividendsIncomeAnnualSummaryValidatorFactory.validator(_: String, _: String)).expects(*, *)
 
-  }
+}

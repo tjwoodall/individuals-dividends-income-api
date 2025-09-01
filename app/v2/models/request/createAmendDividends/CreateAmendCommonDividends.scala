@@ -27,6 +27,6 @@ object CreateAmendCommonDividends {
   implicit val writes: OWrites[CreateAmendCommonDividends] = (
     (JsPath \ "customerReference").writeNullable[String] and
       (JsPath \ "grossAmount").write[BigDecimal]
-  )(unlift(CreateAmendCommonDividends.unapply))
+  )(w => Tuple.fromProductTyped(w))
 
 }

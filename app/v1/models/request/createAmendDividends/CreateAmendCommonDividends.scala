@@ -16,7 +16,7 @@
 
 package v1.models.request.createAmendDividends
 
-import play.api.libs.functional.syntax._
+import play.api.libs.functional.syntax.*
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 
 case class CreateAmendCommonDividends(customerReference: Option[String], grossAmount: BigDecimal)
@@ -27,6 +27,6 @@ object CreateAmendCommonDividends {
   implicit val writes: OWrites[CreateAmendCommonDividends] = (
     (JsPath \ "customerReference").writeNullable[String] and
       (JsPath \ "grossAmount").write[BigDecimal]
-  )(unlift(CreateAmendCommonDividends.unapply))
+  )(w => Tuple.fromProductTyped(w))
 
 }

@@ -24,7 +24,8 @@ import shared.models.domain.TaxYear
 import shared.models.errors.MtdError
 import v2.models.request.retrieveAdditionalDirectorshipDividend.RetrieveAdditionalDirectorshipDividendRequest
 
-class RetrieveAdditionalDirectorshipDividendValidator(nino: String, taxYear: String, employmentId: String) extends Validator[RetrieveAdditionalDirectorshipDividendRequest] {
+class RetrieveAdditionalDirectorshipDividendValidator(nino: String, taxYear: String, employmentId: String)
+    extends Validator[RetrieveAdditionalDirectorshipDividendRequest] {
 
   private val resolveTaxYear = ResolveTaxYearMinimum(TaxYear.fromMtd("2025-26"))
 
@@ -33,5 +34,6 @@ class RetrieveAdditionalDirectorshipDividendValidator(nino: String, taxYear: Str
       ResolveNino(nino),
       resolveTaxYear(taxYear),
       ResolveEmploymentId(employmentId)
-    ).mapN(RetrieveAdditionalDirectorshipDividendRequest)
+    ).mapN(RetrieveAdditionalDirectorshipDividendRequest.apply)
+
 }

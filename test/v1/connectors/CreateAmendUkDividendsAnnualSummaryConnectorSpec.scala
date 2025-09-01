@@ -37,15 +37,19 @@ class CreateAmendUkDividendsAnnualSummaryConnectorSpec extends ConnectorSpec {
     "createOrAmendAnnualSummary called and 'isDesIfMigrationEnabled' is off" must {
       "return a 200 status for a success scenario" in
         new DesTest with Test {
-          MockedSharedAppConfig.featureSwitchConfig.anyNumberOfTimes().returns(Configuration(
-            "desIf_Migration.enabled" -> "false"
-          ))
+          MockedSharedAppConfig.featureSwitchConfig
+            .anyNumberOfTimes()
+            .returns(
+              Configuration(
+                "desIf_Migration.enabled" -> "false"
+              ))
 
           def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
 
           val outcome = Right(ResponseWrapper(correlationId, ()))
 
-          willPost(url"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}", body) returns Future.successful(outcome)
+          willPost(url"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}", body) returns Future.successful(
+            outcome)
 
           val result: DownstreamOutcome[Unit] = await(connector.createAmendUkDividends(request))
           result shouldBe outcome
@@ -55,15 +59,19 @@ class CreateAmendUkDividendsAnnualSummaryConnectorSpec extends ConnectorSpec {
     "createOrAmendAnnualSummary called and 'isDesIfMigrationEnabled' is on" must {
       "return a 200 status for a success scenario" in
         new IfsTest with Test {
-          MockedSharedAppConfig.featureSwitchConfig.anyNumberOfTimes().returns(Configuration(
-            "desIf_Migration.enabled" -> "true"
-          ))
+          MockedSharedAppConfig.featureSwitchConfig
+            .anyNumberOfTimes()
+            .returns(
+              Configuration(
+                "desIf_Migration.enabled" -> "true"
+              ))
 
           def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
 
           val outcome = Right(ResponseWrapper(correlationId, ()))
 
-          willPost(url"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}", body) returns Future.successful(outcome)
+          willPost(url"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}", body) returns Future.successful(
+            outcome)
 
           val result: DownstreamOutcome[Unit] = await(connector.createAmendUkDividends(request))
           result shouldBe outcome
@@ -85,7 +93,7 @@ class CreateAmendUkDividendsAnnualSummaryConnectorSpec extends ConnectorSpec {
     }
   }
 
-  trait Test { _: ConnectorTest =>
+  trait Test { self: ConnectorTest =>
     def taxYear: TaxYear
 
     protected val connector: CreateAmendUkDividendsAnnualSummaryConnector =

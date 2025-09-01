@@ -32,7 +32,6 @@ class RetrieveDividendsValidatorSpec extends UnitSpec {
 
   def validator(nino: String, taxYear: String) = new RetrieveDividendsValidator(nino, taxYear)
 
-
   "running a validation" should {
     "return no errors" when {
       "a valid request is supplied" in {

@@ -20,6 +20,8 @@ import shared.controllers.validators.Validator
 import v2.models.request.retrieveDividends.RetrieveDividendsRequest
 
 class RetrieveDividendsValidatorFactory {
+
   def validator(nino: String, taxYear: String): Validator[RetrieveDividendsRequest] =
     new RetrieveDividendsValidator(nino, taxYear)
+
 }

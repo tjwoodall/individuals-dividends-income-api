@@ -27,9 +27,10 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CreateAmendAdditionalDirectorshipDividendService @Inject()(connector: CreateAmendAdditionalDirectorshipDividendConnector) extends BaseService {
+class CreateAmendAdditionalDirectorshipDividendService @Inject() (connector: CreateAmendAdditionalDirectorshipDividendConnector) extends BaseService {
 
-  def createAmend(request: CreateAmendAdditionalDirectorshipDividendRequest)(implicit ctx: RequestContext, ec: ExecutionContext): Future[ServiceOutcome[Unit]] =
+  def createAmend(
+      request: CreateAmendAdditionalDirectorshipDividendRequest)(implicit ctx: RequestContext, ec: ExecutionContext): Future[ServiceOutcome[Unit]] =
     connector.createAmend(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
 
   private val downstreamErrorMap: Map[String, MtdError] = Map(
@@ -43,4 +44,5 @@ class CreateAmendAdditionalDirectorshipDividendService @Inject()(connector: Crea
     "1213" -> InternalError,
     "1218" -> InternalError
   )
+
 }

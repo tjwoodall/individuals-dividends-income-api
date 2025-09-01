@@ -24,7 +24,7 @@ import shared.models.domain.TaxYear
 import shared.models.errors.MtdError
 import v1.models.request.deleteDividends.DeleteDividendsRequest
 
-class DeleteDividendsValidator(nino:String, taxYear: String) extends Validator[DeleteDividendsRequest] {
+class DeleteDividendsValidator(nino: String, taxYear: String) extends Validator[DeleteDividendsRequest] {
 
   private val resolveTaxYear = ResolveTaxYearMinimum(TaxYear.fromMtd("2019-20"))
 
@@ -32,6 +32,6 @@ class DeleteDividendsValidator(nino:String, taxYear: String) extends Validator[D
     (
       ResolveNino(nino),
       resolveTaxYear(taxYear)
-    ).mapN(DeleteDividendsRequest)
+    ).mapN(DeleteDividendsRequest.apply)
 
 }

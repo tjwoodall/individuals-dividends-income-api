@@ -76,7 +76,10 @@ class RetrieveAdditionalDirectorshipDividendControllerSpec extends ControllerBas
     }
   }
 
-  trait Test extends ControllerTest with MockRetrieveAdditionalDirectorshipDividendService with MockRetrieveAdditionalDirectorshipDividendValidatorFactory {
+  trait Test
+      extends ControllerTest
+      with MockRetrieveAdditionalDirectorshipDividendService
+      with MockRetrieveAdditionalDirectorshipDividendValidatorFactory {
 
     val controller: RetrieveAdditionalDirectorshipDividendController = new RetrieveAdditionalDirectorshipDividendController(
       authService = mockEnrolmentsAuthService,
@@ -96,6 +99,5 @@ class RetrieveAdditionalDirectorshipDividendControllerSpec extends ControllerBas
     protected def callController(): Future[Result] = controller.retrieve(validNino, taxYear, employmentId)(fakeGetRequest)
 
   }
-
 
 }

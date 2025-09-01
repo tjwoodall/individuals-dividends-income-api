@@ -31,8 +31,8 @@ import scala.concurrent.{ExecutionContext, Future}
 class RetrieveUkDividendsIncomeAnnualSummaryService @Inject() (connector: RetrieveUKDividendsIncomeAnnualSummaryConnector) extends BaseService {
 
   def retrieveUKDividendsIncomeAnnualSummary(request: RetrieveUkDividendsIncomeAnnualSummaryRequest)(implicit
-                                                                                                     ctx: RequestContext,
-                                                                                                     ec: ExecutionContext): Future[ServiceOutcome[RetrieveUkDividendsAnnualIncomeSummaryResponse]] = {
+      ctx: RequestContext,
+      ec: ExecutionContext): Future[ServiceOutcome[RetrieveUkDividendsAnnualIncomeSummaryResponse]] = {
 
     connector.retrieveUKDividendsIncomeAnnualSummary(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
   }

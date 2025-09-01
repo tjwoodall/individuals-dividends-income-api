@@ -16,7 +16,7 @@
 
 package v1.models.response.retrieveDividends
 
-import play.api.libs.functional.syntax._
+import play.api.libs.functional.syntax.*
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import shared.models.domain.Timestamp
 import utils.JsonUtils
@@ -39,7 +39,7 @@ object RetrieveDividendsResponse extends JsonUtils {
       (JsPath \ "redeemableShares").readNullable[RedeemableShares] and
       (JsPath \ "bonusIssuesOfSecurities").readNullable[BonusIssuesOfSecurities] and
       (JsPath \ "closeCompanyLoansWrittenOff").readNullable[CloseCompanyLoansWrittenOff]
-  )(RetrieveDividendsResponse.apply _)
+  )(RetrieveDividendsResponse.apply)
 
   implicit val writes: OWrites[RetrieveDividendsResponse] = Json.writes[RetrieveDividendsResponse]
 

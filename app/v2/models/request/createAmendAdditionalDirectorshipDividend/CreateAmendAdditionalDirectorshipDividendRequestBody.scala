@@ -27,5 +27,8 @@ case class CreateAmendAdditionalDirectorshipDividendRequestBody(companyDirector:
                                                                 dividendReceived: Option[BigDecimal])
 
 object CreateAmendAdditionalDirectorshipDividendRequestBody {
-  implicit val format: OFormat[CreateAmendAdditionalDirectorshipDividendRequestBody] = Json.format[CreateAmendAdditionalDirectorshipDividendRequestBody]
+
+  implicit val format: OFormat[CreateAmendAdditionalDirectorshipDividendRequestBody] =
+    Json.format[CreateAmendAdditionalDirectorshipDividendRequestBody]
+
 }
