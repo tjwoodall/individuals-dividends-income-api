@@ -1,4 +1,4 @@
-summary: "Retrieve Additional Directorship and Dividend Information [test only]"
+summary: Retrieve Additional Directorship and Dividend Information
 description: |
   This endpoint enables you to retrieve additional directorship/dividend information under each employment ID.
   A National Insurance number, tax year and employment ID must be provided.
