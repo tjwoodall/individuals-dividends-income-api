@@ -1,4 +1,4 @@
-summary: "Create or Amend Additional Directorship and Dividend Information [test only]"
+summary: Create or Amend Additional Directorship and Dividend Information
 description: |
   This endpoint enables you to create or amend additional directorship/dividend information under each employment ID.
   A National Insurance number, tax year and employment ID must be provided.
