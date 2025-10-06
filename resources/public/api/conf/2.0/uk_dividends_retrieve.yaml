@@ -47,8 +47,7 @@ responses:
         examples:
           default:
             description: Full UK Dividends Response
-            value:
-              $ref: './examples/ukDividendsIncome/retrieve_response.json'
+            externalValue: './examples/ukDividendsIncome/retrieve_response.json'
 
   "400":
     description: Bad request
