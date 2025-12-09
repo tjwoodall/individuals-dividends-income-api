@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -211,7 +211,7 @@ class SharedAppConfigSpec extends UnitSpec {
   "deprecationFor" when {
     "the API version is deprecated" should {
       "return NotDeprecated" in {
-        val appConfigWithDeprecatedVersion = appConfig(
+        val config: SharedAppConfig = appConfig(
           """
             |    1.0 {
             |      status = "BETA"
@@ -224,7 +224,7 @@ class SharedAppConfigSpec extends UnitSpec {
           """.stripMargin
         )
 
-        appConfigWithDeprecatedVersion.deprecationFor(Version1) shouldBe Valid(NotDeprecated)
+        config.deprecationFor(Version1) shouldBe Valid(NotDeprecated)
       }
     }
 
