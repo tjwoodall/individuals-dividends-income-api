@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,19 @@
 
 package v2.controllers
 
+import org.scalatest.OneInstancePerTest
+import shared.config.MockSharedAppConfig
 import shared.models.domain.{Nino, TaxYear}
-import shared.models.errors._
+import shared.models.errors.*
 import shared.utils.UnitSpec
 import v2.models.request.deleteDividends.DeleteDividendsRequest
 
-class DeleteDividendsValidatorSpec extends UnitSpec {
+class DeleteDividendsValidatorSpec extends UnitSpec with OneInstancePerTest with MockSharedAppConfig {
+
+  MockedSharedAppConfig.minimumPermittedTaxYear
+    .returns(TaxYear.ending(2020))
+    .anyNumberOfTimes()
+
   private implicit val correlationId: String = "1234"
 
   private val validNino    = "AA123456A"

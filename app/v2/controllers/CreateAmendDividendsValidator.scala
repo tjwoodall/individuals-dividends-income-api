@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,19 +17,24 @@
 package v2.controllers
 
 import cats.data.Validated
-import cats.implicits._
+import cats.implicits.*
 import play.api.libs.json.JsValue
+import shared.config.SharedAppConfig
 import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.{ResolveNino, ResolveNonEmptyJsonObject, ResolveTaxYearMinimum}
 import shared.models.domain.TaxYear
 import shared.models.errors.MtdError
-import v2.models.request.createAmendDividends._
+import v2.models.request.createAmendDividends.*
 
-class CreateAmendDividendsValidator(nino: String, taxYear: String, body: JsValue) extends Validator[CreateAmendDividendsRequest] {
+import javax.inject.Inject
+
+class CreateAmendDividendsValidator @Inject() (nino: String, taxYear: String, body: JsValue)(implicit appConfig: SharedAppConfig)
+    extends Validator[CreateAmendDividendsRequest] {
 
   private val resolveJson = ResolveNonEmptyJsonObject.resolver[CreateAmendDividendsRequestBody]
 
-  private val resolveTaxYear = ResolveTaxYearMinimum(TaxYear.fromMtd("2019-20"))
+  private lazy val minimumTaxYear = appConfig.minimumPermittedTaxYear
+  private lazy val resolveTaxYear = ResolveTaxYearMinimum(minimumTaxYear)
 
   override def validate: Validated[Seq[MtdError], CreateAmendDividendsRequest] =
     (

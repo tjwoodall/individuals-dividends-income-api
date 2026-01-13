@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import cats.implicits.catsSyntaxValidatedId
 import com.typesafe.config.Config
 import play.api.{ConfigLoader, Configuration}
 import shared.config.Deprecation.{Deprecated, NotDeprecated}
+import shared.models.domain.TaxYear
 import shared.routing.Version
 import uk.gov.hmrc.auth.core.ConfidenceLevel
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
@@ -50,6 +51,8 @@ class SharedAppConfig @Inject() (val config: ServicesConfig, protected[config] v
   def apiStatus(version: Version): String = config.getString(s"api.$version.status")
 
   def featureSwitchConfig: Configuration = configuration.getOptional[Configuration](s"feature-switch").getOrElse(Configuration.empty)
+
+  def minimumPermittedTaxYear: TaxYear = TaxYear.ending(config.getInt("minimumPermittedTaxYear"))
 
   def endpointsEnabled(version: String): Boolean = config.getBoolean(s"api.$version.endpoints.enabled")
 

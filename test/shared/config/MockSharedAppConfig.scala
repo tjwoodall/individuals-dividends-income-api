@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import org.scalamock.handlers.{CallHandler, CallHandler0}
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.TestSuite
 import play.api.Configuration
+import shared.models.domain.TaxYear
 import shared.routing.Version
 
 trait MockSharedAppConfig extends TestSuite with MockFactory {
@@ -40,6 +41,7 @@ trait MockSharedAppConfig extends TestSuite with MockFactory {
     // API Config
     def featureSwitchConfig: CallHandler0[Configuration]         = (() => mockSharedAppConfig.featureSwitchConfig: Configuration).expects()
     def apiGatewayContext: CallHandler0[String]                  = (() => mockSharedAppConfig.apiGatewayContext: String).expects()
+    def minimumPermittedTaxYear: CallHandler0[TaxYear]           = (() => mockSharedAppConfig.minimumPermittedTaxYear: TaxYear).expects()
     def apiStatus(version: Version): CallHandler[String]         = (mockSharedAppConfig.apiStatus: Version => String).expects(version)
     def endpointsEnabled(version: String): CallHandler[Boolean]  = (mockSharedAppConfig.endpointsEnabled(_: String)).expects(version)
     def endpointsEnabled(version: Version): CallHandler[Boolean] = (mockSharedAppConfig.endpointsEnabled: Version => Boolean).expects(version)

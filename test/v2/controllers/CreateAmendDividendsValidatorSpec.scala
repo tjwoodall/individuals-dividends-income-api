@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,15 @@
 package v2.controllers
 
 import common.errors.CustomerRefFormatError
+import org.scalatest.OneInstancePerTest
 import play.api.libs.json.{JsValue, Json}
+import shared.config.MockSharedAppConfig
 import shared.models.domain.{Nino, TaxYear}
-import shared.models.errors._
+import shared.models.errors.*
 import shared.utils.UnitSpec
-import v2.models.request.createAmendDividends._
+import v2.models.request.createAmendDividends.*
 
-class CreateAmendDividendsValidatorSpec extends UnitSpec {
+class CreateAmendDividendsValidatorSpec extends UnitSpec with OneInstancePerTest with MockSharedAppConfig {
 
   private val validNino    = "AA123456A"
   private val validTaxYear = "2020-21"
@@ -371,6 +373,10 @@ class CreateAmendDividendsValidatorSpec extends UnitSpec {
 
   def validator(nino: String, taxYear: String, body: JsValue): CreateAmendDividendsValidator =
     new CreateAmendDividendsValidator(nino, taxYear, body)
+
+  MockedSharedAppConfig.minimumPermittedTaxYear
+    .returns(TaxYear.ending(2020))
+    .anyNumberOfTimes()
 
   private val parsedNino    = Nino(validNino)
   private val parsedTaxYear = TaxYear.fromMtd(validTaxYear)

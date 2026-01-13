@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,13 @@
 
 package v2.controllers
 
+import shared.config.SharedAppConfig
 import shared.controllers.validators.Validator
 import v2.models.request.retrieveDividends.RetrieveDividendsRequest
 
-class RetrieveDividendsValidatorFactory {
+import javax.inject.Inject
+
+class RetrieveDividendsValidatorFactory @Inject() (implicit appConfig: SharedAppConfig) {
 
   def validator(nino: String, taxYear: String): Validator[RetrieveDividendsRequest] =
     new RetrieveDividendsValidator(nino, taxYear)

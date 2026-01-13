@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,21 @@
 package v1.controllers
 
 import cats.data.Validated
-import cats.implicits._
+import cats.implicits.*
+import shared.config.SharedAppConfig
 import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
 import shared.models.domain.TaxYear
 import shared.models.errors.MtdError
 import v1.models.request.retrieveDividends.RetrieveDividendsRequest
 
-class RetrieveDividendsValidator(nino: String, taxYear: String) extends Validator[RetrieveDividendsRequest] {
+import javax.inject.Inject
 
-  private val resolveTaxYear = ResolveTaxYearMinimum(TaxYear.fromMtd("2019-20"))
+class RetrieveDividendsValidator @Inject() (nino: String, taxYear: String)(implicit appConfig: SharedAppConfig)
+    extends Validator[RetrieveDividendsRequest] {
+
+  private lazy val minimumTaxYear = appConfig.minimumPermittedTaxYear
+  private lazy val resolveTaxYear = ResolveTaxYearMinimum(minimumTaxYear)
 
   override def validate: Validated[Seq[MtdError], RetrieveDividendsRequest] =
     (
