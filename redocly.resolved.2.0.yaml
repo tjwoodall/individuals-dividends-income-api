@@ -1,0 +1,2638 @@
+openapi: 3.0.3
+info:
+  version: '2.0'
+  title: Individuals Dividends Income (MTD)
+  description: |
+    The following groups of endpoints are stateful in the Sandbox:
+    * [Dividends Income](#tag/Dividends-Income)
+    * [UK Dividends Income](#tag/UK-Dividends-Income)
+    * [Additional Directorship and Dividend Information](#tag/Additional-Directorship-and-Dividend-Information)
+
+    # Send fraud prevention data
+    HMRC monitors transactions to help protect your customers' confidential data from criminals and fraudsters. 
+
+    <div class="govuk-warning-text warning-icon-fix">
+      <span class="govuk-warning-text__icon warning-icon-ui-fix" aria-hidden="true">!</span>
+      <strong class="govuk-warning-text__text">
+        <span class="govuk-warning-text__assistive">Warning</span>
+        You are required by law to submit header data for this API. This includes all associated APIs and endpoints.
+      </strong>
+    </div>
+
+    [Check the data you need to send](/guides/fraud-prevention/). You can also use the [Test API](/api-documentation/docs/api/service/txm-fph-validator-api/2.0) during initial development and as part of your quality assurance checks.
+
+    # Mapping APIs to Self Assessment tax return forms
+    Some parameters in this API map to box numbers in one or more Self Assessment tax return forms. To learn more and to download this mapping information as a CSV file, go to [income-tax-mtd-changelog/mapping](https://github.com/hmrc/income-tax-mtd-changelog?tab=readme-ov-file#mapping-apis-to-self-assessment-tax-return-forms) on GitHub.
+
+    # Changelog
+    You can find the changelog in the [income-tax-mtd-changelog](https://github.com/hmrc/income-tax-mtd-changelog/#readme) on GitHub.
+
+    # Support
+
+    * Direct reports of bugs or errors in Production or Sandbox code, or queries about HMRC business functionality (such as how a specific field is used by HMRC or why it is needed) to the [Software Development Support Team (SDST)](https://developer.service.hmrc.gov.uk/developer/support).
+    * Send queries or feedback related to the design of the APIs (including recommended changes) using the [income-tax-mtd-changelog](https://github.com/hmrc/income-tax-mtd-changelog/issues) GitHub page.
+    * <a href="/contact/report-technical-problem?newTab=true&service=api-documentation-frontend" target="_blank">Is this page not working properly? (opens in new tab)</a>
+servers:
+  - url: https://test-api.service.hmrc.gov.uk
+    description: Sandbox
+  - url: https://api.service.hmrc.gov.uk
+    description: Production
+tags:
+  - name: Dividends Income
+    description: These endpoints allow a user to create, amend, retrieve and delete Dividends
+  - name: UK Dividends Income
+    description: Resources relating to an individual's uk dividends
+  - name: Additional Directorship and Dividend Information
+    description: Provide taxable income for less common types of dividends income
+paths:
+  /individuals/dividends-income/{nino}/{taxYear}:
+    get:
+      summary: Retrieve Dividends Income
+      security:
+        - User-Restricted:
+            - read:self-assessment
+      description: |
+        This endpoint enables you to retrieve dividends income: 
+        foreign dividend, dividend income received whilst abroad, stock dividend, redeemable shares, bonus issues of 
+        securities and close company loans written off. A National Insurance number and tax year must be provided.
+
+        ###  Test data
+        Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
+
+        | Header Value (Gov-Test-Scenario) | Scenario                                       |
+        |----------------------------------|------------------------------------------------|
+        | N/A - DEFAULT                    | Simulates success response.                    |
+        | NOT_FOUND                        | Simulates the scenario where no data is found. |
+        | REQUEST_CANNOT_BE_FULFILLED      | Simulates the scenario where the request could not be processed. |
+        | STATEFUL                         | Performs a stateful retrieve.                  |
+      tags:
+        - Dividends Income
+      parameters:
+        - name: nino
+          in: path
+          description: |
+            National Insurance number, in the format `AA999999A`
+          schema: &ref_3
+            type: string
+            example: TC663795B
+          required: true
+        - name: taxYear
+          in: path
+          description: |
+            The tax year the data applies to, for example, 2021-22. 
+            The start year and end year must not span two tax years. The minimum tax year is 2021-22. No gaps are allowed, for example, 2020-22 is not valid.
+            (The minimum tax year in Sandbox is 2019-20.)
+          schema: &ref_4
+            type: string
+            example: 2021-22
+          required: true
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format and the version of the API to be used.
+          schema: &ref_5
+            type: string
+            enum:
+              - application/vnd.hmrc.2.0+json
+          required: true
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 Bearer Token with the *read:self-assessment* scope.
+          schema: &ref_32
+            type: string
+            example: Bearer bb7fed3fe10dd235a2ccda3d50fb
+          required: true
+        - name: Gov-Test-Scenario
+          in: header
+          description: |
+            Only in sandbox environment. See Test Data table for all header values.
+          schema: &ref_6
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: &ref_0
+                type: string
+                example: c75f40a6-a3df-4429-a697-471eeec46435
+              required: true
+            Deprecation:
+              name: Deprecation
+              in: header
+              description: |
+                The deprecation date/time for this endpoint.
+              schema: &ref_19
+                type: string
+                example: Sun, 01 Jan 2023 23:59:59 GMT
+              required: false
+            Sunset:
+              name: Sunset
+              in: header
+              description: |
+                The earliest date/time this endpoint will become unavailable after deprecation.
+              schema: &ref_20
+                type: string
+                example: Sun, 02 Jul 2023 23:59:59 GMT
+              required: false
+            Link:
+              name: Link
+              in: header
+              description: |
+                URL of the documentation for the API.
+              schema: &ref_21
+                type: string
+                example: https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individuals-dividends-income-api
+              required: false
+          content:
+            application/json:
+              schema:
+                $schema: http://json-schema.org/draft-04/schema#
+                title: Retrieve Dividends Income Request
+                description: Retrieve Dividends Income Request
+                type: object
+                properties:
+                  submittedOn:
+                    type: string
+                    description: The date the dividends income was added. It must be provided in the format YYYY-MM-DDThh:mm:ssZ
+                    example: '2021-04-06T09:37:17Z'
+                  foreignDividend:
+                    type: array
+                    description: Financial details about foreign dividend income.
+                    items:
+                      type: object
+                      properties: &ref_7
+                        countryCode:
+                          type: string
+                          description: A three-letter code that represents a country name. The value must in a ISO 3166-1 Alpha-3 format.
+                          example: FRA
+                        amountBeforeTax:
+                          type: number
+                          description: The total amount of income (in UK pounds) before taking off any foreign tax. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          example: '1999.99'
+                        taxTakenOff:
+                          type: number
+                          description: The total amount of foreign tax taken off the customer's income. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          example: '1999.99'
+                        specialWithholdingTax:
+                          type: number
+                          description: The total amount of Special Withholding Tax (SWT) (in UK pounds) and any UK tax deducted from the foreign income. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          example: '5000.99'
+                        foreignTaxCreditRelief:
+                          type: boolean
+                          description: Boolean indicating whether Foreign Tax Credit Relief (FTCR) has been claimed.
+                          example: 'false'
+                        taxableAmount:
+                          type: number
+                          description: The total taxable amount on dividends. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          example: '5000.99'
+                      required: &ref_8
+                        - countryCode
+                        - taxableAmount
+                  dividendIncomeReceivedWhilstAbroad:
+                    type: array
+                    description: Financial details about foreign dividend income received whilst abroad.
+                    items:
+                      type: object
+                      properties: &ref_9
+                        countryCode:
+                          type: string
+                          description: A three-letter code that represents a country name. The value must in a ISO 3166-1 Alpha-3 format.
+                          example: FRA
+                        amountBeforeTax:
+                          type: number
+                          description: The total amount of income (in UK pounds) before taking off any foreign tax. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          example: '1999.99'
+                        taxTakenOff:
+                          type: number
+                          description: The total amount of foreign tax taken off the customer's income. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          example: '1999.99'
+                        specialWithholdingTax:
+                          type: number
+                          description: The total amount of Special Withholding Tax (SWT) (in UK pounds) and any UK tax deducted from the foreign income. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          example: '5000.99'
+                        foreignTaxCreditRelief:
+                          type: boolean
+                          description: Boolean indicating whether Foreign Tax Credit Relief (FTCR) has been claimed.
+                          example: 'false'
+                        taxableAmount:
+                          type: number
+                          description: The total taxable amount on dividends. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          example: '5000.99'
+                      required: &ref_10
+                        - countryCode
+                        - taxableAmount
+                  stockDividend:
+                    type: object
+                    description: Object that holds the key value for stock dividends income.
+                    properties: &ref_11
+                      customerReference:
+                        type: string
+                        description: Customer-supplied reference to identify the stock dividends income.
+                        example: Stock dividend income
+                        pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                      grossAmount:
+                        type: number
+                        description: The gross amount of the dividends. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        example: '5000.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        'maximum:': 99999999999.99
+                    required: &ref_12
+                      - grossAmount
+                  redeemableShares:
+                    type: object
+                    description: Object that holds the key value for redeemable shares income.
+                    properties: &ref_13
+                      customerReference:
+                        type: string
+                        description: Customer-supplied reference to identify the redeemable shares income.
+                        example: Redeemable shares income
+                        pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                      grossAmount:
+                        type: number
+                        description: The gross amount of the dividends. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        example: '5000.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        'maximum:': 99999999999.99
+                    required: &ref_14
+                      - grossAmount
+                  bonusIssuesOfSecurities:
+                    type: object
+                    description: Object that holds the key value for bonus issues of securities income.
+                    properties: &ref_15
+                      customerReference:
+                        type: string
+                        description: Customer-supplied reference to identify the bonus securities income.
+                        example: Bonus Securities
+                        pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                      grossAmount:
+                        type: number
+                        description: The gross amount of the dividends. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        example: '5000.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        'maximum:': 99999999999.99
+                    required: &ref_16
+                      - grossAmount
+                  closeCompanyLoansWrittenOff:
+                    type: object
+                    description: Container that holds the key value for close company loans written off income.
+                    properties: &ref_17
+                      customerReference:
+                        type: string
+                        description: Customer-supplied reference to identify the close company loans written off income.
+                        example: Write off
+                        pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                      grossAmount:
+                        type: number
+                        description: The gross amount of the dividends. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        example: '5000.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        'maximum:': 99999999999.99
+                    required: &ref_18
+                      - grossAmount
+                required:
+                  - submittedOn
+              examples:
+                default:
+                  description: Full Dividends Income
+                  value:
+                    submittedOn: '2021-04-06T09:37:17.000Z'
+                    foreignDividend:
+                      - countryCode: FRA
+                        amountBeforeTax: 1999.99
+                        taxTakenOff: 1999.99
+                        specialWithholdingTax: 5000.99
+                        foreignTaxCreditRelief: false
+                        taxableAmount: 5000.99
+                    dividendIncomeReceivedWhilstAbroad:
+                      - countryCode: FRA
+                        amountBeforeTax: 1999.99
+                        taxTakenOff: 1999.99
+                        specialWithholdingTax: 5000.99
+                        foreignTaxCreditRelief: false
+                        taxableAmount: 5000.99
+                    stockDividend:
+                      customerReference: Stock dividend income
+                      grossAmount: 5000.99
+                    redeemableShares:
+                      customerReference: Redeemable shares income
+                      grossAmount: 5000.99
+                    bonusIssuesOfSecurities:
+                      customerReference: Bonus Securities
+                      grossAmount: 5000.99
+                    closeCompanyLoansWrittenOff:
+                      customerReference: Write off
+                      grossAmount: 5000.99
+        '400':
+          description: Bad request
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: &ref_1
+                  code:
+                    description: The error code
+                    type: string
+                  message:
+                    description: The error message
+                    type: string
+                required: &ref_2
+                  - code
+              examples:
+                FORMAT_NINO:
+                  description: The format of the supplied NINO field is not valid.
+                  value: &ref_22
+                    code: FORMAT_NINO
+                    message: The NINO format is invalid
+                FORMAT_TAX_YEAR:
+                  description: The format of the supplied tax year field is not valid.
+                  value: &ref_23
+                    code: FORMAT_TAX_YEAR
+                    message: The taxYear format is invalid
+                RULE_TAX_YEAR_NOT_SUPPORTED:
+                  description: |
+                    The specified tax year is not supported.
+                    Either the tax year specified is before the minimum tax year value, or it is after the maximum tax year value.
+                  value: &ref_24
+                    code: RULE_TAX_YEAR_NOT_SUPPORTED
+                    message: The tax year specified does not lie within the supported range
+                RULE_TAX_YEAR_RANGE_INVALID:
+                  description: Tax year range invalid. A tax year range of one year is required.
+                  value: &ref_25
+                    code: RULE_TAX_YEAR_RANGE_INVALID
+                    message: A tax year range of one year is required
+                RULE_INCORRECT_GOV_TEST_SCENARIO:
+                  description: The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. This error will only be returned in the Sandbox environment.
+                  value: &ref_26
+                    code: RULE_INCORRECT_GOV_TEST_SCENARIO
+                    message: The supplied Gov-Test-Scenario is not valid
+        '403':
+          description: Forbidden
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                CLIENT_OR_AGENT_NOT_AUTHORISED:
+                  description: |
+                    The client or agent is not authorised. This is because: the client is not subscribed to MTD, 
+                    the agent is not subscribed to Agent Services, or the client has not authorised the agent to act on their behalf.
+                  value: &ref_27
+                    code: CLIENT_OR_AGENT_NOT_AUTHORISED
+                    message: The client or agent is not authorised
+        '404':
+          description: Not Found
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                MATCHING_RESOURCE_NOT_FOUND:
+                  description: The supplied income source could not be found.
+                  value: &ref_31
+                    code: MATCHING_RESOURCE_NOT_FOUND
+                    message: Matching resource not found
+        '422':
+          description: Unprocessable Entity
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                RULE_REQUEST_CANNOT_BE_FULFILLED:
+                  description: The request cannot be fulfilled. More specific information is provided in the error message.
+                  value: &ref_28
+                    code: RULE_REQUEST_CANNOT_BE_FULFILLED
+                    message: Custom (will vary in production depending on the actual error)
+    put:
+      summary: Create and Amend Dividends Income
+      security:
+        - User-Restricted:
+            - write:self-assessment
+      description: |
+        This endpoint enables you to create and amend UK dividends income: 
+        foreign dividend, dividend income received whilst abroad, stock dividend, redeemable shares, bonus issues of 
+        securities and close company loans written off. A National Insurance number and tax year must be provided. 
+
+        ###  Test data
+        Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
+
+        | Header Value (Gov-Test-Scenario) | Scenario                                                                                       |
+        |----------------------------------|------------------------------------------------------------------------------------------------|
+        | N/A - DEFAULT                    | Simulates success response.                                                                    |
+        | REQUEST_CANNOT_BE_FULFILLED      | Simulates the scenario where the request could not be processed.                               |
+        | OUTSIDE_AMENDMENT_WINDOW         | Simulates the scenario where request cannot be completed as it is outside the amendment window.|
+        | STATEFUL                         | Performs a stateful create or update.                                                          |
+      tags:
+        - Dividends Income
+      parameters:
+        - name: nino
+          in: path
+          description: |
+            National Insurance number, in the format `AA999999A`
+          schema: *ref_3
+          required: true
+        - name: taxYear
+          in: path
+          description: |
+            The tax year the data applies to, for example, 2021-22. 
+            The start year and end year must not span two tax years. The minimum tax year is 2021-22. No gaps are allowed, for example, 2020-22 is not valid.
+            (The minimum tax year in Sandbox is 2019-20.)
+          schema: *ref_4
+          required: true
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format and the version of the API to be used.
+          schema: *ref_5
+          required: true
+        - name: Content-Type
+          in: header
+          description: |
+            Specifies the format of the request body, which must be JSON.
+          schema: &ref_34
+            type: string
+            enum:
+              - application/json
+          required: true
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 Bearer Token with the *write:self-assessment* scope.
+          schema: &ref_29
+            type: string
+            example: Bearer bb7fed3fe10dd235a2ccda3d50fb
+          required: true
+        - name: Gov-Test-Scenario
+          in: header
+          description: |
+            Only in sandbox environment. See Test Data table for all header values.
+          schema: *ref_6
+          required: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $schema: http://json-schema.org/draft-04/schema#
+              title: Create And Amend Dividends Income Request
+              description: Create And Amend Dividends Income Request
+              type: object
+              properties:
+                foreignDividend:
+                  type: array
+                  description: Financial details about foreign dividend income.
+                  items:
+                    type: object
+                    properties: *ref_7
+                    required: *ref_8
+                dividendIncomeReceivedWhilstAbroad:
+                  type: array
+                  description: Financial details about foreign dividend income received whilst abroad.
+                  items:
+                    type: object
+                    properties: *ref_9
+                    required: *ref_10
+                stockDividend:
+                  type: object
+                  description: Object that holds the key value for stock dividends income.
+                  properties: *ref_11
+                  required: *ref_12
+                redeemableShares:
+                  type: object
+                  description: Object that holds the key value for redeemable shares income.
+                  properties: *ref_13
+                  required: *ref_14
+                bonusIssuesOfSecurities:
+                  type: object
+                  description: Object that holds the key value for bonus issues of securities income.
+                  properties: *ref_15
+                  required: *ref_16
+                closeCompanyLoansWrittenOff:
+                  type: object
+                  description: Container that holds the key value for close company loans written off income.
+                  properties: *ref_17
+                  required: *ref_18
+            examples:
+              full_amendment:
+                description: Full Dividends Income Amendment
+                value:
+                  foreignDividend:
+                    - countryCode: FRA
+                      amountBeforeTax: 1999.99
+                      taxTakenOff: 1999.99
+                      specialWithholdingTax: 5000.99
+                      foreignTaxCreditRelief: false
+                      taxableAmount: 5000.99
+                  dividendIncomeReceivedWhilstAbroad:
+                    - countryCode: FRA
+                      amountBeforeTax: 1999.99
+                      taxTakenOff: 1999.99
+                      specialWithholdingTax: 5000.99
+                      foreignTaxCreditRelief: false
+                      taxableAmount: 5000.99
+                  stockDividend:
+                    customerReference: Stock dividend income
+                    grossAmount: 5000.99
+                  redeemableShares:
+                    customerReference: Redeemable shares income
+                    grossAmount: 5000.99
+                  bonusIssuesOfSecurities:
+                    customerReference: Bonus Securities
+                    grossAmount: 5000.99
+                  closeCompanyLoansWrittenOff:
+                    customerReference: Written off
+                    grossAmount: 5000.99
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+            Deprecation:
+              name: Deprecation
+              in: header
+              description: |
+                The deprecation date/time for this endpoint.
+              schema: *ref_19
+              required: false
+            Sunset:
+              name: Sunset
+              in: header
+              description: |
+                The earliest date/time this endpoint will become unavailable after deprecation.
+              schema: *ref_20
+              required: false
+            Link:
+              name: Link
+              in: header
+              description: |
+                URL of the documentation for the API.
+              schema: *ref_21
+              required: false
+        '400':
+          description: Bad request
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                FORMAT_NINO:
+                  description: The format of the supplied NINO field is not valid.
+                  value: *ref_22
+                FORMAT_TAX_YEAR:
+                  description: The format of the supplied tax year field is not valid.
+                  value: *ref_23
+                RULE_TAX_YEAR_NOT_SUPPORTED:
+                  description: |
+                    The specified tax year is not supported.
+                    Either the tax year specified is before the minimum tax year value, or it is after the maximum tax year value.
+                  value: *ref_24
+                RULE_TAX_YEAR_RANGE_INVALID:
+                  description: Tax year range invalid. A tax year range of one year is required.
+                  value: *ref_25
+                FORMAT_VALUE:
+                  description: One or more values have been added with the incorrect format.
+                  value: &ref_35
+                    code: FORMAT_VALUE
+                    message: The value must be between 0.00 and 99999999999.99
+                FORMAT_COUNTRY_CODE:
+                  description: The format of the supplied country code is not valid.
+                  value:
+                    code: FORMAT_COUNTRY_CODE
+                    message: The provided Country code is invalid
+                RULE_COUNTRY_CODE:
+                  description: Not a valid ISO 3166-1 alpha-3 country code.
+                  value:
+                    code: RULE_COUNTRY_CODE
+                    message: The country code is not a valid ISO 3166-1 alpha-3 country code
+                FORMAT_CUSTOMER_REF:
+                  description: The format of the supplied customer reference is not valid.
+                  value:
+                    code: FORMAT_CUSTOMER_REF
+                    message: The provided customer reference is invalid
+                RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED:
+                  description: An empty or non-matching body was submitted.
+                  value: &ref_36
+                    code: RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED
+                    message: An empty or non-matching body was submitted
+                RULE_OUTSIDE_AMENDMENT_WINDOW:
+                  description: The request cannot be completed as you are outside the amendment window.
+                  value: &ref_30
+                    code: RULE_OUTSIDE_AMENDMENT_WINDOW
+                    message: You are outside the amendment window
+                RULE_INCORRECT_GOV_TEST_SCENARIO:
+                  description: The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. This error will only be returned in the Sandbox environment.
+                  value: *ref_26
+        '403':
+          description: Forbidden
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                CLIENT_OR_AGENT_NOT_AUTHORISED:
+                  description: |
+                    The client or agent is not authorised. This is because: the client is not subscribed to MTD, 
+                    the agent is not subscribed to Agent Services, or the client has not authorised the agent to act on their behalf.
+                  value: *ref_27
+        '422':
+          description: Unprocessable Entity
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                RULE_REQUEST_CANNOT_BE_FULFILLED:
+                  description: The request cannot be fulfilled. More specific information is provided in the error message.
+                  value: *ref_28
+    delete:
+      summary: Delete Dividends Income
+      security:
+        - User-Restricted:
+            - write:self-assessment
+      description: |
+        This endpoint enables you to delete dividends income: 
+        foreign dividend, dividend income received whilst abroad, stock dividend, redeemable shares, bonus issues of 
+        securities and close company loans written off. A National Insurance number and tax year must be provided.
+
+        ### Test data
+        Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
+
+        | Header Value (Gov-Test-Scenario) | Scenario                                                                                       |
+        |----------------------------------|------------------------------------------------------------------------------------------------|
+        | N/A - DEFAULT                    | Simulates success response.                                                                    |
+        | NOT_FOUND                        | Simulates the scenario where no data is found.                                                 |
+        | REQUEST_CANNOT_BE_FULFILLED      | Simulates the scenario where the request could not be processed.                               |
+        | OUTSIDE_AMENDMENT_WINDOW         | Simulates the scenario where request cannot be completed as it is outside the amendment window.|
+        | STATEFUL                         | Performs a stateful delete.                                                                    |   
+      tags:
+        - Dividends Income
+      parameters:
+        - name: nino
+          in: path
+          description: |
+            National Insurance number, in the format `AA999999A`
+          schema: *ref_3
+          required: true
+        - name: taxYear
+          in: path
+          description: |
+            The tax year the data applies to, for example, 2021-22. 
+            The start year and end year must not span two tax years. The minimum tax year is 2021-22. No gaps are allowed, for example, 2020-22 is not valid.
+            (The minimum tax year in Sandbox is 2019-20.)
+          schema: *ref_4
+          required: true
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format and the version of the API to be used.
+          schema: *ref_5
+          required: true
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 Bearer Token with the *write:self-assessment* scope.
+          schema: *ref_29
+          required: true
+        - name: Gov-Test-Scenario
+          in: header
+          description: |
+            Only in sandbox environment. See Test Data table for all header values.
+          schema: *ref_6
+          required: false
+      responses:
+        '204':
+          description: No Content
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+            Deprecation:
+              name: Deprecation
+              in: header
+              description: |
+                The deprecation date/time for this endpoint.
+              schema: *ref_19
+              required: false
+            Sunset:
+              name: Sunset
+              in: header
+              description: |
+                The earliest date/time this endpoint will become unavailable after deprecation.
+              schema: *ref_20
+              required: false
+            Link:
+              name: Link
+              in: header
+              description: |
+                URL of the documentation for the API.
+              schema: *ref_21
+              required: false
+        '400':
+          description: Bad request
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                FORMAT_NINO:
+                  description: The format of the supplied NINO field is not valid.
+                  value: *ref_22
+                FORMAT_TAX_YEAR:
+                  description: The format of the supplied tax year field is not valid.
+                  value: *ref_23
+                RULE_TAX_YEAR_RANGE_INVALID:
+                  description: Tax year range invalid. A tax year range of one year is required.
+                  value: *ref_25
+                RULE_TAX_YEAR_NOT_SUPPORTED:
+                  description: |
+                    The specified tax year is not supported.
+                    Either the tax year specified is before the minimum tax year value, or it is after the maximum tax year value.
+                  value: *ref_24
+                RULE_OUTSIDE_AMENDMENT_WINDOW:
+                  description: The request cannot be completed as you are outside the amendment window.
+                  value: *ref_30
+                RULE_INCORRECT_GOV_TEST_SCENARIO:
+                  description: The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. This error will only be returned in the Sandbox environment.
+                  value: *ref_26
+        '403':
+          description: Forbidden
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                CLIENT_OR_AGENT_NOT_AUTHORISED:
+                  description: |
+                    The client or agent is not authorised. This is because: the client is not subscribed to MTD, 
+                    the agent is not subscribed to Agent Services, or the client has not authorised the agent to act on their behalf.
+                  value: *ref_27
+        '404':
+          description: Not Found
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                MATCHING_RESOURCE_NOT_FOUND:
+                  description: The supplied income source could not be found.
+                  value: *ref_31
+        '422':
+          description: Unprocessable Entity
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                RULE_REQUEST_CANNOT_BE_FULFILLED:
+                  description: The request cannot be fulfilled. More specific information is provided in the error message.
+                  value: *ref_28
+  /individuals/dividends-income/uk/{nino}/{taxYear}:
+    get:
+      summary: Retrieve a UK Dividends Income Annual Summary
+      security:
+        - User-Restricted:
+            - read:self-assessment
+      description: |
+        This endpoint enables you to retrieve UK dividends income.
+        A National Insurance number and tax year must be provided.
+
+        ###  Test data
+        Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
+
+        | Header Value (Gov-Test-Scenario) | Scenario                                       |
+        |----------------------------------|------------------------------------------------|
+        | N/A - DEFAULT                    | Simulates success response.                    |
+        | NOT_FOUND                        | Simulates the scenario where no data is found. |
+        | REQUEST_CANNOT_BE_FULFILLED      | Simulates the scenario where the request could not be processed. |
+        | STATEFUL                         | Performs a stateful retrieve.                  |
+      tags:
+        - UK Dividends Income
+      parameters:
+        - name: nino
+          in: path
+          description: |
+            National Insurance number, in the format `AA999999A`
+          schema: *ref_3
+          required: true
+        - name: taxYear
+          in: path
+          description: |
+            The tax year the data applies to. The start year and end year must not span two tax years.
+            No gaps are allowed, for example, 2020-22 is not valid. The minimum tax year is 2017-18.
+          schema: &ref_33
+            type: string
+            example: 2021-22
+          required: true
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format and the version of the API to be used.
+          schema: *ref_5
+          required: true
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 Bearer Token with the *read:self-assessment* scope.
+          schema: *ref_32
+          required: true
+        - name: Gov-Test-Scenario
+          in: header
+          description: |
+            Only in sandbox environment. See Test Data table for all header values.
+          schema: *ref_6
+          required: false
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+            Deprecation:
+              name: Deprecation
+              in: header
+              description: |
+                The deprecation date/time for this endpoint.
+              schema: *ref_19
+              required: false
+            Sunset:
+              name: Sunset
+              in: header
+              description: |
+                The earliest date/time this endpoint will become unavailable after deprecation.
+              schema: *ref_20
+              required: false
+            Link:
+              name: Link
+              in: header
+              description: |
+                URL of the documentation for the API.
+              schema: *ref_21
+              required: false
+          content:
+            application/json:
+              schema:
+                $schema: http://json-schema.org/draft-04/schema#
+                title: Retrieve Dividends Income Response
+                description: Retrieve Dividends Income Response
+                type: object
+                properties:
+                  ukDividends:
+                    type: number
+                    description: The total dividends payments received from UK companies, including any dividends from employee share schemes. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                    example: '3000.50'
+                    multipleOf: 0.01
+                    minimum: 0
+                    maximum: 99999999999.99
+                  otherUkDividends:
+                    type: number
+                    description: |-
+                      Dividends received from these types of UK investment fund:
+
+                      Authorised unit trusts, Open-ended investment companies or Investment trusts. Include dividends from accumulation units or shares, which are automatically reinvested. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                    example: '3000.50'
+                    multipleOf: 0.01
+                    minimum: 0
+                    maximum: 99999999999.99
+              examples:
+                default:
+                  description: Full UK Dividends Response
+                  value:
+                    ukDividends: 10.12
+                    otherUkDividends: 11.12
+        '400':
+          description: Bad request
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                FORMAT_NINO:
+                  description: The format of the supplied NINO field is not valid.
+                  value: *ref_22
+                FORMAT_TAX_YEAR:
+                  description: The format of the supplied tax year field is not valid.
+                  value: *ref_23
+                RULE_TAX_YEAR_NOT_SUPPORTED:
+                  description: |
+                    The specified tax year is not supported.
+                    Either the tax year specified is before the minimum tax year value, or it is after the maximum tax year value.
+                  value: *ref_24
+                RULE_TAX_YEAR_RANGE_INVALID:
+                  description: Tax year range invalid. A tax year range of one year is required.
+                  value: *ref_25
+                RULE_INCORRECT_GOV_TEST_SCENARIO:
+                  description: The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. This error will only be returned in the Sandbox environment.
+                  value: *ref_26
+        '403':
+          description: Forbidden
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                CLIENT_OR_AGENT_NOT_AUTHORISED:
+                  description: |
+                    The client or agent is not authorised. This is because: the client is not subscribed to MTD, 
+                    the agent is not subscribed to Agent Services, or the client has not authorised the agent to act on their behalf.
+                  value: *ref_27
+        '404':
+          description: Not Found
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                MATCHING_RESOURCE_NOT_FOUND:
+                  description: The supplied income source could not be found.
+                  value: *ref_31
+        '422':
+          description: Unprocessable Entity
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                RULE_REQUEST_CANNOT_BE_FULFILLED:
+                  description: The request cannot be fulfilled. More specific information is provided in the error message.
+                  value: *ref_28
+    put:
+      summary: Create and Amend a UK Dividends Income Annual Summary
+      security:
+        - User-Restricted:
+            - write:self-assessment
+      description: |
+        This endpoint enables you to create and amend UK dividends income.
+        A National Insurance number and tax year must be provided.
+
+        ###  Test data
+        Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
+
+        | Header Value (Gov-Test-Scenario) | Scenario                                       |
+        |----------------------------------|------------------------------------------------|
+        | N/A - DEFAULT                    | Simulates success response.                    |
+        | NOT_FOUND                        | Simulates the scenario where no data is found. |
+        | OUTSIDE_AMENDMENT_WINDOW         | Simulates the scenario where request cannot be completed as it is outside the amendment window. |
+        | REQUEST_CANNOT_BE_FULFILLED      | Simulates the scenario where the request could not be processed. |
+        | STATEFUL                         | Performs a stateful create or update.          |  
+      tags:
+        - UK Dividends Income
+      parameters:
+        - name: nino
+          in: path
+          description: |
+            National Insurance number, in the format `AA999999A`
+          schema: *ref_3
+          required: true
+        - name: taxYear
+          in: path
+          description: |
+            The tax year the data applies to. The start year and end year must not span two tax years.
+            No gaps are allowed, for example, 2020-22 is not valid. The minimum tax year is 2017-18.
+          schema: *ref_33
+          required: true
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format and the version of the API to be used.
+          schema: *ref_5
+          required: true
+        - name: Content-Type
+          in: header
+          description: |
+            Specifies the format of the request body, which must be JSON.
+          schema: *ref_34
+          required: true
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 Bearer Token with the *write:self-assessment* scope.
+          schema: *ref_29
+          required: true
+        - name: Gov-Test-Scenario
+          in: header
+          description: |
+            Only in sandbox environment. See Test Data table for all header values.
+          schema: *ref_6
+          required: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $schema: http://json-schema.org/draft-04/schema#
+              title: Create And Amend Dividends Income Request
+              description: Create And Amend Dividends Income Request
+              type: object
+              properties:
+                ukDividends:
+                  type: number
+                  description: The total dividends payments received from UK companies, including any dividends from employee share schemes. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                  example: '1999.99'
+                  multipleOf: 0.01
+                  minimum: 0
+                  'maximum:': 99999999999.99
+                otherUkDividends:
+                  type: number
+                  description: |-
+                    Dividends received from these types of UK investment fund:
+
+                    Authorised unit trusts, Open-ended investment companies or Investment trusts. Include dividends from accumulation units or shares, which are automatically reinvested. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                  example: '1999.99'
+                  multipleOf: 0.01
+                  minimum: 0
+                  'maximum:': 99999999999.99
+            examples:
+              full_amendment:
+                description: Full Dividend Income Amendment
+                value:
+                  ukDividends: 55844806400.99
+                  otherUkDividends: 60267421355.99
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+            Deprecation:
+              name: Deprecation
+              in: header
+              description: |
+                The deprecation date/time for this endpoint.
+              schema: *ref_19
+              required: false
+            Sunset:
+              name: Sunset
+              in: header
+              description: |
+                The earliest date/time this endpoint will become unavailable after deprecation.
+              schema: *ref_20
+              required: false
+            Link:
+              name: Link
+              in: header
+              description: |
+                URL of the documentation for the API.
+              schema: *ref_21
+              required: false
+        '400':
+          description: Bad request
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                FORMAT_NINO:
+                  description: The format of the supplied NINO field is not valid.
+                  value: *ref_22
+                FORMAT_TAX_YEAR:
+                  description: The format of the supplied tax year field is not valid.
+                  value: *ref_23
+                RULE_OUTSIDE_AMENDMENT_WINDOW:
+                  description: The request cannot be completed as you are outside the amendment window.
+                  value: *ref_30
+                RULE_TAX_YEAR_NOT_SUPPORTED:
+                  description: |
+                    The specified tax year is not supported.
+                    Either the tax year specified is before the minimum tax year value, or it is after the maximum tax year value.
+                  value: *ref_24
+                RULE_TAX_YEAR_RANGE_INVALID:
+                  description: Tax year range invalid. A tax year range of one year is required.
+                  value: *ref_25
+                FORMAT_VALUE:
+                  description: One or more values have been added with the incorrect format.
+                  value: *ref_35
+                RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED:
+                  description: An empty or non-matching body was submitted.
+                  value: *ref_36
+                RULE_INCORRECT_GOV_TEST_SCENARIO:
+                  description: The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. This error will only be returned in the Sandbox environment.
+                  value: *ref_26
+        '403':
+          description: Forbidden
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                CLIENT_OR_AGENT_NOT_AUTHORISED:
+                  description: |
+                    The client or agent is not authorised. This is because: the client is not subscribed to MTD, 
+                    the agent is not subscribed to Agent Services, or the client has not authorised the agent to act on their behalf.
+                  value: *ref_27
+        '404':
+          description: Not Found
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                MATCHING_RESOURCE_NOT_FOUND:
+                  description: The supplied income source could not be found.
+                  value: *ref_31
+        '422':
+          description: Unprocessable Entity
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                RULE_REQUEST_CANNOT_BE_FULFILLED:
+                  description: The request cannot be fulfilled. More specific information is provided in the error message.
+                  value: *ref_28
+    delete:
+      summary: Delete a UK Dividends Income Annual Summary
+      security:
+        - User-Restricted:
+            - write:self-assessment
+      description: |
+        This endpoint enables you to delete a UK dividends income annual summary for a tax year.
+        A National Insurance Number and tax year must be provided.
+
+        ### Test data
+        Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment. In sandbox, this endpoint requires a DELETE request with a Gov-Test-Scenario header to simulate a success response.
+
+        | Header Value (Gov-Test-Scenario) | Scenario                                       |
+        |----------------------------------|------------------------------------------------|
+        | DELETE                           | Simulates success response.                    |
+        | NOT_FOUND                        | Simulates the scenario where no data is found. |
+        | OUTSIDE_AMENDMENT_WINDOW         | Simulates the scenario where request cannot be completed as it is outside the amendment window. |
+        | REQUEST_CANNOT_BE_FULFILLED      | Simulates the scenario where the request could not be processed. |
+        | STATEFUL                         | Performs a stateful delete.                    | 
+      tags:
+        - UK Dividends Income
+      parameters:
+        - name: nino
+          in: path
+          description: |
+            National Insurance number, in the format `AA999999A`
+          schema: *ref_3
+          required: true
+        - name: taxYear
+          in: path
+          description: |
+            The tax year the data applies to. The start year and end year must not span two tax years.
+            No gaps are allowed, for example, 2020-22 is not valid. The minimum tax year is 2017-18.
+          schema: *ref_33
+          required: true
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format and the version of the API to be used.
+          schema: *ref_5
+          required: true
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 Bearer Token with the *write:self-assessment* scope.
+          schema: *ref_29
+          required: true
+        - name: Gov-Test-Scenario
+          in: header
+          description: |
+            Only in sandbox environment. See Test Data table for all header values.
+          schema: *ref_6
+          required: false
+      responses:
+        '204':
+          description: No Content
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+            Deprecation:
+              name: Deprecation
+              in: header
+              description: |
+                The deprecation date/time for this endpoint.
+              schema: *ref_19
+              required: false
+            Sunset:
+              name: Sunset
+              in: header
+              description: |
+                The earliest date/time this endpoint will become unavailable after deprecation.
+              schema: *ref_20
+              required: false
+            Link:
+              name: Link
+              in: header
+              description: |
+                URL of the documentation for the API.
+              schema: *ref_21
+              required: false
+        '400':
+          description: Bad request
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                FORMAT_NINO:
+                  description: The format of the supplied NINO field is not valid.
+                  value: *ref_22
+                FORMAT_TAX_YEAR:
+                  description: The format of the supplied tax year field is not valid.
+                  value: *ref_23
+                RULE_OUTSIDE_AMENDMENT_WINDOW:
+                  description: The request cannot be completed as you are outside the amendment window.
+                  value: *ref_30
+                RULE_TAX_YEAR_NOT_SUPPORTED:
+                  description: |
+                    The specified tax year is not supported.
+                    Either the tax year specified is before the minimum tax year value, or it is after the maximum tax year value.
+                  value: *ref_24
+                RULE_TAX_YEAR_RANGE_INVALID:
+                  description: Tax year range invalid. A tax year range of one year is required.
+                  value: *ref_25
+                RULE_INCORRECT_GOV_TEST_SCENARIO:
+                  description: The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. This error will only be returned in the Sandbox environment.
+                  value: *ref_26
+        '403':
+          description: Forbidden
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                CLIENT_OR_AGENT_NOT_AUTHORISED:
+                  description: |
+                    The client or agent is not authorised. This is because: the client is not subscribed to MTD, 
+                    the agent is not subscribed to Agent Services, or the client has not authorised the agent to act on their behalf.
+                  value: *ref_27
+        '404':
+          description: Not Found
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                MATCHING_RESOURCE_NOT_FOUND:
+                  description: The supplied income source could not be found.
+                  value: *ref_31
+        '422':
+          description: Unprocessable Entity
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                RULE_REQUEST_CANNOT_BE_FULFILLED:
+                  description: The request cannot be fulfilled. More specific information is provided in the error message.
+                  value: *ref_28
+  /individuals/dividends-income/directorship/{nino}/{taxYear}/{employmentId}:
+    get:
+      summary: Retrieve Additional Directorship and Dividend Information
+      security:
+        - User-Restricted:
+            - read:self-assessment
+      description: |
+        This endpoint enables you to retrieve additional directorship/dividend information under each employment ID.
+        A National Insurance number, tax year and employment ID must be provided.
+
+        <strong>Note:</strong> To obtain the employment ID, use the List Employments endpoint in the [Individuals Employments Income API](/api-documentation/docs/api/service/individuals-employments-income-api).  
+
+        ### Test data
+        Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
+
+        | Header Value (Gov-Test-Scenario) | Scenario                                                                                                                      |
+        |----------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+        | N/A - DEFAULT                    | Simulates success response.                                                                                                   |
+        | NOT_FOUND                        | Simulates the scenario where no data is found.                                                                                |
+        | REQUEST_CANNOT_BE_FULFILLED      | Simulates the scenario where the request cannot be fulfilled for various reasons other than the ones triggering other errors. |
+        | STATEFUL                         | Performs a stateful retrieve.                                                                                                   |
+      tags:
+        - Additional Directorship and Dividend Information
+      parameters:
+        - name: nino
+          in: path
+          description: |
+            National Insurance number, in the format `AA999999A`
+          schema: *ref_3
+          required: true
+        - name: taxYear
+          in: path
+          description: |
+            The tax year to which the data applies. The start year and end year must not span two tax years.
+            The minimum tax year is 2025-26. No gaps are allowed, for example, 2025-27 is not valid.
+          schema: &ref_37
+            type: string
+            example: 2025-26
+          required: true
+        - name: employmentId
+          in: path
+          description: The unique identifier for the employment.
+          schema: &ref_38
+            type: string
+            pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$
+            example: 4557ecb5-fd32-48cc-81f5-e6acd1099f3c
+          required: true
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format and the version of the API to be used.
+          schema: *ref_5
+          required: true
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 Bearer Token with the *read:self-assessment* scope.
+          schema: *ref_32
+          required: true
+        - name: Gov-Test-Scenario
+          in: header
+          description: |
+            Only in sandbox environment. See Test Data table for all header values.
+          schema: *ref_6
+          required: false
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+            Deprecation:
+              name: Deprecation
+              in: header
+              description: |
+                The deprecation date/time for this endpoint.
+              schema: *ref_19
+              required: false
+            Sunset:
+              name: Sunset
+              in: header
+              description: |
+                The earliest date/time this endpoint will become unavailable after deprecation.
+              schema: *ref_20
+              required: false
+            Link:
+              name: Link
+              in: header
+              description: |
+                URL of the documentation for the API.
+              schema: *ref_21
+              required: false
+          content:
+            application/json:
+              schema:
+                $schema: http://json-schema.org/draft-04/schema#
+                title: Retrieve Additional Directorship and Dividend Information Response
+                description: Retrieve Additional Directorship and Dividend Information Response
+                type: object
+                properties:
+                  companyDirector:
+                    type: boolean
+                    description: Indicates whether a taxable entity is a director or not.
+                    example: true
+                  closeCompany:
+                    type: boolean
+                    description: Indicates whether the company is a close company. This field is always returned when companyDirector is true.
+                    example: true
+                  directorshipCeasedDate:
+                    type: string
+                    description: Date when the directorship ceased. This will cease the rollover across tax years for custom employments that were created for Additional Dividends and Directorship. Must conform to the format YYYY-MM-DD
+                    format: date
+                    example: '2025-07-01'
+                  companyName:
+                    type: string
+                    description: The name by which the company is registered with Companies House. This field is always returned when closeCompany is true.
+                    example: Comapny One
+                    pattern: ^.{0,160}$
+                  companyNumber:
+                    type: string
+                    description: The number by which the company is registered with Companies House. This field is always returned when closeCompany is true.
+                    example: '36488522'
+                    pattern: ^(?:\d{8}|[A-Za-z]{2}\d{6})$
+                  shareholding:
+                    type: number
+                    description: The percentage shareholding of the company. This field is always returned when closeCompany is true. A value of 0 indicates no shareholding. The value must be between 0 and 100 up to 2 decimal places.
+                    example: 20.99
+                    multipleOf: 0.01
+                    minimum: 0
+                    maximum: 100
+                  dividendReceived:
+                    type: number
+                    description: The amount of dividends received from the company. This field is always returned when closeCompany is true. A value of 0 indicates no dividends were received. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                    example: 1024.99
+                    multipleOf: 0.01
+                    minimum: 0
+                    maximum: 99999999999.99
+                  submittedOn:
+                    type: string
+                    description: The date and time of the submission. Must conform to the format YYYY-MM-DDThh:mm:ss.SSSZ
+                    format: date-time
+                    example: '2025-08-24T14:15:22.802Z'
+                additionalProperties: false
+                required:
+                  - companyDirector
+                  - submittedOn
+              example:
+                companyDirector: true
+                closeCompany: true
+                directorshipCeasedDate: '2025-07-01'
+                companyName: Company One
+                companyNumber: '36488522'
+                shareholding: 20.95
+                dividendReceived: 1024.99
+                submittedOn: '2025-08-24T14:15:22.802Z'
+        '400':
+          description: Bad request
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+            Deprecation:
+              name: Deprecation
+              in: header
+              description: |
+                The deprecation date/time for this endpoint.
+              schema: *ref_19
+              required: false
+            Sunset:
+              name: Sunset
+              in: header
+              description: |
+                The earliest date/time this endpoint will become unavailable after deprecation.
+              schema: *ref_20
+              required: false
+            Link:
+              name: Link
+              in: header
+              description: |
+                URL of the documentation for the API.
+              schema: *ref_21
+              required: false
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                FORMAT_NINO:
+                  description: The format of the supplied NINO field is not valid.
+                  value: *ref_22
+                FORMAT_TAX_YEAR:
+                  description: The format of the supplied tax year field is not valid.
+                  value: *ref_23
+                FORMAT_EMPLOYMENT_ID:
+                  description: The format of the supplied employment ID field is not valid.
+                  value: &ref_39
+                    code: FORMAT_EMPLOYMENT_ID
+                    message: The employment ID format is invalid
+                RULE_TAX_YEAR_RANGE_INVALID:
+                  description: Tax year range invalid. A tax year range of one year is required.
+                  value: *ref_25
+                RULE_TAX_YEAR_NOT_SUPPORTED:
+                  description: |
+                    The specified tax year is not supported.
+                    Either the tax year specified is before the minimum tax year value, or it is after the maximum tax year value.
+                  value: *ref_24
+                RULE_INCORRECT_GOV_TEST_SCENARIO:
+                  description: The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. This error will only be returned in the Sandbox environment.
+                  value: *ref_26
+        '403':
+          description: Forbidden
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+            Deprecation:
+              name: Deprecation
+              in: header
+              description: |
+                The deprecation date/time for this endpoint.
+              schema: *ref_19
+              required: false
+            Sunset:
+              name: Sunset
+              in: header
+              description: |
+                The earliest date/time this endpoint will become unavailable after deprecation.
+              schema: *ref_20
+              required: false
+            Link:
+              name: Link
+              in: header
+              description: |
+                URL of the documentation for the API.
+              schema: *ref_21
+              required: false
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                CLIENT_OR_AGENT_NOT_AUTHORISED:
+                  description: |
+                    The client or agent is not authorised. This is because: the client is not subscribed to MTD, 
+                    the agent is not subscribed to Agent Services, or the client has not authorised the agent to act on their behalf.
+                  value: *ref_27
+        '404':
+          description: Not Found
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+            Deprecation:
+              name: Deprecation
+              in: header
+              description: |
+                The deprecation date/time for this endpoint.
+              schema: *ref_19
+              required: false
+            Sunset:
+              name: Sunset
+              in: header
+              description: |
+                The earliest date/time this endpoint will become unavailable after deprecation.
+              schema: *ref_20
+              required: false
+            Link:
+              name: Link
+              in: header
+              description: |
+                URL of the documentation for the API.
+              schema: *ref_21
+              required: false
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                MATCHING_RESOURCE_NOT_FOUND:
+                  description: The supplied income source could not be found.
+                  value: *ref_31
+        '422':
+          description: Unprocessable Entity
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+            Deprecation:
+              name: Deprecation
+              in: header
+              description: |
+                The deprecation date/time for this endpoint.
+              schema: *ref_19
+              required: false
+            Sunset:
+              name: Sunset
+              in: header
+              description: |
+                The earliest date/time this endpoint will become unavailable after deprecation.
+              schema: *ref_20
+              required: false
+            Link:
+              name: Link
+              in: header
+              description: |
+                URL of the documentation for the API.
+              schema: *ref_21
+              required: false
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                RULE_REQUEST_CANNOT_BE_FULFILLED:
+                  description: The request cannot be fulfilled. More specific information is provided in the error message.
+                  value: *ref_28
+    delete:
+      summary: Delete Additional Directorship and Dividend Information
+      security:
+        - User-Restricted:
+            - write:self-assessment
+      description: |
+        This endpoint enables you to delete additional directorship/dividend information under each employment ID.
+        A National Insurance number, tax year and employment ID must be provided.
+
+        <strong>Note:</strong> To obtain the employment ID, use the List Employments endpoint in the [Individuals Employments Income API](/api-documentation/docs/api/service/individuals-employments-income-api).
+
+        ### Test data
+        Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
+
+        | Header Value (Gov-Test-Scenario) | Scenario                                                                                                                      |
+        |----------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+        | N/A - DEFAULT                    | Simulates success response.                                                                                                   |
+        | NOT_FOUND                        | Simulates the scenario where no data is found.                                                                                |
+        | REQUEST_CANNOT_BE_FULFILLED      | Simulates the scenario where the request cannot be fulfilled for various reasons other than the ones triggering other errors. |
+        | STATEFUL                         | Performs a stateful delete.                                                                                                   |   
+      tags:
+        - Additional Directorship and Dividend Information
+      parameters:
+        - name: nino
+          in: path
+          description: |
+            National Insurance number, in the format `AA999999A`
+          schema: *ref_3
+          required: true
+        - name: taxYear
+          in: path
+          description: |
+            The tax year to which the data applies. The start year and end year must not span two tax years.
+            The minimum tax year is 2025-26. No gaps are allowed, for example, 2025-27 is not valid.
+          schema: *ref_37
+          required: true
+        - name: employmentId
+          in: path
+          description: The unique identifier for the employment.
+          schema: *ref_38
+          required: true
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format and the version of the API to be used.
+          schema: *ref_5
+          required: true
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 Bearer Token with the *write:self-assessment* scope.
+          schema: *ref_29
+          required: true
+        - name: Gov-Test-Scenario
+          in: header
+          description: |
+            Only in sandbox environment. See Test Data table for all header values.
+          schema: *ref_6
+          required: false
+      responses:
+        '204':
+          description: No Content
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+            Deprecation:
+              name: Deprecation
+              in: header
+              description: |
+                The deprecation date/time for this endpoint.
+              schema: *ref_19
+              required: false
+            Sunset:
+              name: Sunset
+              in: header
+              description: |
+                The earliest date/time this endpoint will become unavailable after deprecation.
+              schema: *ref_20
+              required: false
+            Link:
+              name: Link
+              in: header
+              description: |
+                URL of the documentation for the API.
+              schema: *ref_21
+              required: false
+        '400':
+          description: Bad request
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+            Deprecation:
+              name: Deprecation
+              in: header
+              description: |
+                The deprecation date/time for this endpoint.
+              schema: *ref_19
+              required: false
+            Sunset:
+              name: Sunset
+              in: header
+              description: |
+                The earliest date/time this endpoint will become unavailable after deprecation.
+              schema: *ref_20
+              required: false
+            Link:
+              name: Link
+              in: header
+              description: |
+                URL of the documentation for the API.
+              schema: *ref_21
+              required: false
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                FORMAT_NINO:
+                  description: The format of the supplied NINO field is not valid.
+                  value: *ref_22
+                FORMAT_TAX_YEAR:
+                  description: The format of the supplied tax year field is not valid.
+                  value: *ref_23
+                FORMAT_EMPLOYMENT_ID:
+                  description: The format of the supplied employment ID field is not valid.
+                  value: *ref_39
+                RULE_TAX_YEAR_RANGE_INVALID:
+                  description: Tax year range invalid. A tax year range of one year is required.
+                  value: *ref_25
+                RULE_TAX_YEAR_NOT_SUPPORTED:
+                  description: |
+                    The specified tax year is not supported.
+                    Either the tax year specified is before the minimum tax year value, or it is after the maximum tax year value.
+                  value: *ref_24
+                RULE_INCORRECT_GOV_TEST_SCENARIO:
+                  description: The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. This error will only be returned in the Sandbox environment.
+                  value: *ref_26
+        '403':
+          description: Forbidden
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+            Deprecation:
+              name: Deprecation
+              in: header
+              description: |
+                The deprecation date/time for this endpoint.
+              schema: *ref_19
+              required: false
+            Sunset:
+              name: Sunset
+              in: header
+              description: |
+                The earliest date/time this endpoint will become unavailable after deprecation.
+              schema: *ref_20
+              required: false
+            Link:
+              name: Link
+              in: header
+              description: |
+                URL of the documentation for the API.
+              schema: *ref_21
+              required: false
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                CLIENT_OR_AGENT_NOT_AUTHORISED:
+                  description: |
+                    The client or agent is not authorised. This is because: the client is not subscribed to MTD, 
+                    the agent is not subscribed to Agent Services, or the client has not authorised the agent to act on their behalf.
+                  value: *ref_27
+        '404':
+          description: Not Found
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+            Deprecation:
+              name: Deprecation
+              in: header
+              description: |
+                The deprecation date/time for this endpoint.
+              schema: *ref_19
+              required: false
+            Sunset:
+              name: Sunset
+              in: header
+              description: |
+                The earliest date/time this endpoint will become unavailable after deprecation.
+              schema: *ref_20
+              required: false
+            Link:
+              name: Link
+              in: header
+              description: |
+                URL of the documentation for the API.
+              schema: *ref_21
+              required: false
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                MATCHING_RESOURCE_NOT_FOUND:
+                  description: The supplied income source could not be found.
+                  value: *ref_31
+        '422':
+          description: Unprocessable Entity
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+            Deprecation:
+              name: Deprecation
+              in: header
+              description: |
+                The deprecation date/time for this endpoint.
+              schema: *ref_19
+              required: false
+            Sunset:
+              name: Sunset
+              in: header
+              description: |
+                The earliest date/time this endpoint will become unavailable after deprecation.
+              schema: *ref_20
+              required: false
+            Link:
+              name: Link
+              in: header
+              description: |
+                URL of the documentation for the API.
+              schema: *ref_21
+              required: false
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                RULE_REQUEST_CANNOT_BE_FULFILLED:
+                  description: The request cannot be fulfilled. More specific information is provided in the error message.
+                  value: *ref_28
+    put:
+      summary: Create or Amend Additional Directorship and Dividend Information
+      security:
+        - User-Restricted:
+            - write:self-assessment
+      description: |
+        This endpoint enables you to create or amend additional directorship/dividend information under each employment ID.
+        A National Insurance number, tax year and employment ID must be provided.
+
+        <strong>Note:</strong> To obtain the employment ID, use the List Employments endpoint in the [Individuals Employments Income API](/api-documentation/docs/api/service/individuals-employments-income-api).
+
+        ### Test data
+        Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
+
+        | Header Value (Gov-Test-Scenario) | Scenario                                                                                                                      |
+        |----------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+        | N/A - DEFAULT                    | Simulates success response.                                                                                                   |
+        | NOT_FOUND                        | Simulates the scenario where no data is found.                                                                                |
+        | REQUEST_CANNOT_BE_FULFILLED      | Simulates the scenario where the request cannot be fulfilled for various reasons other than the ones triggering other errors. |
+        | STATEFUL                         | Performs a stateful create or amend.                                                                                          |
+      tags:
+        - Additional Directorship and Dividend Information
+      parameters:
+        - name: nino
+          in: path
+          description: |
+            National Insurance number, in the format `AA999999A`
+          schema: *ref_3
+          required: true
+        - name: taxYear
+          in: path
+          description: |
+            The tax year to which the data applies. The start year and end year must not span two tax years.
+            The minimum tax year is 2025-26. No gaps are allowed, for example, 2025-27 is not valid.
+          schema: *ref_37
+          required: true
+        - name: employmentId
+          in: path
+          description: The unique identifier for the employment.
+          schema: *ref_38
+          required: true
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format and the version of the API to be used.
+          schema: *ref_5
+          required: true
+        - name: Content-Type
+          in: header
+          description: |
+            Specifies the format of the request body, which must be JSON.
+          schema: *ref_34
+          required: true
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 Bearer Token with the *write:self-assessment* scope.
+          schema: *ref_29
+          required: true
+        - name: Gov-Test-Scenario
+          in: header
+          description: |
+            Only in sandbox environment. See Test Data table for all header values.
+          schema: *ref_6
+          required: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $schema: http://json-schema.org/draft-04/schema#
+              title: Create or Amend Additional Directorship Dividend Request
+              description: Create or Amend Additional Directorship Dividend Request
+              type: object
+              properties:
+                companyDirector:
+                  type: boolean
+                  description: Indicates whether a taxable entity is a director or not
+                  example: 'false'
+                closeCompany:
+                  type: boolean
+                  description: Indicates whether the company is a close company. This is required where companyDirector property is true.
+                  example: 'false'
+                directorshipCeasedDate:
+                  type: string
+                  description: Date when the directorship ceased. This will cease the rollover across tax years for custom employments that were created for Additional Dividends and Directorship. Must conform to the format YYYY-MM-DD
+                  example: '2025-07-01'
+                  pattern: YYYY-MM-DD
+                companyName:
+                  type: string
+                  description: The name by which the company is registered with Companies House. This is required where closeCompany is true.
+                  example: Company One
+                  pattern: ^.{0,160}$
+                companyNumber:
+                  type: string
+                  description: The number by which the company is registered with Companies House. This is required where closeCompany is true.
+                  example: '36488522'
+                  pattern: ^(?:\d{8}|[A-Za-z]{2}\d{6})$
+                shareholding:
+                  type: number
+                  description: |-
+                    The percentage shareholding of the company. This is required where closeCompany is true. Where there is no shareholding, a zero can be submitted.
+
+                    The value must be between 0 and 100 up to 2 decimal places.
+                  example: '20.99'
+                  multipleOf: 0.01
+                  minimum: 0
+                  'maximum:': 100
+                dividendReceived:
+                  type: number
+                  description: |-
+                    The amount of dividends received from the company. This is required where closeCompany is true. Where no dividends are received, a zero can be submitted.
+
+                    The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                  example: '1024.99'
+                  multipleOf: 0.01
+                  minimum: 0
+                  'maximum:': 99999999999.99
+              required:
+                - companyDirector
+            examples:
+              full_amendment:
+                description: Full Additional Directorship Dividend Amendment
+                value:
+                  companyDirector: true
+                  closeCompany: true
+                  directorshipCeasedDate: '2025-07-01'
+                  companyName: Company One
+                  companyNumber: '36488522'
+                  shareholding: 20.99
+                  dividendReceived: 1024.99
+              minimum_amendment:
+                description: Minimum Additional Directorship Dividend Amendment
+                value:
+                  companyDirector: false
+      responses:
+        '204':
+          description: No Content
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+            Deprecation:
+              name: Deprecation
+              in: header
+              description: |
+                The deprecation date/time for this endpoint.
+              schema: *ref_19
+              required: false
+            Sunset:
+              name: Sunset
+              in: header
+              description: |
+                The earliest date/time this endpoint will become unavailable after deprecation.
+              schema: *ref_20
+              required: false
+            Link:
+              name: Link
+              in: header
+              description: |
+                URL of the documentation for the API.
+              schema: *ref_21
+              required: false
+        '400':
+          description: Bad request
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+            Deprecation:
+              name: Deprecation
+              in: header
+              description: |
+                The deprecation date/time for this endpoint.
+              schema: *ref_19
+              required: false
+            Sunset:
+              name: Sunset
+              in: header
+              description: |
+                The earliest date/time this endpoint will become unavailable after deprecation.
+              schema: *ref_20
+              required: false
+            Link:
+              name: Link
+              in: header
+              description: |
+                URL of the documentation for the API.
+              schema: *ref_21
+              required: false
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                FORMAT_NINO:
+                  description: The format of the supplied NINO field is not valid.
+                  value: *ref_22
+                FORMAT_TAX_YEAR:
+                  description: The format of the supplied tax year field is not valid.
+                  value: *ref_23
+                FORMAT_EMPLOYMENT_ID:
+                  description: The format of the supplied employment ID field is not valid.
+                  value: *ref_39
+                RULE_TAX_YEAR_RANGE_INVALID:
+                  description: Tax year range invalid. A tax year range of one year is required.
+                  value: *ref_25
+                RULE_TAX_YEAR_NOT_SUPPORTED:
+                  description: |
+                    The specified tax year is not supported.
+                    Either the tax year specified is before the minimum tax year value, or it is after the maximum tax year value.
+                  value: *ref_24
+                RULE_INCORRECT_GOV_TEST_SCENARIO:
+                  description: The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. This error will only be returned in the Sandbox environment.
+                  value: *ref_26
+                RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED:
+                  description: An empty or non-matching body was submitted.
+                  value: *ref_36
+                FORMAT_VALUE:
+                  description: One or more values have been added with the incorrect format.
+                  value: *ref_35
+                FORMAT_COMPANY_NAME:
+                  description: The format of the supplied company name field is not valid.
+                  value:
+                    code: FORMAT_COMPANY_NAME
+                    message: The company name format is invalid
+                FORMAT_COMPANY_NUMBER:
+                  description: The format of the supplied company number field is not valid.
+                  value:
+                    code: FORMAT_COMPANY_NUMBER
+                    message: The company number format is invalid
+                FORMAT_DIRECTORSHIP_CEASED_DATE:
+                  description: The format of the supplied directorship ceased date field is not valid.
+                  value:
+                    code: FORMAT_DIRECTORSHIP_CEASED_DATE
+                    message: The directorship ceased date format is invalid
+                RULE_MISSING_CLOSE_COMPANY:
+                  description: Close company field is required for directors.
+                  value:
+                    code: RULE_MISSING_CLOSE_COMPANY
+                    message: closeCompany is required when companyDirector is set to true
+                RULE_MISSING_CLOSE_COMPANY_DETAILS:
+                  description: Close company details are required when the company is a close company.
+                  value:
+                    code: RULE_MISSING_CLOSE_COMPANY_DETAILS
+                    message: Close company details are required when closeCompany is set to true
+                RULE_DIRECTORSHIP_CEASED_DATE:
+                  description: The directorship ceased date must be within the tax year.
+                  value:
+                    code: RULE_DIRECTORSHIP_CEASED_DATE
+                    message: The directorship ceased date must be within the tax year
+        '403':
+          description: Forbidden
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+            Deprecation:
+              name: Deprecation
+              in: header
+              description: |
+                The deprecation date/time for this endpoint.
+              schema: *ref_19
+              required: false
+            Sunset:
+              name: Sunset
+              in: header
+              description: |
+                The earliest date/time this endpoint will become unavailable after deprecation.
+              schema: *ref_20
+              required: false
+            Link:
+              name: Link
+              in: header
+              description: |
+                URL of the documentation for the API.
+              schema: *ref_21
+              required: false
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                CLIENT_OR_AGENT_NOT_AUTHORISED:
+                  description: |
+                    The client or agent is not authorised. This is because: the client is not subscribed to MTD, 
+                    the agent is not subscribed to Agent Services, or the client has not authorised the agent to act on their behalf.
+                  value: *ref_27
+        '404':
+          description: Not Found
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+            Deprecation:
+              name: Deprecation
+              in: header
+              description: |
+                The deprecation date/time for this endpoint.
+              schema: *ref_19
+              required: false
+            Sunset:
+              name: Sunset
+              in: header
+              description: |
+                The earliest date/time this endpoint will become unavailable after deprecation.
+              schema: *ref_20
+              required: false
+            Link:
+              name: Link
+              in: header
+              description: |
+                URL of the documentation for the API.
+              schema: *ref_21
+              required: false
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                MATCHING_RESOURCE_NOT_FOUND:
+                  description: The supplied income source could not be found.
+                  value: *ref_31
+        '422':
+          description: Unprocessable Entity
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking.
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+            Deprecation:
+              name: Deprecation
+              in: header
+              description: |
+                The deprecation date/time for this endpoint.
+              schema: *ref_19
+              required: false
+            Sunset:
+              name: Sunset
+              in: header
+              description: |
+                The earliest date/time this endpoint will become unavailable after deprecation.
+              schema: *ref_20
+              required: false
+            Link:
+              name: Link
+              in: header
+              description: |
+                URL of the documentation for the API.
+              schema: *ref_21
+              required: false
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                RULE_REQUEST_CANNOT_BE_FULFILLED:
+                  description: The request cannot be fulfilled. More specific information is provided in the error message.
+                  value: *ref_28
+components:
+  securitySchemes:
+    User-Restricted:
+      type: oauth2
+      description: HMRC supports OAuth 2.0 for authenticating [User-restricted](https://developer.service.hmrc.gov.uk/api-documentation/docs/authorisation/user-restricted-endpoints) API requests
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.service.hmrc.gov.uk/oauth/authorize
+          tokenUrl: https://api.service.hmrc.gov.uk/oauth/token
+          refreshUrl: https://api.service.hmrc.gov.uk/oauth/refresh
+          scopes:
+            write:self-assessment: Grant write access
+            read:self-assessment: Grant read access
