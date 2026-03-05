@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,9 @@
 package shared.definition
 
 import cats.implicits.catsSyntaxValidatedId
+import play.api.libs.json.Json
 import shared.config.Deprecation.NotDeprecated
-import shared.config.{SharedAppConfig, MockSharedAppConfig}
+import shared.config.{MockSharedAppConfig, SharedAppConfig}
 import shared.definition.APIStatus.{ALPHA, BETA}
 import shared.mocks.MockHttpClient
 import shared.routing.*
@@ -69,6 +70,21 @@ class ApiDefinitionFactorySpec extends UnitSpec {
     }
   }
 
+  "APIVersion Json.format" should {
+
+    "round-trip successfully" in {
+      val model = APIVersion(
+        version = Version2,
+        status = APIStatus.BETA,
+        endpointsEnabled = true
+      )
+
+      val json = Json.toJson(model)
+
+      json.as[APIVersion] shouldBe model
+    }
+  }
+
   trait Test extends UnitSpec with MockHttpClient with MockSharedAppConfig {
     MockedSharedAppConfig.apiGatewayContext returns "individuals/dividends-income"
 
@@ -81,7 +97,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
           "description",
           "context",
           List("category"),
-          List(APIVersion(Version1, APIStatus.BETA, endpointsEnabled = true)),
+          List(APIVersion(Version2, APIStatus.BETA, endpointsEnabled = true)),
           None)
       )
 
