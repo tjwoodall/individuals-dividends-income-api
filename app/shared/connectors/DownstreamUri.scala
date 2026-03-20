@@ -28,9 +28,6 @@ object DownstreamUri {
   private def withStandardStrategy[Resp](path: String, config: DownstreamConfig) =
     DownstreamUri(path, DownstreamStrategy.standardStrategy(config))
 
-  def DesUri[Resp](value: String)(implicit appConfig: SharedAppConfig): DownstreamUri[Resp] =
-    withStandardStrategy(value, appConfig.desDownstreamConfig)
-
   def IfsUri[Resp](value: String)(implicit appConfig: SharedAppConfig): DownstreamUri[Resp] =
     withStandardStrategy(value, appConfig.ifsDownstreamConfig)
 

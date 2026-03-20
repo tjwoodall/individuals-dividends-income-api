@@ -30,14 +30,8 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
 
   "DeleteUkDividendsIncomeAnnualSummaryConnector" should {
     "return the expected response for a non-TYS request" when {
-      "a valid request is made and `isPassDeleteIntentEnabled` feature switch is on and isDesIfMigrationEnabled is on" in new IfsTest with Test {
+      "a valid request is made and `isPassDeleteIntentEnabled` feature switch is on" in new IfsTest with Test {
         def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
-        MockedSharedAppConfig.featureSwitchConfig
-          .anyNumberOfTimes()
-          .returns(
-            Configuration(
-              "desIf_Migration.enabled" -> "true"
-            ))
 
         val outcome = Right(ResponseWrapper(correlationId, ()))
 
@@ -56,68 +50,10 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
         await(connector.delete(request)) shouldBe outcome
       }
 
-      "a valid request is made and `isPassDeleteIntentEnabled` feature switch is on and isDefIfMigrationEnabled is off" in new DesTest with Test {
-        MockedSharedAppConfig.featureSwitchConfig
-          .anyNumberOfTimes()
-          .returns(
-            Configuration(
-              "desIf_Migration.enabled" -> "false"
-            ))
+      "a valid request is made and `isPassDeleteIntentEnabled` feature switch is off" in new IfsTest with Test {
 
         def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
         val outcome          = Right(ResponseWrapper(correlationId, ()))
-
-        willPost(
-          url = url"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}",
-          body = Json.parse("""{}""")
-        ).returns(Future.successful(outcome))
-
-        MockedSharedAppConfig.featureSwitchConfig
-          .anyNumberOfTimes()
-          .returns(
-            Configuration(
-              "passDeleteIntentHeader.enabled" -> "true"
-            ))
-
-        await(connector.delete(request)) shouldBe outcome
-      }
-
-      "a valid request is made and `isPassDeleteIntentEnabled` feature switch is off and isDesMigrationEnabled is off" in new DesTest with Test {
-        MockedSharedAppConfig.featureSwitchConfig
-          .anyNumberOfTimes()
-          .returns(
-            Configuration(
-              "desIf_Migration.enabled" -> "false"
-            ))
-
-        def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
-        val outcome          = Right(ResponseWrapper(correlationId, ()))
-
-        willPost(
-          url = url"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}",
-          body = Json.parse("""{}""")
-        ).returns(Future.successful(outcome))
-
-        MockedSharedAppConfig.featureSwitchConfig
-          .anyNumberOfTimes()
-          .returns(
-            Configuration(
-              "passDeleteIntentHeader.enabled" -> "false"
-            ))
-
-        await(connector.delete(request)) shouldBe outcome
-      }
-
-      "a valid request is made and `isPassDeleteIntentEnabled` feature switch is off and isDesMigrationEnabled is on" in new IfsTest with Test {
-        def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
-        MockedSharedAppConfig.featureSwitchConfig
-          .once()
-          .returns(
-            Configuration(
-              "desIf_Migration.enabled" -> "true"
-            ))
-
-        val outcome = Right(ResponseWrapper(correlationId, ()))
 
         willPost(
           url = url"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}",

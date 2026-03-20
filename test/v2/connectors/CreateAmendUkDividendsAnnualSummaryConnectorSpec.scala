@@ -16,7 +16,6 @@
 
 package v2.connectors
 
-import play.api.Configuration
 import shared.connectors.{ConnectorSpec, DownstreamOutcome}
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.outcomes.ResponseWrapper
@@ -34,37 +33,9 @@ class CreateAmendUkDividendsAnnualSummaryConnectorSpec extends ConnectorSpec {
   private val body = CreateAmendUkDividendsIncomeAnnualSummaryBody(None, None)
 
   "CreateAmendUkDividendsAnnualSummaryConnector" when {
-    "createOrAmendAnnualSummary called and 'isDesIfMigrationEnabled' is off" must {
-      "return a 200 status for a success scenario" in
-        new DesTest with Test {
-          MockedSharedAppConfig.featureSwitchConfig
-            .anyNumberOfTimes()
-            .returns(
-              Configuration(
-                "desIf_Migration.enabled" -> "false"
-              ))
-
-          def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
-
-          val outcome = Right(ResponseWrapper(correlationId, ()))
-
-          willPost(url"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}", body) returns Future.successful(
-            outcome)
-
-          val result: DownstreamOutcome[Unit] = await(connector.createAmendUkDividends(request))
-          result shouldBe outcome
-        }
-    }
-
-    "createOrAmendAnnualSummary called and 'isDesIfMigrationEnabled' is on" must {
+    "createOrAmendAnnualSummary called for a non-TYS request" must {
       "return a 200 status for a success scenario" in
         new IfsTest with Test {
-          MockedSharedAppConfig.featureSwitchConfig
-            .anyNumberOfTimes()
-            .returns(
-              Configuration(
-                "desIf_Migration.enabled" -> "true"
-              ))
 
           def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
 
