@@ -403,13 +403,6 @@ class SharedAppConfigSpec extends UnitSpec {
            |        port = 9769
            |      }
            |
-           |      des {
-           |        host = 127.0.0.1
-           |        port = 6666
-           |        env = Prod
-           |        token = DES-ABCD1234
-           |        environmentHeaders = ["Des-Accept", "Des-Gov-Test-Scenario", "Des-Content-Type"]
-           |      }
            |
            |      ifs {
            |        enabled = true

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,7 +66,6 @@ class CreateAmendUkDividendsAnnualSummaryServiceSpec extends ServiceSpec {
 
         val errors = List(
           ("INVALID_NINO", NinoFormatError),
-          ("INVALID_TAXYEAR", TaxYearFormatError), // remove once DES to IFS migration complete
           ("INVALID_TYPE", InternalError),
           ("INVALID_PAYLOAD", InternalError),
           ("NOT_FOUND_INCOME_SOURCE", NotFoundError),

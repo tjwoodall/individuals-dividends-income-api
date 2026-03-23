@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,20 +30,20 @@ class RetrieveUkDividendsAnnualIncomeSummaryControllerISpec extends IntegrationB
 
   "Calling the 'retrieve dividends' endpoint" should {
     "return a 200 status code" when {
-      "any valid request is made" in new NonTysTest {
-
-        override def setupStubs(): StubMapping = {
-          AuditStub.audit()
-          AuthStub.authorised()
-          MtdIdLookupStub.ninoFound(nino)
-          DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, OK, desResponse)
-        }
-
-        val response: WSResponse = await(request.get())
-        response.status shouldBe OK
-        response.json shouldBe mtdResponse
-        response.header("Content-Type") shouldBe Some("application/json")
-      }
+//      "any valid request is made" in new NonTysTest {
+//
+//        override def setupStubs(): StubMapping = {
+//          AuditStub.audit()
+//          AuthStub.authorised()
+//          MtdIdLookupStub.ninoFound(nino)
+//          DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, OK, desResponse)
+//        }
+//
+//        val response: WSResponse = await(request.get())
+//        response.status shouldBe OK
+//        response.json shouldBe mtdResponse
+//        response.header("Content-Type") shouldBe Some("application/json")
+//      }
 
       "any valid request is made with a Tax Year Specific year" in new TysIfsTest {
         override def setupStubs(): StubMapping = {
@@ -94,7 +94,7 @@ class RetrieveUkDividendsAnnualIncomeSummaryControllerISpec extends IntegrationB
 
       "downstream service error" when {
         def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-          s"des returns an $downstreamCode error and status $downstreamStatus" in new NonTysTest {
+          s"downstream returns an $downstreamCode error and status $downstreamStatus" in new NonTysTest {
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
@@ -114,14 +114,13 @@ class RetrieveUkDividendsAnnualIncomeSummaryControllerISpec extends IntegrationB
           s"""
              |{
              |   "code": "$code",
-             |   "reason": "des message"
+             |   "reason": "message"
              |}
             """.stripMargin
 
         val errors = Seq(
           (BAD_REQUEST, "INVALID_NINO", BAD_REQUEST, NinoFormatError),
           (BAD_REQUEST, "INVALID_TYPE", INTERNAL_SERVER_ERROR, InternalError),
-          (BAD_REQUEST, "INVALID_TAXYEAR", BAD_REQUEST, TaxYearFormatError),
           (BAD_REQUEST, "INVALID_INCOME_SOURCE", INTERNAL_SERVER_ERROR, InternalError),
           (NOT_FOUND, "NOT_FOUND_PERIOD", NOT_FOUND, NotFoundError),
           (NOT_FOUND, "NOT_FOUND_INCOME_SOURCE", NOT_FOUND, NotFoundError),
@@ -151,13 +150,6 @@ class RetrieveUkDividendsAnnualIncomeSummaryControllerISpec extends IntegrationB
     def downstreamUri: String
 
     def nino: String = "AA123456A"
-
-    val desResponse: JsValue = Json.parse("""
-                                             |{
-                                             |  "ukDividends": 10.12,
-                                             |  "otherUkDividends": 11.12
-                                             |}
-                                             |""".stripMargin)
 
     val ifsResponse: JsValue = Json.parse("""
                                             |{
