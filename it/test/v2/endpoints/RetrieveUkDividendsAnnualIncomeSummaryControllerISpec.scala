@@ -30,20 +30,20 @@ class RetrieveUkDividendsAnnualIncomeSummaryControllerISpec extends IntegrationB
 
   "Calling the 'retrieve dividends' endpoint" should {
     "return a 200 status code" when {
-//      "any valid request is made" in new NonTysTest {
-//
-//        override def setupStubs(): StubMapping = {
-//          AuditStub.audit()
-//          AuthStub.authorised()
-//          MtdIdLookupStub.ninoFound(nino)
-//          DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, OK, desResponse)
-//        }
-//
-//        val response: WSResponse = await(request.get())
-//        response.status shouldBe OK
-//        response.json shouldBe mtdResponse
-//        response.header("Content-Type") shouldBe Some("application/json")
-//      }
+      "any valid request is made" in new NonTysTest {
+
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, OK, ifsResponse)
+        }
+
+        val response: WSResponse = await(request.get())
+        response.status shouldBe OK
+        response.json shouldBe mtdResponse
+        response.header("Content-Type") shouldBe Some("application/json")
+      }
 
       "any valid request is made with a Tax Year Specific year" in new TysIfsTest {
         override def setupStubs(): StubMapping = {
