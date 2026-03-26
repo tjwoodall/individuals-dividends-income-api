@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 package v2.connectors
 
-import play.api.Configuration
 import shared.connectors.ConnectorSpec
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.outcomes.ResponseWrapper
@@ -38,37 +37,10 @@ class RetrieveUKDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec 
     otherUkDividends = Some(11.12)
   )
 
-  "RetrieveUkDividendsIncomeAnnualSummaryConnectorSpec and isDefIf_MigrationEnabled is off" when {
+  "RetrieveUkDividendsIncomeAnnualSummaryConnectorSpec for a non-TYS request" when {
     "retrieveUKDividendsIncomeAnnualSummary is called" must {
       "return a 200 for success scenario" in {
-        new DesTest with Test {
-          MockedSharedAppConfig.featureSwitchConfig
-            .once()
-            .returns(
-              Configuration(
-                "isDesIfMigrationEnabled" -> "false"
-              ))
-
-          def taxYear: TaxYear = TaxYear.fromMtd("2018-19")
-
-          val outcome = Right(ResponseWrapper(correlationId, validResponse))
-
-          willGet(url"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/$taxYearDownstream")
-            .returns(Future.successful(outcome))
-        }
-      }
-    }
-
-    "retrieveUKDividendsIncomeAnnualSummary is called and isDesIfMigrationEnabled is on" must {
-      "return a 200 for success scenario" in {
         new IfsTest with Test {
-          MockedSharedAppConfig.featureSwitchConfig
-            .once()
-            .returns(
-              Configuration(
-                "isDesIfMigrationEnabled" -> "true"
-              ))
-
           def taxYear: TaxYear = TaxYear.fromMtd("2018-19")
 
           val outcome = Right(ResponseWrapper(correlationId, validResponse))

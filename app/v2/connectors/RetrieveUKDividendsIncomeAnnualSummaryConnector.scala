@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,8 @@
 
 package v2.connectors
 
-import config.DividendsIncomeFeatureSwitches
 import shared.config.SharedAppConfig
-import shared.connectors.DownstreamUri.{DesUri, IfsUri}
+import shared.connectors.DownstreamUri.IfsUri
 import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -45,10 +44,8 @@ class RetrieveUKDividendsIncomeAnnualSummaryConnector @Inject() (val http: HttpC
     val downstreamUri =
       if (taxYear.useTaxYearSpecificApi) {
         IfsUri[RetrieveUkDividendsAnnualIncomeSummaryResponse](s"income-tax/${taxYear.asTysDownstream}/$nino/income-source/dividends/annual")
-      } else if (DividendsIncomeFeatureSwitches().isDesIfMigrationEnabled) {
-        IfsUri[RetrieveUkDividendsAnnualIncomeSummaryResponse](path)
       } else {
-        DesUri[RetrieveUkDividendsAnnualIncomeSummaryResponse](path)
+        IfsUri[RetrieveUkDividendsAnnualIncomeSummaryResponse](path)
       }
 
     get(downstreamUri)
