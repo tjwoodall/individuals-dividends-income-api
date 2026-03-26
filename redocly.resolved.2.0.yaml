@@ -47,10 +47,10 @@ tags:
 paths:
   /individuals/dividends-income/{nino}/{taxYear}:
     get:
-      summary: Retrieve Dividends Income
       security:
         - User-Restricted:
             - read:self-assessment
+      summary: Retrieve Dividends Income
       description: |
         This endpoint enables you to retrieve dividends income: 
         foreign dividend, dividend income received whilst abroad, stock dividend, redeemable shares, bonus issues of 
@@ -307,33 +307,7 @@ paths:
                 default:
                   description: Full Dividends Income
                   value:
-                    submittedOn: '2021-04-06T09:37:17.000Z'
-                    foreignDividend:
-                      - countryCode: FRA
-                        amountBeforeTax: 1999.99
-                        taxTakenOff: 1999.99
-                        specialWithholdingTax: 5000.99
-                        foreignTaxCreditRelief: false
-                        taxableAmount: 5000.99
-                    dividendIncomeReceivedWhilstAbroad:
-                      - countryCode: FRA
-                        amountBeforeTax: 1999.99
-                        taxTakenOff: 1999.99
-                        specialWithholdingTax: 5000.99
-                        foreignTaxCreditRelief: false
-                        taxableAmount: 5000.99
-                    stockDividend:
-                      customerReference: Stock dividend income
-                      grossAmount: 5000.99
-                    redeemableShares:
-                      customerReference: Redeemable shares income
-                      grossAmount: 5000.99
-                    bonusIssuesOfSecurities:
-                      customerReference: Bonus Securities
-                      grossAmount: 5000.99
-                    closeCompanyLoansWrittenOff:
-                      customerReference: Write off
-                      grossAmount: 5000.99
+                    $ref: ./examples/dividendsIncome/retrieve_response.json
         '400':
           description: Bad request
           headers:
@@ -462,10 +436,10 @@ paths:
                     code: RULE_REQUEST_CANNOT_BE_FULFILLED
                     message: Custom (will vary in production depending on the actual error)
     put:
-      summary: Create and Amend Dividends Income
       security:
         - User-Restricted:
             - write:self-assessment
+      summary: Create and Amend Dividends Income
       description: |
         This endpoint enables you to create and amend UK dividends income: 
         foreign dividend, dividend income received whilst abroad, stock dividend, redeemable shares, bonus issues of 
@@ -573,32 +547,7 @@ paths:
               full_amendment:
                 description: Full Dividends Income Amendment
                 value:
-                  foreignDividend:
-                    - countryCode: FRA
-                      amountBeforeTax: 1999.99
-                      taxTakenOff: 1999.99
-                      specialWithholdingTax: 5000.99
-                      foreignTaxCreditRelief: false
-                      taxableAmount: 5000.99
-                  dividendIncomeReceivedWhilstAbroad:
-                    - countryCode: FRA
-                      amountBeforeTax: 1999.99
-                      taxTakenOff: 1999.99
-                      specialWithholdingTax: 5000.99
-                      foreignTaxCreditRelief: false
-                      taxableAmount: 5000.99
-                  stockDividend:
-                    customerReference: Stock dividend income
-                    grossAmount: 5000.99
-                  redeemableShares:
-                    customerReference: Redeemable shares income
-                    grossAmount: 5000.99
-                  bonusIssuesOfSecurities:
-                    customerReference: Bonus Securities
-                    grossAmount: 5000.99
-                  closeCompanyLoansWrittenOff:
-                    customerReference: Written off
-                    grossAmount: 5000.99
+                  $ref: ./examples/dividendsIncome/amend_request.json
       responses:
         '200':
           description: Success
@@ -745,10 +694,10 @@ paths:
                   description: The request cannot be fulfilled. More specific information is provided in the error message.
                   value: *ref_28
     delete:
-      summary: Delete Dividends Income
       security:
         - User-Restricted:
             - write:self-assessment
+      summary: Delete Dividends Income
       description: |
         This endpoint enables you to delete dividends income: 
         foreign dividend, dividend income received whilst abroad, stock dividend, redeemable shares, bonus issues of 
@@ -941,10 +890,10 @@ paths:
                   value: *ref_28
   /individuals/dividends-income/uk/{nino}/{taxYear}:
     get:
-      summary: Retrieve a UK Dividends Income Annual Summary
       security:
         - User-Restricted:
             - read:self-assessment
+      summary: Retrieve a UK Dividends Income Annual Summary
       description: |
         This endpoint enables you to retrieve UK dividends income.
         A National Insurance number and tax year must be provided.
@@ -1056,8 +1005,7 @@ paths:
                 default:
                   description: Full UK Dividends Response
                   value:
-                    ukDividends: 10.12
-                    otherUkDividends: 11.12
+                    $ref: ./examples/ukDividendsIncome/retrieve_response.json
         '400':
           description: Bad request
           headers:
@@ -1163,10 +1111,10 @@ paths:
                   description: The request cannot be fulfilled. More specific information is provided in the error message.
                   value: *ref_28
     put:
-      summary: Create and Amend a UK Dividends Income Annual Summary
       security:
         - User-Restricted:
             - write:self-assessment
+      summary: Create and Amend a UK Dividends Income Annual Summary
       description: |
         This endpoint enables you to create and amend UK dividends income.
         A National Insurance number and tax year must be provided.
@@ -1251,8 +1199,7 @@ paths:
               full_amendment:
                 description: Full Dividend Income Amendment
                 value:
-                  ukDividends: 55844806400.99
-                  otherUkDividends: 60267421355.99
+                  $ref: ./examples/ukDividendsIncome/amend_request.json
       responses:
         '200':
           description: Success
@@ -1400,10 +1347,10 @@ paths:
                   description: The request cannot be fulfilled. More specific information is provided in the error message.
                   value: *ref_28
     delete:
-      summary: Delete a UK Dividends Income Annual Summary
       security:
         - User-Restricted:
             - write:self-assessment
+      summary: Delete a UK Dividends Income Annual Summary
       description: |
         This endpoint enables you to delete a UK dividends income annual summary for a tax year.
         A National Insurance Number and tax year must be provided.
@@ -1594,10 +1541,10 @@ paths:
                   value: *ref_28
   /individuals/dividends-income/directorship/{nino}/{taxYear}/{employmentId}:
     get:
-      summary: Retrieve Additional Directorship and Dividend Information
       security:
         - User-Restricted:
             - read:self-assessment
+      summary: Retrieve Additional Directorship and Dividend Information
       description: |
         This endpoint enables you to retrieve additional directorship/dividend information under each employment ID.
         A National Insurance number, tax year and employment ID must be provided.
@@ -1947,10 +1894,10 @@ paths:
                   description: The request cannot be fulfilled. More specific information is provided in the error message.
                   value: *ref_28
     delete:
-      summary: Delete Additional Directorship and Dividend Information
       security:
         - User-Restricted:
             - write:self-assessment
+      summary: Delete Additional Directorship and Dividend Information
       description: |
         This endpoint enables you to delete additional directorship/dividend information under each employment ID.
         A National Insurance number, tax year and employment ID must be provided.
@@ -2230,10 +2177,10 @@ paths:
                   description: The request cannot be fulfilled. More specific information is provided in the error message.
                   value: *ref_28
     put:
-      summary: Create or Amend Additional Directorship and Dividend Information
       security:
         - User-Restricted:
             - write:self-assessment
+      summary: Create or Amend Additional Directorship and Dividend Information
       description: |
         This endpoint enables you to create or amend additional directorship/dividend information under each employment ID.
         A National Insurance number, tax year and employment ID must be provided.
@@ -2352,17 +2299,11 @@ paths:
               full_amendment:
                 description: Full Additional Directorship Dividend Amendment
                 value:
-                  companyDirector: true
-                  closeCompany: true
-                  directorshipCeasedDate: '2025-07-01'
-                  companyName: Company One
-                  companyNumber: '36488522'
-                  shareholding: 20.99
-                  dividendReceived: 1024.99
+                  $ref: ./examples/additionalDirectorshipDividend/full_amend_request.json
               minimum_amendment:
                 description: Minimum Additional Directorship Dividend Amendment
                 value:
-                  companyDirector: false
+                  $ref: ./examples/additionalDirectorshipDividend/minimum_amend_request.json
       responses:
         '204':
           description: No Content
