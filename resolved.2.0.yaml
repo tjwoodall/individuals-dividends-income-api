@@ -42,49 +42,40 @@ tags:
 paths:
   /individuals/dividends-income/{nino}/{taxYear}:
     get:
-      summary: Retrieve Dividends Income
       security:
       - User-Restricted:
         - read:self-assessment
     put:
-      summary: Create and Amend Dividends Income
       security:
       - User-Restricted:
         - write:self-assessment
     delete:
-      summary: Delete Dividends Income
       security:
       - User-Restricted:
         - write:self-assessment
   /individuals/dividends-income/uk/{nino}/{taxYear}:
     get:
-      summary: Retrieve a UK Dividends Income Annual Summary
       security:
       - User-Restricted:
         - read:self-assessment
     put:
-      summary: Create and Amend a UK Dividends Income Annual Summary
       security:
       - User-Restricted:
         - write:self-assessment
     delete:
-      summary: Delete a UK Dividends Income Annual Summary
       security:
       - User-Restricted:
         - write:self-assessment
   /individuals/dividends-income/directorship/{nino}/{taxYear}/{employmentId}:
     get:
-      summary: Retrieve Additional Directorship and Dividend Information
       security:
       - User-Restricted:
         - read:self-assessment
     put:
-      summary: Create or Amend Additional Directorship and Dividend Information
       security:
       - User-Restricted:
         - write:self-assessment
     delete:
-      summary: Delete Additional Directorship and Dividend Information
       security:
       - User-Restricted:
         - write:self-assessment
