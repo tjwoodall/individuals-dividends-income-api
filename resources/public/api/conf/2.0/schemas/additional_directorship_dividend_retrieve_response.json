@@ -16,14 +16,14 @@
     },
     "directorshipCeasedDate": {
       "type": "string",
-      "description": "Date when the directorship ceased. This will cease the rollover across tax years for custom employments that were created for Additional Dividends and Directorship. Must conform to the format YYYY-MM-DD",
+      "description": "Date when the directorship ceased. This will cease the rollover across tax years for custom employments that were created for Additional Dividends and Directorship. Must conform to the format `YYYY-MM-DD`",
       "format": "date",
       "example": "2025-07-01"
     },
     "companyName": {
       "type": "string",
       "description": "The name by which the company is registered with Companies House. This field is always returned when closeCompany is true.",
-      "example": "Comapny One",
+      "example": "Company One",
       "pattern": "^.{0,160}$"
     },
     "companyNumber": {
@@ -50,7 +50,7 @@
     },
     "submittedOn": {
       "type": "string",
-      "description": "The date and time of the submission. Must conform to the format YYYY-MM-DDThh:mm:ss.SSSZ",
+      "description": "The date and time of the submission. Must conform to the format `YYYY-MM-DDThh:mm:ss.SSSZ`",
       "format": "date-time",
       "example": "2025-08-24T14:15:22.802Z"
     }
