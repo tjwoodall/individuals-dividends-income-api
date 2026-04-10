@@ -161,8 +161,9 @@ paths:
                 properties:
                   submittedOn:
                     type: string
-                    description: The date the dividends income was added. It must be provided in the format YYYY-MM-DDThh:mm:ssZ
-                    example: '2021-04-06T09:37:17Z'
+                    description: The date the dividends income was added. It must be provided in the format `YYYY-MM-DDThh:mm:ss.SSSZ`
+                    format: date-time
+                    example: '2021-04-06T09:37:17.000Z'
                   foreignDividend:
                     type: array
                     description: Financial details about foreign dividend income.
@@ -176,23 +177,35 @@ paths:
                         amountBeforeTax:
                           type: number
                           description: The total amount of income (in UK pounds) before taking off any foreign tax. The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                          example: '1999.99'
+                          example: 1999.99
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
                         taxTakenOff:
                           type: number
                           description: The total amount of foreign tax taken off the customer's income. The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                          example: '1999.99'
+                          example: 1999.99
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
                         specialWithholdingTax:
                           type: number
                           description: The total amount of Special Withholding Tax (SWT) (in UK pounds) and any UK tax deducted from the foreign income. The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                          example: '5000.99'
+                          example: 5000.99
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
                         foreignTaxCreditRelief:
                           type: boolean
                           description: Boolean indicating whether Foreign Tax Credit Relief (FTCR) has been claimed.
-                          example: 'false'
+                          example: false
                         taxableAmount:
                           type: number
                           description: The total taxable amount on dividends. The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                          example: '5000.99'
+                          example: 5000.99
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
                       required: &ref_8
                         - countryCode
                         - taxableAmount
@@ -209,23 +222,35 @@ paths:
                         amountBeforeTax:
                           type: number
                           description: The total amount of income (in UK pounds) before taking off any foreign tax. The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                          example: '1999.99'
+                          example: 1999.99
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
                         taxTakenOff:
                           type: number
                           description: The total amount of foreign tax taken off the customer's income. The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                          example: '1999.99'
+                          example: 1999.99
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
                         specialWithholdingTax:
                           type: number
                           description: The total amount of Special Withholding Tax (SWT) (in UK pounds) and any UK tax deducted from the foreign income. The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                          example: '5000.99'
+                          example: 5000.99
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
                         foreignTaxCreditRelief:
                           type: boolean
                           description: Boolean indicating whether Foreign Tax Credit Relief (FTCR) has been claimed.
-                          example: 'false'
+                          example: false
                         taxableAmount:
                           type: number
                           description: The total taxable amount on dividends. The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                          example: '5000.99'
+                          example: 5000.99
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
                       required: &ref_10
                         - countryCode
                         - taxableAmount
@@ -241,10 +266,10 @@ paths:
                       grossAmount:
                         type: number
                         description: The gross amount of the dividends. The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                        example: '5000.99'
+                        example: 5000.99
                         multipleOf: 0.01
                         minimum: 0
-                        'maximum:': 99999999999.99
+                        maximum: 99999999999.99
                     required: &ref_12
                       - grossAmount
                   redeemableShares:
@@ -259,10 +284,10 @@ paths:
                       grossAmount:
                         type: number
                         description: The gross amount of the dividends. The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                        example: '5000.99'
+                        example: 5000.99
                         multipleOf: 0.01
                         minimum: 0
-                        'maximum:': 99999999999.99
+                        maximum: 99999999999.99
                     required: &ref_14
                       - grossAmount
                   bonusIssuesOfSecurities:
@@ -277,10 +302,10 @@ paths:
                       grossAmount:
                         type: number
                         description: The gross amount of the dividends. The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                        example: '5000.99'
+                        example: 5000.99
                         multipleOf: 0.01
                         minimum: 0
-                        'maximum:': 99999999999.99
+                        maximum: 99999999999.99
                     required: &ref_16
                       - grossAmount
                   closeCompanyLoansWrittenOff:
@@ -295,10 +320,10 @@ paths:
                       grossAmount:
                         type: number
                         description: The gross amount of the dividends. The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                        example: '5000.99'
+                        example: 5000.99
                         multipleOf: 0.01
                         minimum: 0
-                        'maximum:': 99999999999.99
+                        maximum: 99999999999.99
                     required: &ref_18
                       - grossAmount
                 required:
@@ -987,7 +1012,7 @@ paths:
                   ukDividends:
                     type: number
                     description: The total dividends payments received from UK companies, including any dividends from employee share schemes. The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                    example: '3000.50'
+                    example: 3000.5
                     multipleOf: 0.01
                     minimum: 0
                     maximum: 99999999999.99
@@ -997,7 +1022,7 @@ paths:
                       Dividends received from these types of UK investment fund:
 
                       Authorised unit trusts, Open-ended investment companies or Investment trusts. Include dividends from accumulation units or shares, which are automatically reinvested. The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                    example: '3000.50'
+                    example: 3000.5
                     multipleOf: 0.01
                     minimum: 0
                     maximum: 99999999999.99
@@ -1181,20 +1206,20 @@ paths:
                 ukDividends:
                   type: number
                   description: The total dividends payments received from UK companies, including any dividends from employee share schemes. The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                  example: '1999.99'
+                  example: 1999.99
                   multipleOf: 0.01
                   minimum: 0
-                  'maximum:': 99999999999.99
+                  maximum: 99999999999.99
                 otherUkDividends:
                   type: number
                   description: |-
                     Dividends received from these types of UK investment fund:
 
                     Authorised unit trusts, Open-ended investment companies or Investment trusts. Include dividends from accumulation units or shares, which are automatically reinvested. The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                  example: '1999.99'
+                  example: 1999.99
                   multipleOf: 0.01
                   minimum: 0
-                  'maximum:': 99999999999.99
+                  maximum: 99999999999.99
             examples:
               full_amendment:
                 description: Full Dividend Income Amendment
@@ -1655,13 +1680,13 @@ paths:
                     example: true
                   directorshipCeasedDate:
                     type: string
-                    description: Date when the directorship ceased. This will cease the rollover across tax years for custom employments that were created for Additional Dividends and Directorship. Must conform to the format YYYY-MM-DD
+                    description: Date when the directorship ceased. This will cease the rollover across tax years for custom employments that were created for Additional Dividends and Directorship. Must conform to the format `YYYY-MM-DD`
                     format: date
                     example: '2025-07-01'
                   companyName:
                     type: string
                     description: The name by which the company is registered with Companies House. This field is always returned when closeCompany is true.
-                    example: Comapny One
+                    example: Company One
                     pattern: ^.{0,160}$
                   companyNumber:
                     type: string
@@ -1684,7 +1709,7 @@ paths:
                     maximum: 99999999999.99
                   submittedOn:
                     type: string
-                    description: The date and time of the submission. Must conform to the format YYYY-MM-DDThh:mm:ss.SSSZ
+                    description: The date and time of the submission. Must conform to the format `YYYY-MM-DDThh:mm:ss.SSSZ`
                     format: date-time
                     example: '2025-08-24T14:15:22.802Z'
                 additionalProperties: false
@@ -2253,16 +2278,16 @@ paths:
                 companyDirector:
                   type: boolean
                   description: Indicates whether a taxable entity is a director or not
-                  example: 'false'
+                  example: false
                 closeCompany:
                   type: boolean
                   description: Indicates whether the company is a close company. This is required where companyDirector property is true.
-                  example: 'false'
+                  example: false
                 directorshipCeasedDate:
                   type: string
-                  description: Date when the directorship ceased. This will cease the rollover across tax years for custom employments that were created for Additional Dividends and Directorship. Must conform to the format YYYY-MM-DD
+                  description: Date when the directorship ceased. This will cease the rollover across tax years for custom employments that were created for Additional Dividends and Directorship. Must conform to the format `YYYY-MM-DD`
+                  format: date
                   example: '2025-07-01'
-                  pattern: YYYY-MM-DD
                 companyName:
                   type: string
                   description: The name by which the company is registered with Companies House. This is required where closeCompany is true.
@@ -2279,20 +2304,20 @@ paths:
                     The percentage shareholding of the company. This is required where closeCompany is true. Where there is no shareholding, a zero can be submitted.
 
                     The value must be between 0 and 100 up to 2 decimal places.
-                  example: '20.99'
+                  example: 20.99
                   multipleOf: 0.01
                   minimum: 0
-                  'maximum:': 100
+                  maximum: 100
                 dividendReceived:
                   type: number
                   description: |-
                     The amount of dividends received from the company. This is required where closeCompany is true. Where no dividends are received, a zero can be submitted.
 
                     The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                  example: '1024.99'
+                  example: 1024.99
                   multipleOf: 0.01
                   minimum: 0
-                  'maximum:': 99999999999.99
+                  maximum: 99999999999.99
               required:
                 - companyDirector
             examples:
