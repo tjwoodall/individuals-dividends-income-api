@@ -17,17 +17,18 @@
 package v2.controllers
 
 import cats.data.Validated
-import cats.data.Validated.Invalid
 import cats.implicits.toTraverseOps
 import common.errors.CustomerRefFormatError
 import shared.controllers.validators.RulesValidator
-import shared.controllers.validators.resolvers.{ResolveParsedCountryCode, ResolveParsedNumber}
+import shared.controllers.validators.resolvers.{ResolveParsedCountryCode, ResolveParsedNumber, ResolveStringPattern}
 import shared.models.errors.MtdError
-import v2.models.request.createAmendDividends._
+import v2.models.request.createAmendDividends.*
 
 object CreateAmendDividendsRulesValidator extends RulesValidator[CreateAmendDividendsRequest] {
 
   private val resolveParsedNumber: ResolveParsedNumber = ResolveParsedNumber()
+
+  private val customerReferenceRegex = "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$".r
 
   override def validateBusinessRules(parsed: CreateAmendDividendsRequest): Validated[Seq[MtdError], CreateAmendDividendsRequest] = {
     import parsed.body._
@@ -42,7 +43,6 @@ object CreateAmendDividendsRulesValidator extends RulesValidator[CreateAmendDivi
       bonusIssuesOfSecurities.traverse(validateCommonDividends(_, "bonusIssuesOfSecurities")),
       closeCompanyLoansWrittenOff.traverse(validateCommonDividends(_, "closeCompanyLoansWrittenOff"))
     ).onSuccess(parsed)
-
   }
 
   private def validateForeignDividend(foreignDividend: CreateAmendForeignDividendItem, arrayIndex: Int): Validated[Seq[MtdError], Unit] = {
@@ -74,19 +74,9 @@ object CreateAmendDividendsRulesValidator extends RulesValidator[CreateAmendDivi
     import commonDividends._
 
     combine(
-      validateCustomerRef(customerReference, s"/$fieldName/customerReference"),
+      ResolveStringPattern(customerReference, customerReferenceRegex, CustomerRefFormatError.withPath(s"/$fieldName/customerReference")),
       resolveParsedNumber(grossAmount, s"/$fieldName/grossAmount")
     )
-  }
-
-  private def validateCustomerRef(customerRef: Option[String], path: String): Validated[Seq[MtdError], Unit] = {
-    val stringRegex = "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$".r
-
-    customerRef match {
-      case Some(customerRef) if stringRegex.matches(customerRef) => valid
-      case None                                                  => valid
-      case _                                                     => Invalid(List(CustomerRefFormatError.withPath(path)))
-    }
   }
 
 }

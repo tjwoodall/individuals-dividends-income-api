@@ -76,8 +76,8 @@ object CreateAmendAdditionalDirectorshipDividendRulesValidator extends RulesVali
 
   private def validateCompanyStringFields(companyName: Option[String], companyNumber: Option[String]): Validated[Seq[MtdError], Unit] =
     combine(
-      ResolveStringPattern(companyNameRegex, CompanyNameFormatError)(companyName),
-      ResolveStringPattern(companyNumberRegex, CompanyNumberFormatError)(companyNumber)
+      ResolveStringPattern(companyName, companyNameRegex, CompanyNameFormatError),
+      ResolveStringPattern(companyNumber, companyNumberRegex, CompanyNumberFormatError)
     )
 
   private def validateDirectorshipCeasedDate(taxYear: TaxYear, directorshipCeasedDate: Option[String]): Validated[Seq[MtdError], Unit] =
