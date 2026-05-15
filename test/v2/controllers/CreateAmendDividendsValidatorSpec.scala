@@ -91,6 +91,15 @@ class CreateAmendDividendsValidatorSpec extends UnitSpec with OneInstancePerTest
 
   private val emptyRequestBodyJson: JsValue = Json.parse("""{}""")
 
+  private val emptyArrayJson: JsValue = Json.parse(
+    """
+      |{
+      |  "foreignDividend": [],
+      |  "dividendIncomeReceivedWhilstAbroad": []
+      |}
+  """.stripMargin
+  )
+
   private val nonsenseRequestBodyJson: JsValue = Json.parse("""{"field": "value"}""")
 
   private val nonValidRequestBodyJson: JsValue = Json.parse(
@@ -613,6 +622,21 @@ class CreateAmendDividendsValidatorSpec extends UnitSpec with OneInstancePerTest
 
         result shouldBe Left(ErrorWrapper(correlationId, RuleIncorrectOrEmptyBodyError.copy(paths = Some(paths))))
 
+      }
+
+      "the submitted request body contains empty arrays" in {
+        val result: Either[ErrorWrapper, CreateAmendDividendsRequest] =
+          validator(validNino, validTaxYear, emptyArrayJson).validateAndWrapResult()
+
+        result shouldBe Left(
+          ErrorWrapper(
+            correlationId,
+            RuleIncorrectOrEmptyBodyError.withPaths(
+              Seq(
+                "/foreignDividend",
+                "/dividendIncomeReceivedWhilstAbroad"
+              )
+            )))
       }
     }
 

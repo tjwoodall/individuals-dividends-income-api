@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -166,6 +166,8 @@ class CreateAmendDividendsRequestBodySpec extends UnitSpec {
     Some(closeCompanyLoansWrittenOff)
   )
 
+  private val emptyRequestBodyModel: CreateAmendDividendsRequestBody = CreateAmendDividendsRequestBody(None, None, None, None, None, None)
+
   "CreateAmendDividendsRequestBody" when {
     "read from valid JSON" should {
       "produce the expected CreateAmendDividendsRequestBody object" in {
@@ -185,12 +187,12 @@ class CreateAmendDividendsRequestBodySpec extends UnitSpec {
       "produce an empty CreateAmendDividendsRequestBody object" in {
         val emptyJson = JsObject.empty
 
-        emptyJson.as[CreateAmendDividendsRequestBody] shouldBe CreateAmendDividendsRequestBody.empty
+        emptyJson.as[CreateAmendDividendsRequestBody] shouldBe emptyRequestBodyModel
       }
     }
 
     "read from valid JSON with empty foreignDividend and dividendIncomeReceivedWhilstAbroad arrays" should {
-      "produce an empty CreateAmendDividendsRequestBody object" in {
+      "preserve the empty arrays" in {
         val json = Json.parse(
           """
             |{
@@ -200,7 +202,11 @@ class CreateAmendDividendsRequestBodySpec extends UnitSpec {
         """.stripMargin
         )
 
-        json.as[CreateAmendDividendsRequestBody] shouldBe CreateAmendDividendsRequestBody.empty
+        json.as[CreateAmendDividendsRequestBody] shouldBe
+          emptyRequestBodyModel.copy(
+            foreignDividend = Some(Seq.empty),
+            dividendIncomeReceivedWhilstAbroad = Some(Seq.empty)
+          )
       }
     }
 
