@@ -50,25 +50,25 @@
     },
     "customerReferenceStockDividend": {
       "type": "string",
-      "description": "Customer-supplied reference to identify the stock dividends income.",
+      "description": "Customer-supplied reference to identify the stock dividends income. Must not be empty or contain only whitespace.",
       "example": "Stock dividend income",
       "pattern": "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$"
     },
     "customerReferenceRedeemableShares": {
       "type": "string",
-      "description": "Customer-supplied reference to identify the redeemable shares income.",
+      "description": "Customer-supplied reference to identify the redeemable shares income. Must not be empty or contain only whitespace.",
       "example": "Redeemable shares income",
       "pattern": "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$"
     },
     "customerReferenceBonusIssuesOfSecurities": {
       "type": "string",
-      "description": "Customer-supplied reference to identify the bonus securities income.",
+      "description": "Customer-supplied reference to identify the bonus securities income. Must not be empty or contain only whitespace.",
       "example": "Bonus Securities",
       "pattern": "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$"
     },
     "customerReferenceCloseCompanyLoansWrittenOff": {
       "type": "string",
-      "description": "Customer-supplied reference to identify the close company loans written off income.",
+      "description": "Customer-supplied reference to identify the close company loans written off income. Must not be empty or contain only whitespace.",
       "example": "Write off",
       "pattern": "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$"
     },
