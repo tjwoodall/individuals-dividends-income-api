@@ -16,14 +16,14 @@
 
 package v2.controllers
 
-import shared.config.SharedAppConfig
-import shared.controllers.validators.Validator
+import api.config.AppConfig
+import api.controllers.validators.Validator
 import v2.models.request.deleteDividends.DeleteDividendsRequest
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class DeleteDividendsValidatorFactory @Inject() (implicit appConfig: SharedAppConfig) {
+class DeleteDividendsValidatorFactory @Inject() (implicit appConfig: AppConfig) {
 
   def validator(nino: String, taxYear: String): Validator[DeleteDividendsRequest] =
     new DeleteDividendsValidator(nino, taxYear)

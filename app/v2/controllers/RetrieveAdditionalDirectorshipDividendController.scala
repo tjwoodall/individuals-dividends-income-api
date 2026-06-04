@@ -16,24 +16,23 @@
 
 package v2.controllers
 
-import play.api.mvc._
-import shared.config.SharedAppConfig
-import shared.controllers._
-import shared.services._
-import shared.utils.IdGenerator
+import api.config.AppConfig
+import api.controllers.*
+import api.services.*
+import api.utils.IdGenerator
+import play.api.mvc.*
 import v2.services.RetrieveAdditionalDirectorshipDividendService
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class RetrieveAdditionalDirectorshipDividendController @Inject() (
-    val authService: EnrolmentsAuthService,
-    val lookupService: MtdIdLookupService,
-    validatorFactory: RetrieveAdditionalDirectorshipDividendValidatorFactory,
-    service: RetrieveAdditionalDirectorshipDividendService,
-    cc: ControllerComponents,
-    val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: SharedAppConfig)
+class RetrieveAdditionalDirectorshipDividendController @Inject() (val authService: EnrolmentsAuthService,
+                                                                  val lookupService: MtdIdLookupService,
+                                                                  validatorFactory: RetrieveAdditionalDirectorshipDividendValidatorFactory,
+                                                                  service: RetrieveAdditionalDirectorshipDividendService,
+                                                                  cc: ControllerComponents,
+                                                                  val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: AppConfig)
     extends AuthorisedController(cc) {
 
   override val endpointName: String = "retrieve-additional-directorship-and-dividend-information"

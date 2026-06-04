@@ -16,9 +16,9 @@
 
 package v2.controllers
 
-import shared.models.domain._
-import shared.models.errors._
-import shared.utils.UnitSpec
+import api.models.domain.*
+import api.models.errors.*
+import api.utils.UnitSpec
 import v2.models.request.retrieveAdditionalDirectorshipDividend.RetrieveAdditionalDirectorshipDividendRequest
 
 class RetrieveAdditionalDirectorshipDividendValidatorSpec extends UnitSpec {

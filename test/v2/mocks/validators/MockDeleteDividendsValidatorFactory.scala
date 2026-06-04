@@ -16,8 +16,8 @@
 
 package v2.mocks.validators
 
+import api.controllers.validators.{MockValidatorFactory, Validator}
 import org.scalamock.handlers.CallHandler
-import shared.controllers.validators.{MockValidatorFactory, Validator}
 import v2.controllers.DeleteDividendsValidatorFactory
 import v2.models.request.deleteDividends.DeleteDividendsRequest
 

@@ -16,7 +16,7 @@
 
 package v2.controllers
 
-import shared.controllers.validators.Validator
+import api.controllers.validators.Validator
 import v2.models.request.deleteAdditionalDirectorshipDividend.DeleteAdditionalDirectorshipDividendRequest
 
 import javax.inject.Singleton

@@ -16,6 +16,6 @@
 
 package v2.models.request.deleteAdditionalDirectorshipDividend
 
-import shared.models.domain.{Nino, TaxYear, EmploymentId}
+import api.models.domain.{EmploymentId, Nino, TaxYear}
 
 case class DeleteAdditionalDirectorshipDividendRequest(nino: Nino, taxYear: TaxYear, employmentId: EmploymentId)

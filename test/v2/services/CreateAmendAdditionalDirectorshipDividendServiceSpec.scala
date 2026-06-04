@@ -16,13 +16,13 @@
 
 package v2.services
 
-import shared.models.domain.{EmploymentId, Nino, TaxYear}
-import shared.models.errors._
-import shared.models.outcomes.ResponseWrapper
-import shared.services.{ServiceOutcome, ServiceSpec}
+import api.models.domain.{EmploymentId, Nino, TaxYear}
+import api.models.errors.*
+import api.models.outcomes.ResponseWrapper
+import api.services.{ServiceOutcome, ServiceSpec}
 import v2.fixtures.CreateAmendAdditionalDirectorshipDividendFixtures.minimumRequestBodyModel
 import v2.mocks.connectors.MockCreateAmendAdditionalDirectorshipDividendConnector
-import v2.models.request.createAmendAdditionalDirectorshipDividend._
+import v2.models.request.createAmendAdditionalDirectorshipDividend.*
 
 import scala.concurrent.Future
 

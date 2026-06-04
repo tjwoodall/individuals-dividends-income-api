@@ -16,17 +16,17 @@
 
 package v2.endpoints
 
+import api.models.errors.*
+import api.models.utils.JsonErrorValidators
+import api.services.*
+import api.support.IntegrationBaseSpec
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.libs.json.*
+import play.api.libs.ws.DefaultBodyReadables.readableAsString
+import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.*
-import shared.models.errors.*
-import shared.models.utils.JsonErrorValidators
-import shared.services.*
-import shared.support.IntegrationBaseSpec
 import v2.fixtures.CreateAmendAdditionalDirectorshipDividendFixtures.{validFullRequestBodyJson, validMinimumRequestBodyJson}
-import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
-import play.api.libs.ws.DefaultBodyReadables.readableAsString
 
 class CreateAmendAdditionalDirectorshipDividendControllerISpec extends IntegrationBaseSpec with JsonErrorValidators {
 

@@ -16,9 +16,9 @@
 
 package v2.controllers
 
-import shared.models.domain.{EmploymentId, Nino, TaxYear}
-import shared.models.errors._
-import shared.utils.UnitSpec
+import api.models.domain.{EmploymentId, Nino, TaxYear}
+import api.models.errors.*
+import api.utils.UnitSpec
 import v2.models.request.deleteAdditionalDirectorshipDividend.DeleteAdditionalDirectorshipDividendRequest
 
 class DeleteAdditionalDirectorshipDividendValidatorSpec extends UnitSpec {

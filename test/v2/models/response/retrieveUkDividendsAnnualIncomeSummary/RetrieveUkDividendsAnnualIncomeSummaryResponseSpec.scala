@@ -16,8 +16,8 @@
 
 package v2.models.response.retrieveUkDividendsAnnualIncomeSummary
 
+import api.utils.UnitSpec
 import play.api.libs.json.Json
-import shared.utils.UnitSpec
 
 class RetrieveUkDividendsAnnualIncomeSummaryResponseSpec extends UnitSpec with RetrieveUkDividendsAnnualIncomeSummaryFixture {
 

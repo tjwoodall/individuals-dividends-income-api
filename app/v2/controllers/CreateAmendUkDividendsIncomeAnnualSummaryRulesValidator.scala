@@ -16,10 +16,10 @@
 
 package v2.controllers
 
+import api.controllers.validators.RulesValidator
+import api.controllers.validators.resolvers.ResolveParsedNumber
+import api.models.errors.MtdError
 import cats.data.Validated
-import shared.controllers.validators.RulesValidator
-import shared.controllers.validators.resolvers.ResolveParsedNumber
-import shared.models.errors.MtdError
 import v2.models.request.createAmendUkDividendsIncomeAnnualSummary.CreateAmendUkDividendsIncomeAnnualSummaryRequest
 
 object CreateAmendUkDividendsIncomeAnnualSummaryRulesValidator extends RulesValidator[CreateAmendUkDividendsIncomeAnnualSummaryRequest] {
@@ -28,7 +28,7 @@ object CreateAmendUkDividendsIncomeAnnualSummaryRulesValidator extends RulesVali
 
   override def validateBusinessRules(
       parsed: CreateAmendUkDividendsIncomeAnnualSummaryRequest): Validated[Seq[MtdError], CreateAmendUkDividendsIncomeAnnualSummaryRequest] = {
-    import parsed.body._
+    import parsed.body.*
 
     combine(
       resolveParsedNumber(ukDividends, "/ukDividends"),

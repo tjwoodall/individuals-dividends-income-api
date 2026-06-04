@@ -16,12 +16,12 @@
 
 package v2.controllers
 
-import play.api.libs.json.{JsBoolean, JsNumber, JsObject, JsString, JsValue}
-import shared.models.domain.{EmploymentId, Nino, TaxYear}
-import shared.models.errors._
-import shared.models.utils.JsonErrorValidators
-import shared.utils.UnitSpec
-import v2.fixtures.CreateAmendAdditionalDirectorshipDividendFixtures._
+import api.models.domain.{EmploymentId, Nino, TaxYear}
+import api.models.errors.*
+import api.models.utils.JsonErrorValidators
+import api.utils.UnitSpec
+import play.api.libs.json.*
+import v2.fixtures.CreateAmendAdditionalDirectorshipDividendFixtures.*
 import v2.models.request.createAmendAdditionalDirectorshipDividend.CreateAmendAdditionalDirectorshipDividendRequest
 
 class CreateAmendAdditionalDirectorshipDividendValidatorSpec extends UnitSpec with JsonErrorValidators {

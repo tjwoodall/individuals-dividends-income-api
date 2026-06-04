@@ -16,10 +16,10 @@
 
 package v2.connectors
 
-import shared.config.SharedAppConfig
-import shared.connectors.DownstreamUri.HipUri
-import shared.connectors.httpparsers.StandardDownstreamHttpParser._
-import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome, DownstreamUri}
+import api.config.AppConfig
+import api.connectors.DownstreamUri.HipUri
+import api.connectors.httpparsers.StandardDownstreamHttpParser.*
+import api.connectors.{BaseDownstreamConnector, DownstreamOutcome, DownstreamUri}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.client.HttpClientV2
 import v2.models.request.createAmendAdditionalDirectorshipDividend.CreateAmendAdditionalDirectorshipDividendRequest
@@ -28,14 +28,14 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CreateAmendAdditionalDirectorshipDividendConnector @Inject() (val http: HttpClientV2, val appConfig: SharedAppConfig)
+class CreateAmendAdditionalDirectorshipDividendConnector @Inject() (val http: HttpClientV2, val appConfig: AppConfig)
     extends BaseDownstreamConnector {
 
   def createAmend(request: CreateAmendAdditionalDirectorshipDividendRequest)(implicit
       hc: HeaderCarrier,
       ec: ExecutionContext,
       correlationId: String): Future[DownstreamOutcome[Unit]] = {
-    import request._
+    import request.*
 
     val downstreamUri: DownstreamUri[Unit] =
       HipUri[Unit](s"itsd/income-sources/$nino/directorships/$employmentId?taxYear=${taxYear.asTysDownstream}")

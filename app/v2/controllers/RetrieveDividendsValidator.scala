@@ -16,19 +16,18 @@
 
 package v2.controllers
 
+import api.config.AppConfig
+import api.controllers.validators.Validator
+import api.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
+import api.models.domain.TaxYear
+import api.models.errors.MtdError
 import cats.data.Validated
 import cats.implicits.*
-import shared.config.SharedAppConfig
-import shared.controllers.validators.Validator
-import shared.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
-import shared.models.domain.TaxYear
-import shared.models.errors.MtdError
 import v2.models.request.retrieveDividends.RetrieveDividendsRequest
 
 import javax.inject.Inject
 
-class RetrieveDividendsValidator @Inject(nino: String, taxYear: String) (implicit appConfig: SharedAppConfig)
-    extends Validator[RetrieveDividendsRequest] {
+class RetrieveDividendsValidator @Inject(nino: String, taxYear: String) (implicit appConfig: AppConfig) extends Validator[RetrieveDividendsRequest] {
 
   private lazy val minimumTaxYear = appConfig.minimumPermittedTaxYear
   private lazy val resolveTaxYear = ResolveTaxYearMinimum(minimumTaxYear)

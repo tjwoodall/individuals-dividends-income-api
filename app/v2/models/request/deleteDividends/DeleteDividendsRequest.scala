@@ -16,6 +16,6 @@
 
 package v2.models.request.deleteDividends
 
-import shared.models.domain.{Nino, TaxYear}
+import api.models.domain.{Nino, TaxYear}
 
 case class DeleteDividendsRequest(nino: Nino, taxYear: TaxYear)

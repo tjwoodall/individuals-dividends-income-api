@@ -16,12 +16,12 @@
 
 package v2.services
 
+import api.controllers.EndpointLogContext
+import api.models.domain.{Nino, TaxYear}
+import api.models.errors.*
+import api.models.outcomes.ResponseWrapper
+import api.services.ServiceSpec
 import common.errors.RuleOutsideAmendmentWindowError
-import shared.controllers.EndpointLogContext
-import shared.models.domain.{Nino, TaxYear}
-import shared.models.errors._
-import shared.models.outcomes.ResponseWrapper
-import shared.services.ServiceSpec
 import v2.mocks.connectors.MockCreateAmendUkDividendsAnnualSummaryConnector
 import v2.models.request.createAmendUkDividendsIncomeAnnualSummary.{
   CreateAmendUkDividendsIncomeAnnualSummaryBody,
@@ -41,7 +41,7 @@ class CreateAmendUkDividendsAnnualSummaryServiceSpec extends ServiceSpec {
   "CreateAmendAmendUkDividendsAnnualSummaryService" when {
     "the downstream request is successful" must {
       "return a success result" in new Test {
-        val outcome = Right(ResponseWrapper(correlationId, ()))
+        val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
 
         MockCreateAmendUkDividendsAnnualSummaryConnector
           .createOrAmendAnnualSummary(request)

@@ -16,11 +16,11 @@
 
 package v2.services
 
-import cats.implicits._
+import api.controllers.RequestContext
+import api.models.errors.*
+import api.services.{BaseService, ServiceOutcome}
+import cats.implicits.*
 import common.errors.RuleOutsideAmendmentWindowError
-import shared.controllers.RequestContext
-import shared.models.errors._
-import shared.services.{BaseService, ServiceOutcome}
 import v2.connectors.CreateAmendDividendsConnector
 import v2.models.request.createAmendDividends.CreateAmendDividendsRequest
 

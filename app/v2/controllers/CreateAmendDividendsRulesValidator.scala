@@ -16,12 +16,12 @@
 
 package v2.controllers
 
+import api.controllers.validators.RulesValidator
+import api.controllers.validators.resolvers.{ResolveParsedCountryCode, ResolveParsedNumber, ResolveStringPattern}
+import api.models.errors.MtdError
 import cats.data.Validated
 import cats.implicits.toTraverseOps
 import common.errors.CustomerRefFormatError
-import shared.controllers.validators.RulesValidator
-import shared.controllers.validators.resolvers.{ResolveParsedCountryCode, ResolveParsedNumber, ResolveStringPattern}
-import shared.models.errors.MtdError
 import v2.models.request.createAmendDividends.*
 
 object CreateAmendDividendsRulesValidator extends RulesValidator[CreateAmendDividendsRequest] {
@@ -31,7 +31,7 @@ object CreateAmendDividendsRulesValidator extends RulesValidator[CreateAmendDivi
   private val customerReferenceRegex = "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$".r
 
   override def validateBusinessRules(parsed: CreateAmendDividendsRequest): Validated[Seq[MtdError], CreateAmendDividendsRequest] = {
-    import parsed.body._
+    import parsed.body.*
 
     combine(
       foreignDividend.getOrElse(Seq.empty).zipWithIndex.traverse { case (dividend, arrayIndex) => validateForeignDividend(dividend, arrayIndex) },
@@ -46,7 +46,7 @@ object CreateAmendDividendsRulesValidator extends RulesValidator[CreateAmendDivi
   }
 
   private def validateForeignDividend(foreignDividend: CreateAmendForeignDividendItem, arrayIndex: Int): Validated[Seq[MtdError], Unit] = {
-    import foreignDividend._
+    import foreignDividend.*
 
     combine(
       ResolveParsedCountryCode(countryCode, s"/foreignDividend/$arrayIndex/countryCode"),
@@ -59,7 +59,7 @@ object CreateAmendDividendsRulesValidator extends RulesValidator[CreateAmendDivi
 
   private def validateDividendIncomeReceivedWhilstAbroad(dividendIncomeReceivedWhilstAbroad: CreateAmendDividendIncomeReceivedWhilstAbroadItem,
                                                          arrayIndex: Int): Validated[Seq[MtdError], Unit] = {
-    import dividendIncomeReceivedWhilstAbroad._
+    import dividendIncomeReceivedWhilstAbroad.*
 
     combine(
       ResolveParsedCountryCode(countryCode, s"/dividendIncomeReceivedWhilstAbroad/$arrayIndex/countryCode"),
@@ -71,7 +71,7 @@ object CreateAmendDividendsRulesValidator extends RulesValidator[CreateAmendDivi
   }
 
   private def validateCommonDividends(commonDividends: CreateAmendCommonDividends, fieldName: String): Validated[Seq[MtdError], Unit] = {
-    import commonDividends._
+    import commonDividends.*
 
     combine(
       ResolveStringPattern(customerReference, customerReferenceRegex, CustomerRefFormatError.withPath(s"/$fieldName/customerReference")),

@@ -16,6 +16,6 @@
 
 package v2.models.request.retrieveUkDividendsAnnualIncomeSummary
 
-import shared.models.domain.{Nino, TaxYear}
+import api.models.domain.{Nino, TaxYear}
 
 case class RetrieveUkDividendsIncomeAnnualSummaryRequest(nino: Nino, taxYear: TaxYear)

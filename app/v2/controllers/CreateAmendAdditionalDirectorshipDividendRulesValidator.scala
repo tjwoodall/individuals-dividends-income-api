@@ -16,12 +16,12 @@
 
 package v2.controllers
 
+import api.controllers.validators.RulesValidator
+import api.controllers.validators.resolvers.{ResolveIsoDate, ResolveParsedNumber, ResolveStringPattern}
+import api.models.domain.TaxYear
+import api.models.errors.*
 import cats.data.Validated
 import cats.data.Validated.Invalid
-import shared.controllers.validators.RulesValidator
-import shared.controllers.validators.resolvers.{ResolveIsoDate, ResolveParsedNumber, ResolveStringPattern}
-import shared.models.domain.TaxYear
-import shared.models.errors._
 import v2.models.request.createAmendAdditionalDirectorshipDividend.CreateAmendAdditionalDirectorshipDividendRequest
 
 import scala.util.matching.Regex
@@ -35,7 +35,7 @@ object CreateAmendAdditionalDirectorshipDividendRulesValidator extends RulesVali
 
   override def validateBusinessRules(
       parsed: CreateAmendAdditionalDirectorshipDividendRequest): Validated[Seq[MtdError], CreateAmendAdditionalDirectorshipDividendRequest] = {
-    import parsed.body._
+    import parsed.body.*
 
     combine(
       validateCloseCompany(companyDirector, closeCompany),

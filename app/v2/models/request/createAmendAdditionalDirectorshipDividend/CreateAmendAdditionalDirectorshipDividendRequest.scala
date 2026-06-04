@@ -16,7 +16,7 @@
 
 package v2.models.request.createAmendAdditionalDirectorshipDividend
 
-import shared.models.domain.{EmploymentId, Nino, TaxYear}
+import api.models.domain.{EmploymentId, Nino, TaxYear}
 
 case class CreateAmendAdditionalDirectorshipDividendRequest(nino: Nino,
                                                             taxYear: TaxYear,

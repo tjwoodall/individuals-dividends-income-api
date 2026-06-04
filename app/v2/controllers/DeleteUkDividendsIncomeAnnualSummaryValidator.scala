@@ -16,12 +16,12 @@
 
 package v2.controllers
 
+import api.controllers.validators.Validator
+import api.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
+import api.models.domain.TaxYear
+import api.models.errors.MtdError
 import cats.data.Validated
-import cats.implicits._
-import shared.controllers.validators.Validator
-import shared.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
-import shared.models.domain.TaxYear
-import shared.models.errors.MtdError
+import cats.implicits.*
 import v2.models.request.deleteUkDividendsIncomeAnnualSummary.DeleteUkDividendsIncomeAnnualSummaryRequest
 
 class DeleteUkDividendsIncomeAnnualSummaryValidator(nino: String, taxYear: String) extends Validator[DeleteUkDividendsIncomeAnnualSummaryRequest] {

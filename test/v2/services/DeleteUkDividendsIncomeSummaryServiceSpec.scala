@@ -16,12 +16,12 @@
 
 package v2.services
 
+import api.controllers.EndpointLogContext
+import api.models.domain.{Nino, TaxYear}
+import api.models.errors.*
+import api.models.outcomes.ResponseWrapper
+import api.utils.UnitSpec
 import common.errors.RuleOutsideAmendmentWindowError
-import shared.controllers.EndpointLogContext
-import shared.models.domain.{Nino, TaxYear}
-import shared.models.errors.*
-import shared.models.outcomes.ResponseWrapper
-import shared.utils.UnitSpec
 import uk.gov.hmrc.http.HeaderCarrier
 import v2.mocks.connectors.MockDeleteUkDividendsIncomeAnnualSummaryConnector
 import v2.models.request.deleteUkDividendsIncomeAnnualSummary.DeleteUkDividendsIncomeAnnualSummaryRequest
@@ -34,7 +34,7 @@ class DeleteUkDividendsIncomeSummaryServiceSpec extends UnitSpec {
   "DeleteUkDividendsIncomeSummaryServiceSpec" should {
     "delete" must {
       "return correct result for a success" in new Test {
-        val outcome = Right(ResponseWrapper("resultId", ()))
+        val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper("resultId", ()))
 
         MockDeleteUkDividendsIncomeAnnualSummaryConnector
           .delete(requestData)

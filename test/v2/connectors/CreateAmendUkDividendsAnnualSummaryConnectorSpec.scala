@@ -16,14 +16,14 @@
 
 package v2.connectors
 
-import shared.connectors.{ConnectorSpec, DownstreamOutcome}
-import shared.models.domain.{Nino, TaxYear}
-import shared.models.outcomes.ResponseWrapper
+import api.connectors.{ConnectorSpec, DownstreamOutcome}
+import api.models.domain.{Nino, TaxYear}
+import api.models.outcomes.ResponseWrapper
+import uk.gov.hmrc.http.StringContextOps
 import v2.models.request.createAmendUkDividendsIncomeAnnualSummary.{
   CreateAmendUkDividendsIncomeAnnualSummaryBody,
   CreateAmendUkDividendsIncomeAnnualSummaryRequest
 }
-import uk.gov.hmrc.http.StringContextOps
 
 import scala.concurrent.Future
 
@@ -39,7 +39,7 @@ class CreateAmendUkDividendsAnnualSummaryConnectorSpec extends ConnectorSpec {
 
           def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
 
-          val outcome = Right(ResponseWrapper(correlationId, ()))
+          val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
 
           willPost(url"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}", body) returns Future.successful(
             outcome)
@@ -54,7 +54,7 @@ class CreateAmendUkDividendsAnnualSummaryConnectorSpec extends ConnectorSpec {
         new IfsTest with Test {
           def taxYear: TaxYear = TaxYear.fromMtd("2023-24")
 
-          val outcome = Right(ResponseWrapper(correlationId, ()))
+          val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
 
           willPost(url"$baseUrl/income-tax/${taxYear.asTysDownstream}/$nino/income-source/dividends/annual", body) returns Future.successful(outcome)
 
@@ -70,7 +70,7 @@ class CreateAmendUkDividendsAnnualSummaryConnectorSpec extends ConnectorSpec {
     protected val connector: CreateAmendUkDividendsAnnualSummaryConnector =
       new CreateAmendUkDividendsAnnualSummaryConnector(
         http = mockHttpClient,
-        appConfig = mockSharedAppConfig
+        appConfig = mockAppConfig
       )
 
     protected val request: CreateAmendUkDividendsIncomeAnnualSummaryRequest =

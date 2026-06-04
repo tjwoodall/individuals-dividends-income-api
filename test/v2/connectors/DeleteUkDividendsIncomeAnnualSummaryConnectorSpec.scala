@@ -16,13 +16,13 @@
 
 package v2.connectors
 
+import api.connectors.ConnectorSpec
+import api.models.domain.{Nino, TaxYear}
+import api.models.outcomes.ResponseWrapper
 import play.api.Configuration
 import play.api.libs.json.Json
-import shared.connectors.ConnectorSpec
-import shared.models.domain.{Nino, TaxYear}
-import shared.models.outcomes.ResponseWrapper
-import v2.models.request.deleteUkDividendsIncomeAnnualSummary.DeleteUkDividendsIncomeAnnualSummaryRequest
 import uk.gov.hmrc.http.StringContextOps
+import v2.models.request.deleteUkDividendsIncomeAnnualSummary.DeleteUkDividendsIncomeAnnualSummaryRequest
 
 import scala.concurrent.Future
 
@@ -33,14 +33,14 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
       "a valid request is made and `isPassDeleteIntentEnabled` feature switch is on" in new IfsTest with Test {
         def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
 
-        val outcome = Right(ResponseWrapper(correlationId, ()))
+        val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
 
         willPost(
           url = url"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}",
           body = Json.parse("""{}""")
         ).returns(Future.successful(outcome))
 
-        MockedSharedAppConfig.featureSwitchConfig
+        MockedAppConfig.featureSwitchConfig
           .anyNumberOfTimes()
           .returns(
             Configuration(
@@ -52,15 +52,15 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
 
       "a valid request is made and `isPassDeleteIntentEnabled` feature switch is off" in new IfsTest with Test {
 
-        def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
-        val outcome          = Right(ResponseWrapper(correlationId, ()))
+        def taxYear: TaxYear                               = TaxYear.fromMtd("2019-20")
+        val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
 
         willPost(
           url = url"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}",
           body = Json.parse("""{}""")
         ).returns(Future.successful(outcome))
 
-        MockedSharedAppConfig.featureSwitchConfig
+        MockedAppConfig.featureSwitchConfig
           .anyNumberOfTimes()
           .returns(
             Configuration(
@@ -72,13 +72,13 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
     }
     "return the expected response for a TYS request" when {
       "a valid request is made" in new IfsTest with Test {
-        def taxYear: TaxYear = TaxYear.fromMtd("2023-24")
-        val outcome          = Right(ResponseWrapper(correlationId, ()))
+        def taxYear: TaxYear                               = TaxYear.fromMtd("2023-24")
+        val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
 
         willDelete(url = url"$baseUrl/income-tax/${taxYear.asTysDownstream}/$nino/income-source/dividends/annual")
           .returns(Future.successful(outcome))
 
-        MockedSharedAppConfig.featureSwitchConfig
+        MockedAppConfig.featureSwitchConfig
           .anyNumberOfTimes()
           .returns(
             Configuration(
@@ -99,7 +99,7 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
 
     val connector: DeleteUkDividendsIncomeAnnualSummaryConnector = new DeleteUkDividendsIncomeAnnualSummaryConnector(
       http = mockHttpClient,
-      appConfig = mockSharedAppConfig
+      appConfig = mockAppConfig
     )
 
   }

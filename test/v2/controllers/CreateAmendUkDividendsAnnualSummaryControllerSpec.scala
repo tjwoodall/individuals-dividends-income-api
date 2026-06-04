@@ -16,19 +16,19 @@
 
 package v2.controllers
 
+import api.config.MockAppConfig
+import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import api.models.audit.{AuditEvent, AuditResponse, FlattenedGenericAuditDetail}
+import api.models.auth.UserDetails
+import api.models.domain.TaxYear
+import api.models.errors.*
+import api.models.outcomes.ResponseWrapper
 import play.api.Configuration
 import play.api.libs.json.{JsObject, JsValue}
 import play.api.mvc.Result
-import shared.config.MockSharedAppConfig
-import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import shared.models.audit.{AuditEvent, AuditResponse, FlattenedGenericAuditDetail}
-import shared.models.auth.UserDetails
-import shared.models.domain.TaxYear
-import shared.models.errors._
-import shared.models.outcomes.ResponseWrapper
 import v2.mocks.services.MockCreateAmendUkDividendsAnnualSummaryService
 import v2.mocks.validators.MockCreateAmendUkDividendsAnnualSummaryValidatorFactory
-import v2.models.request.createAmendUkDividendsIncomeAnnualSummary._
+import v2.models.request.createAmendUkDividendsIncomeAnnualSummary.*
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -38,7 +38,7 @@ class CreateAmendUkDividendsAnnualSummaryControllerSpec
     with ControllerTestRunner
     with MockCreateAmendUkDividendsAnnualSummaryService
     with MockCreateAmendUkDividendsAnnualSummaryValidatorFactory
-    with MockSharedAppConfig {
+    with MockAppConfig {
 
   private val taxYear = "2019-20"
   private val mtdId   = "test-mtd-id"
@@ -98,11 +98,11 @@ class CreateAmendUkDividendsAnnualSummaryControllerSpec
       auditService = mockAuditService
     )
 
-    MockedSharedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
+    MockedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
       "supporting-agents-access-control.enabled" -> true
     )
 
-    MockedSharedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
+    MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
 
     protected def callController(): Future[Result] =
       controller.createAmendUkDividendsAnnualSummary(validNino, taxYear)(fakeRequest.withBody(requestJson))

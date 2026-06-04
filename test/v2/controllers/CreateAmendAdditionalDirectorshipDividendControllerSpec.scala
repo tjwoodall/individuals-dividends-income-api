@@ -16,14 +16,14 @@
 
 package v2.controllers
 
+import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
+import api.models.domain.{EmploymentId, TaxYear}
+import api.models.errors.*
+import api.models.outcomes.ResponseWrapper
 import play.api.Configuration
 import play.api.libs.json.JsValue
 import play.api.mvc.Result
-import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
-import shared.models.domain.{EmploymentId, TaxYear}
-import shared.models.errors._
-import shared.models.outcomes.ResponseWrapper
 import v2.fixtures.CreateAmendAdditionalDirectorshipDividendFixtures.{fullRequestBodyModel, validFullRequestBodyJson}
 import v2.mocks.services.MockCreateAmendAdditionalDirectorshipDividendService
 import v2.mocks.validators.MockCreateAmendAdditionalDirectorshipDividendValidatorFactory
@@ -92,11 +92,11 @@ class CreateAmendAdditionalDirectorshipDividendControllerSpec
       idGenerator = mockIdGenerator
     )
 
-    MockedSharedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
+    MockedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
       "supporting-agents-access-control.enabled" -> true
     )
 
-    MockedSharedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
+    MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
 
     protected def callController(): Future[Result] =
       controller.createAmend(validNino, taxYear, employmentId)(fakePostRequest(validFullRequestBodyJson))

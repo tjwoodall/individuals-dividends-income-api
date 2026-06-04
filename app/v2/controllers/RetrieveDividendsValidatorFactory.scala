@@ -16,13 +16,13 @@
 
 package v2.controllers
 
-import shared.config.SharedAppConfig
-import shared.controllers.validators.Validator
+import api.config.AppConfig
+import api.controllers.validators.Validator
 import v2.models.request.retrieveDividends.RetrieveDividendsRequest
 
 import javax.inject.Inject
 
-class RetrieveDividendsValidatorFactory @Inject() (implicit appConfig: SharedAppConfig) {
+class RetrieveDividendsValidatorFactory @Inject() (implicit appConfig: AppConfig) {
 
   def validator(nino: String, taxYear: String): Validator[RetrieveDividendsRequest] =
     new RetrieveDividendsValidator(nino, taxYear)

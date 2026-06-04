@@ -16,15 +16,16 @@
 
 package v2.services
 
-import shared.controllers.EndpointLogContext
-import shared.models.domain.{Nino, TaxYear}
-import shared.models.errors._
-import shared.models.outcomes.ResponseWrapper
-import shared.services.ServiceSpec
+import api.controllers.EndpointLogContext
+import api.models.domain.{Nino, TaxYear}
+import api.models.errors.*
+import api.models.outcomes.ResponseWrapper
+import api.services.ServiceSpec
 import uk.gov.hmrc.http.HeaderCarrier
 import v2.fixtures.RetrieveDividendsFixtures.responseModel
 import v2.mocks.connectors.MockRetrieveDividendsConnector
 import v2.models.request.retrieveDividends.RetrieveDividendsRequest
+import v2.models.response.retrieveDividends.RetrieveDividendsResponse
 
 import scala.concurrent.Future
 
@@ -33,7 +34,7 @@ class RetrieveDividendsServiceSpec extends ServiceSpec {
   "RetrieveDividendsService" should {
     "return the expected response for a non-TYS request" when {
       "a valid request is made" in new Test {
-        val outcome = Right(ResponseWrapper(correlationId, responseModel))
+        val outcome: Right[Nothing, ResponseWrapper[RetrieveDividendsResponse]] = Right(ResponseWrapper(correlationId, responseModel))
 
         MockRetrieveDividendsConnector
           .retrieve(request)

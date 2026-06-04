@@ -16,9 +16,9 @@
 
 package v2.controllers
 
-import shared.models.domain.{Nino, TaxYear}
-import shared.models.errors._
-import shared.utils.UnitSpec
+import api.models.domain.{Nino, TaxYear}
+import api.models.errors.*
+import api.utils.UnitSpec
 import v2.models.request.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsIncomeAnnualSummaryRequest
 
 class RetrieveUkDividendsIncomeAnnualSummaryValidatorSpec extends UnitSpec {

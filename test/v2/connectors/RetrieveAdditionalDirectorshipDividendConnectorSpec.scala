@@ -16,14 +16,14 @@
 
 package v2.connectors
 
-import shared.connectors.{ConnectorSpec, DownstreamOutcome}
-import shared.models.domain.{EmploymentId, Nino, TaxYear}
-import shared.models.errors.{DownstreamErrorCode, DownstreamErrors}
-import shared.models.outcomes.ResponseWrapper
+import api.connectors.{ConnectorSpec, DownstreamOutcome}
+import api.models.domain.{EmploymentId, Nino, TaxYear}
+import api.models.errors.{DownstreamErrorCode, DownstreamErrors}
+import api.models.outcomes.ResponseWrapper
+import uk.gov.hmrc.http.StringContextOps
+import v2.fixtures.RetrieveAdditionalDirectorshipDividendFixtures.*
 import v2.models.request.retrieveAdditionalDirectorshipDividend.RetrieveAdditionalDirectorshipDividendRequest
 import v2.models.response.retrieveAdditionalDirectorshipDividend.RetrieveAdditionalDirectorshipDividendResponse
-import v2.fixtures.RetrieveAdditionalDirectorshipDividendFixtures._
-import uk.gov.hmrc.http.StringContextOps
 
 import scala.concurrent.Future
 
@@ -71,7 +71,7 @@ class RetrieveAdditionalDirectorshipDividendConnectorSpec extends ConnectorSpec 
   trait Test { self: ConnectorTest =>
 
     protected val connector: RetrieveAdditionalDirectorshipDividendConnector =
-      new RetrieveAdditionalDirectorshipDividendConnector(http = mockHttpClient, appConfig = mockSharedAppConfig)
+      new RetrieveAdditionalDirectorshipDividendConnector(http = mockHttpClient, appConfig = mockAppConfig)
 
     protected val request: RetrieveAdditionalDirectorshipDividendRequest = RetrieveAdditionalDirectorshipDividendRequest(
       nino = nino,

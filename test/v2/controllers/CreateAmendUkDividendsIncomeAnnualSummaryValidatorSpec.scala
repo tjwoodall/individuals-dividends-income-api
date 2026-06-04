@@ -16,11 +16,11 @@
 
 package v2.controllers
 
+import api.models.domain.{Nino, TaxYear}
+import api.models.errors.*
+import api.utils.UnitSpec
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.AnyContentAsJson
-import shared.models.domain.{Nino, TaxYear}
-import shared.models.errors._
-import shared.utils.UnitSpec
 import v2.models.request.createAmendUkDividendsIncomeAnnualSummary.{
   CreateAmendUkDividendsIncomeAnnualSummaryBody,
   CreateAmendUkDividendsIncomeAnnualSummaryRequest

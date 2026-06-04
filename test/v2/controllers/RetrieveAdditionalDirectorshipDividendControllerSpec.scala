@@ -16,13 +16,13 @@
 
 package v2.controllers
 
+import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import api.models.domain.{EmploymentId, TaxYear}
+import api.models.errors.*
+import api.models.outcomes.ResponseWrapper
 import play.api.Configuration
 import play.api.mvc.Result
-import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import shared.models.domain.{EmploymentId, TaxYear}
-import shared.models.errors._
-import shared.models.outcomes.ResponseWrapper
-import v2.fixtures.RetrieveAdditionalDirectorshipDividendFixtures._
+import v2.fixtures.RetrieveAdditionalDirectorshipDividendFixtures.*
 import v2.mocks.services.MockRetrieveAdditionalDirectorshipDividendService
 import v2.mocks.validators.MockRetrieveAdditionalDirectorshipDividendValidatorFactory
 import v2.models.request.retrieveAdditionalDirectorshipDividend.RetrieveAdditionalDirectorshipDividendRequest
@@ -90,11 +90,11 @@ class RetrieveAdditionalDirectorshipDividendControllerSpec extends ControllerBas
       idGenerator = mockIdGenerator
     )
 
-    MockedSharedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
+    MockedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
       "supporting-agents-access-control.enabled" -> true
     )
 
-    MockedSharedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
+    MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
 
     protected def callController(): Future[Result] = controller.retrieve(validNino, taxYear, employmentId)(fakeGetRequest)
 

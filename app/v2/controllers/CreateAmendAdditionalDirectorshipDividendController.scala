@@ -16,13 +16,13 @@
 
 package v2.controllers
 
+import api.config.AppConfig
+import api.controllers.*
+import api.routing.Version
+import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
+import api.utils.IdGenerator
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
-import shared.config.SharedAppConfig
-import shared.controllers._
-import shared.routing.Version
-import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
-import shared.utils.IdGenerator
 import v2.services.CreateAmendAdditionalDirectorshipDividendService
 
 import javax.inject.{Inject, Singleton}
@@ -36,7 +36,7 @@ class CreateAmendAdditionalDirectorshipDividendController @Inject() (
     service: CreateAmendAdditionalDirectorshipDividendService,
     auditService: AuditService,
     cc: ControllerComponents,
-    val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: SharedAppConfig)
+    val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: AppConfig)
     extends AuthorisedController(cc) {
 
   val endpointName: String = "create-or-amend-additional-directorship-and-dividend-information"

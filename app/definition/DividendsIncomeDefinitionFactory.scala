@@ -16,14 +16,14 @@
 
 package definition
 
-import shared.config.SharedAppConfig
-import shared.definition._
-import shared.routing.Version2
+import api.config.AppConfig
+import api.definition.*
+import api.routing.Version2
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class DividendsIncomeDefinitionFactory @Inject() (protected val appConfig: SharedAppConfig) extends ApiDefinitionFactory {
+class DividendsIncomeDefinitionFactory @Inject() (protected val appConfig: AppConfig) extends ApiDefinitionFactory {
 
   val definition: Definition =
     Definition(

@@ -16,16 +16,16 @@
 
 package v2.controllers
 
+import api.config.MockAppConfig
+import api.models.domain.{Nino, TaxYear}
+import api.models.errors.*
+import api.utils.UnitSpec
 import common.errors.CustomerRefFormatError
 import org.scalatest.OneInstancePerTest
 import play.api.libs.json.{JsValue, Json}
-import shared.config.MockSharedAppConfig
-import shared.models.domain.{Nino, TaxYear}
-import shared.models.errors.*
-import shared.utils.UnitSpec
 import v2.models.request.createAmendDividends.*
 
-class CreateAmendDividendsValidatorSpec extends UnitSpec with OneInstancePerTest with MockSharedAppConfig {
+class CreateAmendDividendsValidatorSpec extends UnitSpec with OneInstancePerTest with MockAppConfig {
 
   private val validNino    = "AA123456A"
   private val validTaxYear = "2020-21"
@@ -383,7 +383,7 @@ class CreateAmendDividendsValidatorSpec extends UnitSpec with OneInstancePerTest
   def validator(nino: String, taxYear: String, body: JsValue): CreateAmendDividendsValidator =
     new CreateAmendDividendsValidator(nino, taxYear, body)
 
-  MockedSharedAppConfig.minimumPermittedTaxYear
+  MockedAppConfig.minimumPermittedTaxYear
     .returns(TaxYear.ending(2020))
     .anyNumberOfTimes()
 

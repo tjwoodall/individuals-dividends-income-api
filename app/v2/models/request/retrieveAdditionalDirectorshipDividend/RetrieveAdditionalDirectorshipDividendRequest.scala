@@ -16,6 +16,6 @@
 
 package v2.models.request.retrieveAdditionalDirectorshipDividend
 
-import shared.models.domain.{EmploymentId, Nino, TaxYear}
+import api.models.domain.{EmploymentId, Nino, TaxYear}
 
 case class RetrieveAdditionalDirectorshipDividendRequest(nino: Nino, taxYear: TaxYear, employmentId: EmploymentId)

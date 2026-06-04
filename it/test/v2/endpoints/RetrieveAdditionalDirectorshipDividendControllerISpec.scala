@@ -16,13 +16,13 @@
 
 package v2.endpoints
 
+import api.models.errors.*
+import api.services.*
+import api.support.IntegrationBaseSpec
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.libs.json.Json
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.*
-import shared.models.errors.*
-import shared.services.*
-import shared.support.IntegrationBaseSpec
 import v2.fixtures.RetrieveAdditionalDirectorshipDividendFixtures.responseJson
 
 class RetrieveAdditionalDirectorshipDividendControllerISpec extends IntegrationBaseSpec {

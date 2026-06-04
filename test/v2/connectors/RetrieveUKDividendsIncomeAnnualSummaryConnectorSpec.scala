@@ -16,12 +16,12 @@
 
 package v2.connectors
 
-import shared.connectors.ConnectorSpec
-import shared.models.domain.{Nino, TaxYear}
-import shared.models.outcomes.ResponseWrapper
+import api.connectors.ConnectorSpec
+import api.models.domain.{Nino, TaxYear}
+import api.models.outcomes.ResponseWrapper
+import uk.gov.hmrc.http.StringContextOps
 import v2.models.request.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsIncomeAnnualSummaryRequest
 import v2.models.response.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsAnnualIncomeSummaryResponse
-import uk.gov.hmrc.http.StringContextOps
 
 import scala.concurrent.Future
 
@@ -43,7 +43,8 @@ class RetrieveUKDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec 
         new IfsTest with Test {
           def taxYear: TaxYear = TaxYear.fromMtd("2018-19")
 
-          val outcome = Right(ResponseWrapper(correlationId, validResponse))
+          val outcome: Right[Nothing, ResponseWrapper[RetrieveUkDividendsAnnualIncomeSummaryResponse]] =
+            Right(ResponseWrapper(correlationId, validResponse))
 
           willGet(url"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/$taxYearDownstream")
             .returns(Future.successful(outcome))
@@ -59,7 +60,8 @@ class RetrieveUKDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec 
         new IfsTest with Test {
           def taxYear: TaxYear = TaxYear.fromMtd("2023-24")
 
-          val outcome = Right(ResponseWrapper(correlationId, validResponse))
+          val outcome: Right[Nothing, ResponseWrapper[RetrieveUkDividendsAnnualIncomeSummaryResponse]] =
+            Right(ResponseWrapper(correlationId, validResponse))
 
           willGet(url"$baseUrl/income-tax/${taxYear.asTysDownstream}/$nino/income-source/dividends/annual")
             .returns(Future.successful(outcome))
@@ -74,7 +76,7 @@ class RetrieveUKDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec 
     def taxYear: TaxYear
 
     protected val connector: RetrieveUKDividendsIncomeAnnualSummaryConnector =
-      new RetrieveUKDividendsIncomeAnnualSummaryConnector(http = mockHttpClient, appConfig = mockSharedAppConfig)
+      new RetrieveUKDividendsIncomeAnnualSummaryConnector(http = mockHttpClient, appConfig = mockAppConfig)
 
     protected val request: RetrieveUkDividendsIncomeAnnualSummaryRequest =
       RetrieveUkDividendsIncomeAnnualSummaryRequest(Nino("AA111111A"), taxYear = taxYear)

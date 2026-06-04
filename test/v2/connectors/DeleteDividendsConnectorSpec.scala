@@ -16,11 +16,11 @@
 
 package v2.connectors
 
-import shared.connectors.{ConnectorSpec, DownstreamOutcome}
-import shared.models.domain.{Nino, TaxYear}
-import shared.models.outcomes.ResponseWrapper
-import v2.models.request.deleteDividends.DeleteDividendsRequest
+import api.connectors.{ConnectorSpec, DownstreamOutcome}
+import api.models.domain.{Nino, TaxYear}
+import api.models.outcomes.ResponseWrapper
 import uk.gov.hmrc.http.StringContextOps
+import v2.models.request.deleteDividends.DeleteDividendsRequest
 
 import scala.concurrent.Future
 
@@ -61,7 +61,7 @@ class DeleteDividendsConnectorSpec extends ConnectorSpec {
     protected val connector: DeleteDividendsConnector =
       new DeleteDividendsConnector(
         http = mockHttpClient,
-        appConfig = mockSharedAppConfig
+        appConfig = mockAppConfig
       )
 
     protected val request: DeleteDividendsRequest =

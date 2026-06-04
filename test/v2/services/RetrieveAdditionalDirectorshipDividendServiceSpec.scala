@@ -16,11 +16,11 @@
 
 package v2.services
 
-import shared.models.domain._
-import shared.models.errors._
-import shared.models.outcomes.ResponseWrapper
-import shared.services.{ServiceOutcome, ServiceSpec}
-import v2.fixtures.RetrieveAdditionalDirectorshipDividendFixtures._
+import api.models.domain.*
+import api.models.errors.*
+import api.models.outcomes.ResponseWrapper
+import api.services.{ServiceOutcome, ServiceSpec}
+import v2.fixtures.RetrieveAdditionalDirectorshipDividendFixtures.*
 import v2.mocks.connectors.MockRetrieveAdditionalDirectorshipDividendConnector
 import v2.models.request.retrieveAdditionalDirectorshipDividend.RetrieveAdditionalDirectorshipDividendRequest
 import v2.models.response.retrieveAdditionalDirectorshipDividend.RetrieveAdditionalDirectorshipDividendResponse

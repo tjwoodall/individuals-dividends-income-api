@@ -16,8 +16,8 @@
 
 package v2.models.request.createAmendUkDividendsIncomeAnnualSummary
 
+import api.utils.UnitSpec
 import play.api.libs.json.{JsObject, JsValue, Json}
-import shared.utils.UnitSpec
 
 class CreateAmendUkDividendsIncomeAnnualSummaryBodySpec extends UnitSpec {
 

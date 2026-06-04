@@ -16,6 +16,6 @@
 
 package v2.models.request.createAmendDividends
 
-import shared.models.domain.{Nino, TaxYear}
+import api.models.domain.{Nino, TaxYear}
 
 case class CreateAmendDividendsRequest(nino: Nino, taxYear: TaxYear, body: CreateAmendDividendsRequestBody)

@@ -16,9 +16,9 @@
 
 package v2.models.response.retrieveDividends
 
-import play.api.libs.functional.syntax._
+import api.models.domain.Timestamp
+import play.api.libs.functional.syntax.*
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import shared.models.domain.Timestamp
 import utils.JsonUtils
 
 case class RetrieveDividendsResponse(submittedOn: Timestamp,

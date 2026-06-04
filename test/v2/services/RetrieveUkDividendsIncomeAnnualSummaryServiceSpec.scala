@@ -16,11 +16,11 @@
 
 package v2.services
 
-import shared.controllers.EndpointLogContext
-import shared.models.domain.{Nino, TaxYear}
-import shared.models.errors._
-import shared.models.outcomes.ResponseWrapper
-import shared.services.ServiceSpec
+import api.controllers.EndpointLogContext
+import api.models.domain.{Nino, TaxYear}
+import api.models.errors.*
+import api.models.outcomes.ResponseWrapper
+import api.services.ServiceSpec
 import v2.mocks.connectors.MockRetrieveUKDividendsIncomeAnnualSummaryConnector
 import v2.models.request.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsIncomeAnnualSummaryRequest
 import v2.models.response.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsAnnualIncomeSummaryResponse
@@ -50,7 +50,8 @@ class RetrieveUkDividendsIncomeAnnualSummaryServiceSpec extends ServiceSpec {
   "RetrieveUKDividendsIncomeAnnualSummaryService" when {
     "retrieveUKDividendsIncomeAnnualSummary" must {
       "return correct result for a success" in new Test {
-        val outcome = Right(ResponseWrapper(correlationId, validResponse))
+        val outcome: Right[Nothing, ResponseWrapper[RetrieveUkDividendsAnnualIncomeSummaryResponse]] =
+          Right(ResponseWrapper(correlationId, validResponse))
 
         MockRetrieveUKDividendsIncomeAnnualSummaryConnector
           .retrieveUKDividendsIncomeAnnualSummary(requestData)

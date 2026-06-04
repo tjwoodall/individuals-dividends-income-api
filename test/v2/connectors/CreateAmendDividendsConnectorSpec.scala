@@ -16,11 +16,11 @@
 
 package v2.connectors
 
-import shared.connectors.ConnectorSpec
-import shared.models.domain.{Nino, TaxYear}
-import shared.models.outcomes.ResponseWrapper
-import v2.models.request.createAmendDividends.{CreateAmendDividendsRequest, CreateAmendDividendsRequestBody}
+import api.connectors.ConnectorSpec
+import api.models.domain.{Nino, TaxYear}
+import api.models.outcomes.ResponseWrapper
 import uk.gov.hmrc.http.StringContextOps
+import v2.models.request.createAmendDividends.{CreateAmendDividendsRequest, CreateAmendDividendsRequestBody}
 
 import scala.concurrent.Future
 
@@ -41,7 +41,7 @@ class CreateAmendDividendsConnectorSpec extends ConnectorSpec {
 
     val connector: CreateAmendDividendsConnector = new CreateAmendDividendsConnector(
       http = mockHttpClient,
-      appConfig = mockSharedAppConfig
+      appConfig = mockAppConfig
     )
 
     val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))

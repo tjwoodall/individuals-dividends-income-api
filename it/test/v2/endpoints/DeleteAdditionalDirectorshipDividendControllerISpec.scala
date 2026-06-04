@@ -16,14 +16,14 @@
 
 package v2.endpoints
 
+import api.models.errors.*
+import api.services.*
+import api.support.IntegrationBaseSpec
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.libs.json.{JsObject, Json}
+import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.*
-import shared.models.errors.*
-import shared.services.*
-import shared.support.IntegrationBaseSpec
-import play.api.libs.ws.DefaultBodyReadables.readableAsString
 
 class DeleteAdditionalDirectorshipDividendControllerISpec extends IntegrationBaseSpec {
 

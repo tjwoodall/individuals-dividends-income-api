@@ -16,12 +16,12 @@
 
 package auth
 
+import api.auth.AuthMainAgentsOnlyISpec
+import api.models.domain.TaxYear
+import api.services.DownstreamStub
 import play.api.http.Status.NO_CONTENT
 import play.api.libs.json.JsValue
 import play.api.libs.ws.{WSRequest, WSResponse}
-import shared.auth.AuthMainAgentsOnlyISpec
-import shared.models.domain.TaxYear
-import shared.services.DownstreamStub
 
 class IndividualsDividendsIncomeAuthMainAgentsOnlyISpec extends AuthMainAgentsOnlyISpec {
 

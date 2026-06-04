@@ -16,19 +16,19 @@
 
 package v2.controllers
 
+import api.config.AppConfig
+import api.controllers.validators.Validator
+import api.controllers.validators.resolvers.{ResolveNino, ResolveNonEmptyJsonObject, ResolveTaxYearMinimum}
+import api.models.domain.TaxYear
+import api.models.errors.MtdError
 import cats.data.Validated
 import cats.implicits.*
 import play.api.libs.json.JsValue
-import shared.config.SharedAppConfig
-import shared.controllers.validators.Validator
-import shared.controllers.validators.resolvers.{ResolveNino, ResolveNonEmptyJsonObject, ResolveTaxYearMinimum}
-import shared.models.domain.TaxYear
-import shared.models.errors.MtdError
 import v2.models.request.createAmendDividends.*
 
 import javax.inject.Inject
 
-class CreateAmendDividendsValidator @Inject() (nino: String, taxYear: String, body: JsValue)(implicit appConfig: SharedAppConfig)
+class CreateAmendDividendsValidator @Inject() (nino: String, taxYear: String, body: JsValue)(implicit appConfig: AppConfig)
     extends Validator[CreateAmendDividendsRequest] {
 
   private val resolveJson = ResolveNonEmptyJsonObject.resolver[CreateAmendDividendsRequestBody]
